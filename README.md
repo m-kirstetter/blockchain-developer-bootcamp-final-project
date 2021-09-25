@@ -1,7 +1,12 @@
 ## Final project idea
 
-Not too sure between these ideas
+Description: A freelance smart contract development dApp marketplace where recruiters can post smart contract development (or audit, etc) gigs and contractor apply to, and get paid for work.
+Recruiter would see full historical work from applicant's wallet address.
+To save gas, only gig hash would be stored on Ethereum blockchain.
+Gig amount is locked in smart contract and need to be released by gig owner or admin.
 
-- Job board dApp, contract interaction to contact company
-- Interview questionnaire dApp
-- Skills vetting dApp (user enters skills, recruiter validate on-chain)
+App will have 3 roles:
+
+- Admin - can: edit and delete gigs, update gig status, release amount to dev, give back amount to gig owner
+- Recruiter - can: create edit and delete gigs, accept freelancer, accept work (with review) to release funds
+- Freelancer - can: browse, apply to gigs (contract interaction) and get paid
