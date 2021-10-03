@@ -5,8 +5,7 @@ Recruiter would see full historical work from applicant's wallet address.
 To save gas, only gig hash would be stored on Ethereum blockchain.
 Gig amount is locked in smart contract and need to be released by gig owner or admin.
 
-App will have 3 roles:
+App will have 2 roles:
 
-- Admin - can: edit and delete gigs, update gig status, release amount to dev, give back amount to gig owner
 - Recruiter - can: create edit and delete gigs, accept freelancer, accept work (with review) to release funds
-- Freelancer - can: browse, apply to gigs (contract interaction) and get paid
+- Freelancer - can: browse, apply to gigs (contract interaction) and get paid after work is accepted by recruiter
