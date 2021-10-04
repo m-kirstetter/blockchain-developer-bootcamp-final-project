@@ -6,18 +6,20 @@ Description: A freelance smart contract development dApp marketplace where recru
 Recruiter would see full historical work from applicant's wallet address.
 To save gas, only gig hash would be stored on Ethereum blockchain.
 Recruiter can choose how many freelancers can apply.
-Gig amount is transferred and locked in smart contract at ad creation and need to be released by gig owner by selecting best freelancer work.
+Gig amount is transferred and locked in smart contract at gig creation and need to be released by gig owner by selecting best freelancer work.
 
 dApp will have 2 roles:
 
 - Recruiter - can: create edit and delete gigs, accept work from either freelancers (with review) to release funds
 - Freelancer - can: browse, apply to gigs (contract interaction) and get paid after work is accepted by recruiter
 
-App workflow:
+dApp workflow:
 
 1. Recruiter creates gig (fields: name, # of freelances are allowed to apply) and transfer minimum of 0.1 ETH as compensation
 2. Freelancers can apply, until # of freelances chosen by recruiter is reached
 3. Freelancers submit work (all need to submit work)
+4. Recruiter reviews and award one freelancer's work (has to)
+5. Funds are released to winning freelancer
 
 ## Tech stack
 
@@ -72,11 +74,13 @@ $ npm run generate
 
 For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
 
-## TODO
+## TODO/IDEAS
 
 - Frontend
-- Either store full gig on IPFS or hash gig content as ID
+- Either store full gig on IPFS or hash gig content as tamper
 - Add feature to prove deployed contract (testnet) is really from enrolled freelancer (owner address same as freelancer address or custom function on deployed contract, etc)
+- See to split payment (80% for winning freelancer, 20% split between remaining freelancers)
+- See how to deal with ETH in edge cases (no one or not enough freelancers applied, recruiter never reviews, etc..)
 - Optimise for gas
 - Refactor functions
 - Add features
