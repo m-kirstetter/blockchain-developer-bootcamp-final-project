@@ -30,6 +30,7 @@ Frontend is build with Nuxt.js, test covered.
 
 ```bash
 # install dependencies
+$ npm install -g truffle
 $ npm install
 ```
 
