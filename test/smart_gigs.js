@@ -206,7 +206,8 @@ contract("SmartGigs", async function(accounts) {
     );
   });
 
-  it("should be possible to award work (with event)", async function() {
+  it("should be possible to award work (with event), and compensation paid to freelancer", async function() {
+    const balanceBefore = await web3.eth.getBalance(account2);
     await truffleAssert.passes(
       truffleAssert.eventEmitted(
         await contract.awardTo(1, account2),
@@ -216,6 +217,9 @@ contract("SmartGigs", async function(accounts) {
         }
       )
     );
+    const balanceAfter = await web3.eth.getBalance(account2);
+    const paid = balanceAfter - balanceBefore;
+    assert.strictEqual(paid.toString(), compensation.toString());
   });
 
   it("should show awarded freelancer", async function() {
