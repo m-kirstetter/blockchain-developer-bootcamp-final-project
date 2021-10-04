@@ -56,7 +56,7 @@ contract SmartGigs {
     }
 
     modifier isNotOwner (address _address) {
-        require (msg.sender != _address, "You are the gig owner, you can't enroll.");
+        require (msg.sender != _address, "You are the gig owner, you can't enroll/submit work.");
         _;
     }
 
@@ -85,7 +85,11 @@ contract SmartGigs {
 
         require(
             msg.value >= minimumCompensation,
-            "Below the required minimum compensation"
+            "Below the required minimum compensation."
+        );
+        require(
+            _freelancersNumber >= 1,
+            "Below the required minimum freelancersNumber."
         );
         gigsCount = gigsCount + 1;
         // Adding Gig to gigs mapping
@@ -164,6 +168,8 @@ contract SmartGigs {
 
     }
 
+    // @TODO: _contractAddress should be a valid
+    // deployed contract (testnet), with sender address as owner
     function submitWork (uint _gigId, address _contractAddress)
         public
         isNotOwner(gigs[_gigId].owner)
@@ -224,7 +230,7 @@ contract SmartGigs {
     }
     function transfer(address _to, uint _amount) private {
         (bool success, ) = payable(_to).call{value: _amount}("");
-        require(success, "Failed to send Ether");
+        require(success, "Failed to send Ether.");
     }
 
 }
