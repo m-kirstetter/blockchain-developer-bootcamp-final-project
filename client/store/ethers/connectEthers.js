@@ -8,6 +8,7 @@ import {
 } from "ethers";
 import abi from "../../utils/contracts_SmartGigs_sol_SmartGigs.json";
 
+// ropsten: 0xdc5E511D15c7b06De7A423627a716C5D11C621Ef
 const contractAddress = process.env.CONTRACT;
 
 export const PROVIDER_CHECK_MS = 500;

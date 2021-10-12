@@ -22,7 +22,7 @@ export default {
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
     "@nuxtjs/fontawesome",
-    ["@nuxtjs/dotenv", { systemvars: true }],
+    ["@nuxtjs/dotenv", { systemvars: true, path: "./" }],
   ],
 
   fontawesome: {
