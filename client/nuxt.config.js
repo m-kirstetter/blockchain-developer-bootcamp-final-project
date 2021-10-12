@@ -4,6 +4,7 @@ export default {
   generate: {
     fallback: true,
   },
+  srcDir: "client/",
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: "blockchain-developer-bootcamp-final-project",
