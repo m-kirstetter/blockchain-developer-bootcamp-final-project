@@ -258,7 +258,8 @@ async function fireEvent(blockNumber) {
   const timestamp = block.timestamp;
   // Date.now() conversion to seconds insteads of milliseconds
   const now = Math.floor(Date.now() / 1000);
-  return timestamp + 30 > now ? true : false;
+  // return timestamp + 30 > now ? true : false;
+  return true;
 }
 
 export default {
