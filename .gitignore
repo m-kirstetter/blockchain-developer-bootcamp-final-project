@@ -1,2 +1,20 @@
+# dependencies
 node_modules
 package-lock.json
+
+# logs
+npm-debug.log
+
+# Nuxt build
+.nuxt
+
+# Nuxt generate
+dist
+
+# environment
+.env
+
+.DS_Store
+client/static/sw.js
+.nuxt-build-jest
+client/coverage/*

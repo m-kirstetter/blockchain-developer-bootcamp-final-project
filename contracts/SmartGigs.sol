@@ -20,6 +20,9 @@ contract SmartGigs {
         address owner;
         // Number of Freelancers allowed to enroll
         uint8 freelancersNumber;
+        // Number of Freelancers enrolled
+        uint8 enrolled;
+        uint8 works;
         address awardedTo;
     }
 
@@ -91,7 +94,7 @@ contract SmartGigs {
             _freelancersNumber >= 1,
             "Below the required minimum freelancersNumber."
         );
-        gigsCount = gigsCount + 1;
+        gigsCount += 1;
         // Adding Gig to gigs mapping
         gigs[gigsCount] = Gig({
             name: _name,
@@ -99,6 +102,8 @@ contract SmartGigs {
             status: Status.registered,
             owner: msg.sender,
             freelancersNumber: _freelancersNumber,
+            enrolled: 0,
+            works: 0,
             awardedTo: address(0)
         });
         emit LogGigStatusChange(gigsCount, gigs[gigsCount].status);
@@ -117,6 +122,7 @@ contract SmartGigs {
 
         // Push Freelancer address to enrolledFreelancers mapping Array
         enrolledFreelancers[_gigId].push(msg.sender);
+        gigs[_gigId].enrolled += 1;
         // Update status when desired Freelancers number is reached
         if (enrolledFreelancers[_gigId].length == gigs[_gigId].freelancersNumber) {
             gigs[_gigId].status = Status.open;
@@ -199,6 +205,8 @@ contract SmartGigs {
         worksByGig[_gigId].push(work);
         // Push work in worksByFreelancer mapping Array
         worksByFreelancer[msg.sender].push(work);
+        // Update gig works variable
+        gigs[_gigId].works += 1;
         // If submitted work number == required number of Freelancers, status change
         if (worksByGig[_gigId].length == gigs[_gigId].freelancersNumber) {
             gigs[_gigId].status = Status.review;

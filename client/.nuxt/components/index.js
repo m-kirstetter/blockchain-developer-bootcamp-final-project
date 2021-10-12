@@ -1,4 +1,9 @@
-export { default as Logo } from '../../components/Logo.vue'
+export { default as Gig } from '../../components/Gig.vue'
+export { default as Gigs } from '../../components/Gigs.vue'
+export { default as Navbar } from '../../components/Navbar.vue'
+export { default as PostGigButton } from '../../components/PostGigButton.vue'
+export { default as ModalsPostGig } from '../../components/modals/PostGig.vue'
+export { default as ModalsSubmitWork } from '../../components/modals/SubmitWork.vue'
 
 // nuxt/nuxt.js#8607
 function wrapFunctional(options) {

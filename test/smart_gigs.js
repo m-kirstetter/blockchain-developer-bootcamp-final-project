@@ -96,6 +96,11 @@ contract("SmartGigs", async function(accounts) {
     );
   });
 
+  it("should show 1 in Gig enrolled key", async function() {
+    const gig = await contract.gigs(1);
+    await assert.strictEqual(gig.enrolled.toString(), "1");
+  });
+
   it("should not be possible to submit work if Gig status is not valid", async function() {
     await truffleAssert.reverts(
       contract.submitWork(1, work, {
