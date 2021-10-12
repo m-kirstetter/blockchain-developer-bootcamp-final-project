@@ -6,6 +6,8 @@ package-lock.json
 npm-debug.log
 
 # Nuxt build
+dist/*
+
 .nuxt
 client/.nuxt
 
