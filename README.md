@@ -2,6 +2,8 @@
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/5ab45611-764f-4059-8b07-5b20f92cdff3/deploy-status)](https://app.netlify.com/sites/flamboyant-booth-468ae4/deploys)
 
+Deployed at [Netlify](https://flamboyant-booth-468ae4.netlify.app/) on Ropsten.
+
 ## Final project idea
 
 Description: A freelance smart contract development dApp marketplace where recruiters can post smart contract development gigs and contractor apply to, and get paid for work.
