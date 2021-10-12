@@ -1,5 +1,7 @@
 # blockchain-developer-bootcamp-final-project
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/5ab45611-764f-4059-8b07-5b20f92cdff3/deploy-status)](https://app.netlify.com/sites/flamboyant-booth-468ae4/deploys)
+
 ## Final project idea
 
 Description: A freelance smart contract development dApp marketplace where recruiters can post smart contract development gigs and contractor apply to, and get paid for work.
