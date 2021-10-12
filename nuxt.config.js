@@ -1,10 +1,10 @@
 export default {
-  // target: "static",
-  // ssr: false,
-  // generate: {
-  //   fallback: true,
-  //   dir: "dist",
-  // },
+  target: "static",
+  ssr: false,
+  generate: {
+    fallback: true,
+    dir: "dist",
+  },
   srcDir: "client/",
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
