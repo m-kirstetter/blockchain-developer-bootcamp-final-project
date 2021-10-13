@@ -80,7 +80,7 @@ const AppActions: ActionTree<AppRootState, AppRootState> = {
     let localContract;
     try {
       localContract = await getContractRw();
-      localContract.createGig(gig.title, gig.freelancers.toString(), {
+      await localContract.createGig(gig.title, gig.freelancers.toString(), {
         value: utils.parseEther(gig.compensation.toString())
       });
     } catch (error) {
@@ -93,24 +93,21 @@ const AppActions: ActionTree<AppRootState, AppRootState> = {
     let localContract;
     try {
       localContract = await getContractRw();
-      localContract.enroll(id.toString());
+      await localContract.enroll(id.toString());
     } catch (error) {
       commit("SET_LOADING", false);
       throw new Error("Something went wrong with enroll.");
     }
   },
-  async submit({ commit, state, dispatch }, work): Promise<any> {
+  async submit({ commit, state, dispatch }, work): Promise<void> {
     commit("SET_LOADING", true);
     let localContract;
     try {
       localContract = await getContractRw();
-      return await localContract.submitWork(
-        work.gigId.toString(),
-        work.contract
-      );
+      await localContract.submitWork(work.gigId.toString(), work.contract);
     } catch (error) {
       commit("SET_LOADING", false);
-      throw new Error("Something went wrong with enroll.");
+      throw new Error("Something went wrong with submit.");
     }
   }
 };

@@ -1,7 +1,7 @@
 <template>
   <b-modal
     id="submitWork"
-    title="Post Gig"
+    title="Submit Work"
     v-model="show"
     @ok="submit"
     @cancel="cancel"
@@ -82,8 +82,8 @@ export default Vue.extend({
     },
     async submit(event: Event) {
       event.preventDefault();
-      this.$v.gig.$touch();
-      if (this.$v.gig.$anyError) return;
+      this.$v.work.$touch();
+      if (this.$v.work.$anyError) return;
       await this.$store
         .dispatch("app/submit", {
           gigId: this.gigId,
