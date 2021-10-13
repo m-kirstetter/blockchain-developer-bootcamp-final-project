@@ -90,9 +90,8 @@ For detailed explanation on how things work, check out [Nuxt.js docs](https://nu
 
 ## TODO/IDEAS
 
-- Dev work award feature (but I might actually update project and go for spmething more conventional like upwork etc. Where recruiter post gig, freelancers apply with price, recruiter choose one freelancer)
+- Dev work award feature (but I might actually update project and go for something more conventional like upwork etc. Where recruiter post gig, freelancers apply with price, recruiter choose one freelancer)
 - Add feature to prove deployed contract (testnet) is really from enrolled freelancer (owner address same as freelancer address or custom function on deployed contract, etc)
-- See to split payment (80% for winning freelancer, 20% split between remaining freelancers)
 - See how to deal with ETH in edge cases (no one or not enough freelancers applied, recruiter never reviews, etc..)
 - Optimise for gas
 - Refactor smart contract functions to use Library etc
