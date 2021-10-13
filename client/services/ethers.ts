@@ -17,7 +17,6 @@ import abi from "./contracts_SmartGigs_sol_SmartGigs.json";
 
 declare let window: any;
 
-// ropsten: 0xdc5E511D15c7b06De7A423627a716C5D11C621Ef
 let contractAddress: string;
 if (process.env.NUXT_ENV_CONTRACT) {
   contractAddress = process.env.NUXT_ENV_CONTRACT;
@@ -25,36 +24,11 @@ if (process.env.NUXT_ENV_CONTRACT) {
   throw new Error("NUXT_ENV_CONTRACT environment variable is not set");
 }
 
-// const contractAddress = process.env.NUXT_ENV_CONTRACT;
-
-// export const PROVIDER_CHECK_MS = 500;
-// networks where ens exists
-// Mainet, Ropsten, Ropsten
-// export const ENS_NETS = ["0x1", "0x3", "0x4"];
-
-// messages
-// export const EthersMessages = {
-//   NOT_CONNECTED: "Not connected to Ethereum network",
-//   NOT_READY: "Ethereum network not ready",
-//   NO_WALLET: "No Ethereum wallet detected",
-//   ACCOUNT_CHANGED: "Ethereum account changed",
-//   ETHERS_VUEX_INITIALIZED: "Ethers vuex module initialized",
-//   ETHERS_VUEX_READY: "Ethers vuex module ready"
-// };
-// export const EVENT_CHANNEL = "ethers";
 // use vue as a simple event channel
 export const event = new Vue();
 // expose ethers modules
 export const utils = utilsModule;
 export const Contract = ContractModule;
-
-// ethereum transactions to log
-// More information: https://docs.ethers.io/ethers.js/html/api-providers.html#events
-// export const LOG_TRANSACTIONS = [
-//   "block",
-// can also be an address or transaction hash
-// [] // list of topics, empty for all topics
-// ];
 
 // for ethers
 let ethereum: any;
@@ -262,16 +236,6 @@ export async function stopWatchProvider() {
 if (process.client) {
   startProviderWatcher();
 }
-
-// To check if event timestamp is more than 20 seconds from now
-// async function fireEvent(blockNumber) {
-//   const block = await provider.getBlock(blockNumber);
-//   const timestamp = block.timestamp;
-//   // Date.now() conversion to seconds insteads of milliseconds
-//   const now = Math.floor(Date.now() / 1000);
-//   // return timestamp + 30 > now ? true : false;
-//   return true;
-// }
 
 export default {
   connect,
