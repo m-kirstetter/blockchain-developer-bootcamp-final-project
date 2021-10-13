@@ -10,7 +10,12 @@
       class="text-center"
       v-if="$store.state.app.gigs.length === 0"
     >
-      <p>Sorry, not gigs available right now.</p>
+      <p v-if="gigsLoading">Gigs loading....</p>
+      <p v-else>Sorry, no gigs found.</p>
+      <p v-if="!user">
+        You're not connected to Metamask, you can connect
+        <a href="#" @click="connect">here</a>.
+      </p>
     </div>
   </div>
 </template>
@@ -20,7 +25,18 @@ import Vue from "vue";
 import { Modal } from "~/interfaces/modal";
 
 export default Vue.extend({
+  computed: {
+    user: function(): string {
+      return this.$store.state.ethers.user;
+    },
+    gigsLoading: function(): boolean {
+      return this.$store.state.app.loading;
+    }
+  },
   methods: {
+    connect(): void {
+      this.$store.dispatch("ethers/walletConnect");
+    },
     enroll(id: number) {
       this.$store.dispatch("app/enroll", id);
     },
