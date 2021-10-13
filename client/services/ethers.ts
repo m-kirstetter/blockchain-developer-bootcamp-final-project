@@ -193,7 +193,7 @@ export async function startProviderWatcher(): Promise<void> {
   providerInterval = setInterval(checkProvider, PROVIDER_CHECK_MS);
 }
 
-function handleChainChanged(_chainId: any) {
+function handleChainChanged(_chainId: string) {
   chainId = _chainId;
   window.location.reload();
 }

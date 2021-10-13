@@ -109,9 +109,11 @@ const AppActions: ActionTree<AppRootState, AppRootState> = {
       commit("SET_LOADING", false);
       throw new Error("Something went wrong with submit.");
     }
+  },
+  resetGigs({ commit, state, dispatch }): void {
+    commit("SET_GIGS", []);
   }
 };
-
 // To format gig
 function formatGig(
   gig: any,

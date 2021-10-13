@@ -48,6 +48,7 @@ export default Vue.extend({
     },
     disconnect(): void {
       this.$store.dispatch("ethers/disconnect");
+      this.$store.dispatch("app/resetGigs");
     },
     truncate(
       text: string,
