@@ -7,6 +7,9 @@
 
       <b-collapse id="nav-text-collapse" is-nav>
         <b-navbar-nav class="ml-auto">
+          <b-button variant="link">
+            <b-spinner small v-if="$store.state.app.loading" />
+          </b-button>
           <b-button
             id="button-disconnect"
             variant="outline-success"
