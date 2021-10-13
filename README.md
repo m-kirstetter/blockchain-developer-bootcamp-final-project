@@ -64,8 +64,8 @@ $ truffle(develop)> migrate
 
 # generate ABI
 $ solcjs --abi contracts/SmartGigs.sol
-$ mv contracts_SmartGigs_sol_SmartGigs.abi client/util
-$ mv client/utils/contracts_SmartGigs_sol_SmartGigs.abi client/utils/contracts_SmartGigs_sol_SmartGigs.json
+$ mv contracts_SmartGigs_sol_SmartGigs.abi client/services
+$ mv client/services/contracts_SmartGigs_sol_SmartGigs.abi client/services/contracts_SmartGigs_sol_SmartGigs.json
 ```
 
 ## Nuxt.js build setup
