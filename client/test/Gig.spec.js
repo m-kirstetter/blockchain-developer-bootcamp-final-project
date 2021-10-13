@@ -2,7 +2,7 @@ import { shallowMount, createLocalVue } from "@vue/test-utils";
 import Vuex from "vuex";
 import Vuelidate from "vuelidate";
 import { BootstrapVue } from "bootstrap-vue";
-import Gig from "@/components/Gig.vue";
+import Gig from "~/components/Gig.vue";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -18,7 +18,7 @@ describe("Gig", () => {
     registered: "info",
     open: "success",
     review: "warning",
-    awarded: "dark",
+    awarded: "dark"
   };
 
   beforeEach(() => {
@@ -33,24 +33,24 @@ describe("Gig", () => {
         freelancers: [],
         worksSubmitted: "0",
         works: [],
-        awardedTo: "Ox000000000000000000000",
+        awardedTo: "Ox000000000000000000000"
       },
       status: {
         name: "Registered",
-        variant: variants.registered,
-      },
+        variant: variants.registered
+      }
     };
     ethersState = {
       user: "",
-      connected: false,
+      connected: false
     };
     store = new Vuex.Store({
       modules: {
         ethers: {
           namespaced: true,
-          state: ethersState,
-        },
-      },
+          state: ethersState
+        }
+      }
     });
   });
 

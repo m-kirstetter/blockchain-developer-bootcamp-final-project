@@ -25,15 +25,17 @@
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from "vue";
+
+export default Vue.extend({
   methods: {
-    post() {
+    post(): void {
       this.$store.dispatch("modals/openPostGigModal", {
         show: true,
-        data: {},
+        data: {}
       });
-    },
-  },
-};
+    }
+  }
+});
 </script>

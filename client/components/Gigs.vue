@@ -2,12 +2,7 @@
   <div>
     <div id="gigs-list">
       <div v-for="(gig, index) in $store.state.app.gigs" :key="index + 1">
-        <Gig
-          :gig="gig"
-          :status="getStatus(gig.status)"
-          @submit="submit"
-          @enroll="enroll"
-        />
+        <Gig :gig="gig" @submit="submit" @enroll="enroll" />
       </div>
     </div>
     <div
@@ -20,46 +15,23 @@
   </div>
 </template>
 
-<script>
-import Gig from "./Gig";
+<script lang="ts">
+import Vue from "vue";
+import { Modal } from "~/interfaces/modal";
 
-export default {
-  components: {
-    Gig,
-  },
+export default Vue.extend({
   methods: {
-    enroll(id) {
+    enroll(id: number) {
       this.$store.dispatch("app/enroll", id);
     },
-    submit(id) {
+    submit(id: number) {
       this.$store.dispatch("modals/openSubmitWorkModal", {
         show: true,
         data: {
-          gigId: id,
-        },
-      });
-    },
-    getStatus(status) {
-      let lower = status.toLowerCase();
-      let variant;
-      switch (status) {
-        case "open":
-          variant = "success";
-          break;
-        case "review":
-          variant = "warning";
-          break;
-        case "awarded":
-          variant = "dark";
-          break;
-        default:
-          variant = "info";
-      }
-      return {
-        name: status.charAt(0).toUpperCase() + lower.slice(1),
-        variant,
-      };
-    },
-  },
-};
+          gigId: id
+        }
+      } as Modal);
+    }
+  }
+});
 </script>

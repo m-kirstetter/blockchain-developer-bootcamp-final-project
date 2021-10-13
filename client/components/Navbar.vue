@@ -22,12 +22,11 @@
             id="button-connect"
             variant="outline-success"
             class="my-2 my-sm-0"
-            type="submit"
             @click="connect"
             v-else
           >
             <b-spinner small v-if="$store.state.ethers.loading" />
-            <font-awesome-icon :icon="['fas', 'wallet']" class="mr-1" v-else />
+            <font-awesome-icon :icon="['fas', 'wallet']" class="mr-1" />
             Connect
           </b-button>
         </b-navbar-nav>
@@ -36,23 +35,30 @@
   </b-navbar>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from "vue";
+
+export default Vue.extend({
   methods: {
-    async connect() {
-      await this.$store.dispatch("ethers/init");
+    connect(): void {
+      this.$store.dispatch("ethers/walletConnect");
     },
-    disconnect() {
+    disconnect(): void {
       this.$store.dispatch("ethers/disconnect");
     },
-    truncate(text, startChars, endChars, maxLength) {
+    truncate(
+      text: string,
+      startChars: number,
+      endChars: number,
+      maxLength: number
+    ): string {
       if (text.length > maxLength) {
         var start = text.substring(0, startChars);
         var end = text.substring(text.length - endChars, text.length);
         return start + " .... " + end;
       }
       return text;
-    },
-  },
-};
+    }
+  }
+});
 </script>

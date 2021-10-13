@@ -13,14 +13,10 @@
   </b-container>
 </template>
 
-<script>
-import PostGigButton from "@/components/PostGigButton";
-import Gigs from "@/components/Gigs";
+<script lang="ts">
+import Vue from "vue";
 
-export default {
-  components: {
-    PostGigButton,
-    Gigs,
-  },
-};
+export default Vue.extend({});
 </script>
+
+<style></style>

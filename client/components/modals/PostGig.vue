@@ -78,80 +78,82 @@
   </b-modal>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from "vue";
+import { Modal } from "~/interfaces/modal";
+import { GigFormInput } from "~/interfaces/gig";
 import { required, minLength, between, url } from "vuelidate/lib/validators";
 
-export default {
+export default Vue.extend({
   data: function() {
     return {
       gig: {
         title: "",
         description: "",
         freelancers: 1,
-        compensation: 0.1,
-      },
+        compensation: 0.1
+      } as GigFormInput
     };
   },
   computed: {
-    show() {
+    show(): boolean {
       return this.$store.state.modals.postGig.show;
-    },
+    }
   },
   validations: {
     gig: {
       title: {
         required,
-        minLength: minLength(4),
+        minLength: minLength(4)
       },
       description: {
         required,
-        url,
+        url
       },
       freelancers: {
         required,
-        between: between(1, 10),
+        between: between(1, 10)
       },
       compensation: {
         required,
-        between: between(0.1, 10),
-      },
-    },
+        between: between(0.1, 10)
+      }
+    }
   },
   methods: {
-    validateState(name) {
-      const { $dirty, $error } = this.$v.gig[name];
-      return $dirty ? !$error : null;
+    validateState(name: string) {
+      const dirty = this.$v.gig[name]?.$dirty;
+      const error = this.$v.gig[name]?.$error;
+      return dirty ? !error : null;
     },
     reset() {
       this.gig = {
         title: "",
         description: "",
         freelancers: 1,
-        compensation: 0.1,
+        compensation: 0.1
       };
 
       this.$store.commit("modals/SET_POSTGIG_MODAL", {
         show: false,
-        data: {},
-      });
+        data: {}
+      } as Modal);
 
       this.$nextTick(() => {
         this.$v.$reset();
       });
     },
-    create(event) {
+    create(event: Event) {
       event.preventDefault();
       this.$v.gig.$touch();
-      if (this.$v.gig.$anyError) {
-        return;
-      }
+      if (this.$v.gig.$anyError) return;
       this.$store.dispatch("app/create", this.gig);
       this.reset();
     },
-    cancel(event) {
+    cancel(event: Event) {
       event.preventDefault();
       this.reset();
-    },
-  },
-};
+    }
+  }
+});
 </script>

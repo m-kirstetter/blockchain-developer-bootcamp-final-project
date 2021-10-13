@@ -17,22 +17,22 @@ describe("SubmitWork", () => {
   beforeEach(() => {
     actions = {
       actionClick: jest.fn(),
-      actionInput: jest.fn(),
+      actionInput: jest.fn()
     };
     state = {
       submitWork: {
         show: false,
-        data: {},
-      },
+        data: {}
+      }
     };
     store = new Vuex.Store({
       modules: {
         modals: {
           namespaced: true,
           actions,
-          state,
-        },
-      },
+          state
+        }
+      }
     });
   });
 

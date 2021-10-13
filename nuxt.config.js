@@ -3,33 +3,40 @@ export default {
   ssr: false,
   generate: {
     fallback: true,
-    dir: "dist",
+    dir: "dist"
   },
   srcDir: "client/",
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: "blockchain-developer-bootcamp-final-project",
+    title: "nuxt-ts-truffle",
     meta: [
       { charset: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { hid: "description", name: "description", content: "" },
+      { hid: "description", name: "description", content: "" }
     ],
-    link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
+    link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }]
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
-  css: ["~/assets/scss/main.scss"],
+  css: [],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [{ src: "~/plugins/vuelidate" }],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
-  components: true,
+  // components: true,
+  components: [
+    // Equivalent to { path: '~/components' }
+    "~/components",
+    { path: "~/components/modals", extensions: ["vue"] }
+  ],
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
+    // https://go.nuxtjs.dev/typescript
+    "@nuxt/typescript-build",
     "@nuxtjs/fontawesome",
-    ["@nuxtjs/dotenv", { systemvars: true, path: "./" }],
+    ["@nuxtjs/dotenv", { systemvars: true, path: "./" }]
   ],
 
   fontawesome: {
@@ -38,8 +45,8 @@ export default {
       regular: [],
       light: [],
       duotone: [],
-      brands: [],
-    },
+      brands: []
+    }
   },
 
   // Modules: https://go.nuxtjs.dev/config-modules
@@ -49,7 +56,7 @@ export default {
     // https://go.nuxtjs.dev/axios
     "@nuxtjs/axios",
     // https://go.nuxtjs.dev/pwa
-    "@nuxtjs/pwa",
+    "@nuxtjs/pwa"
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
@@ -58,10 +65,10 @@ export default {
   // PWA module configuration: https://go.nuxtjs.dev/pwa
   pwa: {
     manifest: {
-      lang: "en",
-    },
+      lang: "en"
+    }
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {},
+  build: {}
 };

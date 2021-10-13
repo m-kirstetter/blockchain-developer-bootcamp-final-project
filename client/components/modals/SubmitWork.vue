@@ -31,73 +31,73 @@
   </b-modal>
 </template>
 
-<script>
-import { required } from "vuelidate/lib/validators";
+<script lang="ts">
+import Vue from "vue";
+import { Modal } from "~/interfaces/modal";
+import { required, minLength, between, url } from "vuelidate/lib/validators";
 
-export default {
+export default Vue.extend({
   data: function() {
     return {
       work: {
-        contract: "",
+        contract: ""
       },
-      error: false,
+      error: false
     };
+  },
+  computed: {
+    gigId(): number {
+      return this.$store.state.modals.submitWork.data.gigId;
+    },
+    show(): boolean {
+      return this.$store.state.modals.submitWork.show;
+    }
   },
   validations: {
     work: {
       contract: {
-        required,
-      },
-    },
-  },
-  computed: {
-    gigId() {
-      return this.$store.state.modals.submitWork.data.gigId;
-    },
-    show() {
-      return this.$store.state.modals.submitWork.show;
-    },
+        required
+      }
+    }
   },
   methods: {
-    validateState(name) {
-      const { $dirty, $error } = this.$v.work[name];
-      return $dirty ? !$error : null;
+    validateState(name: string) {
+      const dirty = this.$v.work[name]?.$dirty;
+      const error = this.$v.work[name]?.$error;
+      return dirty ? !error : null;
     },
     reset() {
-      this.error = false;
       this.work = {
-        contract: "",
+        contract: ""
       };
 
       this.$store.commit("modals/SET_SUBMITWORK_MODAL", {
         show: false,
-        data: {},
-      });
+        data: {}
+      } as Modal);
 
       this.$nextTick(() => {
         this.$v.$reset();
       });
     },
-    async submit(event) {
+    async submit(event: Event) {
       event.preventDefault();
-      this.$v.work.$touch();
-      if (this.$v.work.$anyError) return;
+      this.$v.gig.$touch();
+      if (this.$v.gig.$anyError) return;
       await this.$store
         .dispatch("app/submit", {
           gigId: this.gigId,
-          contract: this.work.contract,
+          contract: this.work.contract
         })
         .then(() => {
           this.reset();
-        })
-        .catch((error) => {
-          this.error = true;
         });
-    },
-    cancel(event) {
-      event.preventDefault();
       this.reset();
     },
-  },
-};
+    cancel(event: Event) {
+      event.preventDefault();
+      this.reset();
+    }
+  }
+});
 </script>

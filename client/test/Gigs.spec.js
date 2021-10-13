@@ -2,7 +2,7 @@ import { shallowMount, createLocalVue } from "@vue/test-utils";
 import Vuex from "vuex";
 import Vuelidate from "vuelidate";
 import { BootstrapVue } from "bootstrap-vue";
-import Gigs from "@/components/Gigs.vue";
+import Gigs from "~/components/Gigs.vue";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -18,10 +18,10 @@ describe("Gigs", () => {
 
   beforeEach(() => {
     appActions = {
-      enroll: jest.fn(),
+      enroll: jest.fn()
     };
     modalsActions = {
-      openSubmitWorkModal: jest.fn(),
+      openSubmitWorkModal: jest.fn()
     };
     appState = {
       gigsCount: "0",
@@ -30,8 +30,8 @@ describe("Gigs", () => {
           0: "registered",
           1: "open",
           2: "review",
-          3: "awarded",
-        },
+          3: "awarded"
+        }
       },
       gigs: [
         // {
@@ -46,27 +46,27 @@ describe("Gigs", () => {
         //   works: [],
         //   awardedTo: "Ox",
         // }
-      ],
+      ]
     };
     ethersState = {
       user: ""
-    }
+    };
     store = new Vuex.Store({
       modules: {
         app: {
           namespaced: true,
           actions: appActions,
-          state: appState,
+          state: appState
         },
         ethers: {
           namespaced: true,
-          state: ethersState,
+          state: ethersState
         },
         modals: {
           namespaced: true,
-          actions: modalsActions,
-        },
-      },
+          actions: modalsActions
+        }
+      }
     });
   });
 
@@ -92,7 +92,7 @@ describe("Gigs", () => {
         freelancers: [],
         worksSubmitted: "0",
         works: [],
-        awardedTo: "Ox000000000000000000000",
+        awardedTo: "Ox000000000000000000000"
       }
     ];
     const wrapper = shallowMount(Gigs, { store, localVue });

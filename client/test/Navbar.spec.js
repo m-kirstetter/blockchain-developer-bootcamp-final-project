@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faWallet } from "@fortawesome/free-solid-svg-icons";
 import { faPowerOff } from "@fortawesome/free-solid-svg-icons";
-import Navbar from "@/components/Navbar.vue";
+import Navbar from "~/components/Navbar.vue";
 
 library.add(faWallet);
 library.add(faPowerOff);
@@ -24,21 +24,21 @@ describe("Navbar", () => {
   beforeEach(() => {
     actions = {
       handler: () => {},
-      init: jest.fn(),
-      disconnect: jest.fn(),
+      walletConnect: jest.fn(),
+      disconnect: jest.fn()
     };
     state = {
       connected: false,
-      user: "", // 0xcB49CEDB000Db856aa56038EF4fd09704e2d617b
+      user: "" // 0xcB49CEDB000Db856aa56038EF4fd09704e2d617b
     };
     store = new Vuex.Store({
       modules: {
         ethers: {
           namespaced: true,
           actions,
-          state,
-        },
-      },
+          state
+        }
+      }
     });
   });
 
@@ -46,7 +46,7 @@ describe("Navbar", () => {
     const wrapper = shallowMount(Navbar, {
       store,
       localVue,
-      stubs: { FontAwesomeIcon },
+      stubs: { FontAwesomeIcon }
     });
     expect(wrapper.vm).toBeTruthy();
   });
@@ -55,7 +55,7 @@ describe("Navbar", () => {
     const wrapper = shallowMount(Navbar, {
       store,
       localVue,
-      stubs: { FontAwesomeIcon },
+      stubs: { FontAwesomeIcon }
     });
     expect(wrapper.findComponent(Navbar).exists()).toBe(true);
   });
@@ -64,7 +64,7 @@ describe("Navbar", () => {
     const wrapper = shallowMount(Navbar, {
       store,
       localVue,
-      stubs: { FontAwesomeIcon },
+      stubs: { FontAwesomeIcon }
     });
     expect(wrapper.find("#navbar-brand").text()).toContain("Smart Gig");
   });
@@ -73,7 +73,7 @@ describe("Navbar", () => {
     const wrapper = shallowMount(Navbar, {
       store,
       localVue,
-      stubs: { FontAwesomeIcon },
+      stubs: { FontAwesomeIcon }
     });
     expect(wrapper.find("#button-connect").text()).toContain("Connect");
   });
@@ -82,10 +82,10 @@ describe("Navbar", () => {
     const wrapper = shallowMount(Navbar, {
       store,
       localVue,
-      stubs: { FontAwesomeIcon },
+      stubs: { FontAwesomeIcon }
     });
     wrapper.find("#button-connect").trigger("click");
-    expect(actions.init).toHaveBeenCalled();
+    expect(actions.walletConnect).toHaveBeenCalled();
   });
 
   test("it should show button disconnect if user connected", () => {
@@ -94,7 +94,7 @@ describe("Navbar", () => {
     const wrapper = shallowMount(Navbar, {
       store,
       localVue,
-      stubs: { FontAwesomeIcon },
+      stubs: { FontAwesomeIcon }
     });
     expect(wrapper.find("#button-disconnect").exists()).toBe(true);
   });
@@ -105,7 +105,7 @@ describe("Navbar", () => {
     const wrapper = shallowMount(Navbar, {
       store,
       localVue,
-      stubs: { FontAwesomeIcon },
+      stubs: { FontAwesomeIcon }
     });
     expect(wrapper.find("#button-disconnect").text()).toContain(
       "0xcB49 .... 2d617b"
@@ -118,7 +118,7 @@ describe("Navbar", () => {
     const wrapper = shallowMount(Navbar, {
       store,
       localVue,
-      stubs: { FontAwesomeIcon },
+      stubs: { FontAwesomeIcon }
     });
     wrapper.find("#button-disconnect").trigger("click");
     expect(actions.disconnect).toHaveBeenCalled();

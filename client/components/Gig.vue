@@ -1,5 +1,5 @@
 <template>
-  <b-card :border-variant="status.variant" class="mb-3">
+  <b-card :border-variant="variant" class="mb-3">
     <b-row class="mb-3">
       <b-col>
         <h4 :id="`gig-title-${gig.id}`" class="card-title mb-0">
@@ -7,9 +7,9 @@
           <b-badge
             :id="`status-badge-${gig.id}`"
             class="float-right"
-            :variant="status.variant"
+            :variant="variant"
           >
-            {{ status.name }}
+            {{ status }}
           </b-badge>
         </h4>
       </b-col>
@@ -72,11 +72,23 @@
   </b-card>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue, { PropType } from "vue";
+import { Gig } from "~/interfaces/gig";
+import { BootstrapVariant } from "~/enums/bootstrap-variant";
+import { GIG_STATUS_VARIANT } from "~/constants/gig-status.constant";
+
+export default Vue.extend({
   props: {
-    gig: { type: Object, required: true },
-    status: { type: Object, required: true },
+    gig: { type: Object as PropType<Gig>, required: true }
   },
-};
+  computed: {
+    variant(): BootstrapVariant {
+      return GIG_STATUS_VARIANT[this.gig.status];
+    },
+    status(): string {
+      return this.gig.status.charAt(0).toUpperCase() + this.gig.status.slice(1);
+    }
+  }
+});
 </script>

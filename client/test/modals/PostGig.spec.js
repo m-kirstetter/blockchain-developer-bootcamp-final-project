@@ -2,7 +2,7 @@ import { shallowMount, createLocalVue } from "@vue/test-utils";
 import Vuex from "vuex";
 import Vuelidate from "vuelidate";
 import { BootstrapVue } from "bootstrap-vue";
-import PostGig from "@/components/modals/PostGig.vue";
+import PostGig from "~/components/modals/PostGig.vue";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -17,22 +17,22 @@ describe("PostGig", () => {
   beforeEach(() => {
     actions = {
       actionClick: jest.fn(),
-      actionInput: jest.fn(),
+      actionInput: jest.fn()
     };
     state = {
       postGig: {
         show: false,
-        data: {},
-      },
+        data: {}
+      }
     };
     store = new Vuex.Store({
       modules: {
         modals: {
           namespaced: true,
           actions,
-          state,
-        },
-      },
+          state
+        }
+      }
     });
   });
 

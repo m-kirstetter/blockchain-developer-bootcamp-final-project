@@ -1,0 +1,179 @@
+[
+  { "inputs": [], "stateMutability": "nonpayable", "type": "constructor" },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "gigId",
+        "type": "uint256"
+      }
+    ],
+    "name": "LogEnrolled",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "gigId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "enum SmartGigs.Status",
+        "name": "",
+        "type": "uint8"
+      }
+    ],
+    "name": "LogGigStatusChange",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "gigId",
+        "type": "uint256"
+      }
+    ],
+    "name": "LogWorkSubmitted",
+    "type": "event"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "_gigId", "type": "uint256" },
+      {
+        "internalType": "address",
+        "name": "_awardedFreelancer",
+        "type": "address"
+      }
+    ],
+    "name": "awardTo",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "string", "name": "_name", "type": "string" },
+      { "internalType": "uint8", "name": "_freelancersNumber", "type": "uint8" }
+    ],
+    "name": "createGig",
+    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "_gigId", "type": "uint256" }
+    ],
+    "name": "enroll",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "", "type": "uint256" },
+      { "internalType": "uint256", "name": "", "type": "uint256" }
+    ],
+    "name": "enrolledFreelancers",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "name": "gigs",
+    "outputs": [
+      { "internalType": "string", "name": "name", "type": "string" },
+      { "internalType": "uint256", "name": "compensation", "type": "uint256" },
+      {
+        "internalType": "enum SmartGigs.Status",
+        "name": "status",
+        "type": "uint8"
+      },
+      { "internalType": "address", "name": "owner", "type": "address" },
+      { "internalType": "uint8", "name": "freelancersNumber", "type": "uint8" },
+      { "internalType": "uint8", "name": "enrolled", "type": "uint8" },
+      { "internalType": "uint8", "name": "works", "type": "uint8" },
+      { "internalType": "address", "name": "awardedTo", "type": "address" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "gigsCount",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "_gigId", "type": "uint256" }
+    ],
+    "name": "isEnrolled",
+    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "_gigId", "type": "uint256" },
+      {
+        "internalType": "address",
+        "name": "_contractAddress",
+        "type": "address"
+      }
+    ],
+    "name": "submitWork",
+    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "", "type": "address" },
+      { "internalType": "uint256", "name": "", "type": "uint256" }
+    ],
+    "name": "worksByFreelancer",
+    "outputs": [
+      { "internalType": "uint256", "name": "gigId", "type": "uint256" },
+      { "internalType": "address", "name": "owner", "type": "address" },
+      {
+        "internalType": "address",
+        "name": "contractAddress",
+        "type": "address"
+      },
+      { "internalType": "bool", "name": "valid", "type": "bool" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "", "type": "uint256" },
+      { "internalType": "uint256", "name": "", "type": "uint256" }
+    ],
+    "name": "worksByGig",
+    "outputs": [
+      { "internalType": "uint256", "name": "gigId", "type": "uint256" },
+      { "internalType": "address", "name": "owner", "type": "address" },
+      {
+        "internalType": "address",
+        "name": "contractAddress",
+        "type": "address"
+      },
+      { "internalType": "bool", "name": "valid", "type": "bool" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]

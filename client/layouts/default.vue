@@ -1,77 +1,3 @@
-<script>
-import { getProvider, event } from "@/store/ethers/connectEthers";
-import { utils } from "ethers";
-import SubmitWork from "@/components/modals/SubmitWork";
-import PostGig from "@/components/modals/PostGig";
-import Navbar from "@/components/Navbar";
-
-export default {
-  components: {
-    SubmitWork,
-    PostGig,
-    Navbar,
-  },
-  created() {
-    event.$on("LogGigStatusChange", (data) => {
-      this.$store.dispatch("app/getGigs");
-      if (data.status === 0) {
-        this.$bvToast.toast(`Gig #${data.gigId} has been created`, {
-          title: "Gig created",
-          variant: "success",
-          autoHideDelay: 5000,
-        });
-      } else {
-        this.$bvToast.toast(
-          `Gig #${data.gigId} is now status '${
-            this.$store.state.app.const.gigStatusMappingKeys[data.status]
-          }'`,
-          {
-            title: "Status change",
-            variant: "warning",
-            autoHideDelay: 5000,
-          }
-        );
-      }
-    });
-    event.$on("LogEnrolled", (data) => {
-      this.$store.dispatch("app/getGigs");
-      this.$bvToast.toast(`Your are now enrolled to Gig #${data.gigId}`, {
-        title: "Enrolled",
-        variant: "success",
-        autoHideDelay: 5000,
-      });
-    });
-    event.$on("LogWorkSubmitted", (data) => {
-      this.$store.dispatch("app/getGigs");
-      this.$bvToast.toast(
-        `Your work has been submitted to Gig #${data.gigId}`,
-        {
-          title: "Work submitted",
-          variant: "success",
-          autoHideDelay: 5000,
-        }
-      );
-    });
-  },
-  async mounted() {
-    const { ethereum } = window;
-    if (ethereum) await this.$store.dispatch("ethers/init");
-  },
-  computed: {
-    ethersInitialized: function() {
-      return this.$store.state.ethers.user;
-    },
-  },
-  methods: {},
-  watch: {
-    ethersInitialized: function(user) {
-      if (user) {
-        this.$store.dispatch("app/getGigs");
-      }
-    },
-  },
-};
-</script>
 <template>
   <div>
     <Navbar />
@@ -81,4 +7,82 @@ export default {
   </div>
 </template>
 
-<style></style>
+<script lang="ts">
+import Vue from "vue";
+import { GIG_STATUS_MAPPING } from "~/constants/gig-status.constant";
+import { BootstrapVariant } from "~/enums/bootstrap-variant";
+import { event } from "~/services/ethers";
+
+declare let window: any;
+
+export default Vue.extend({
+  created() {
+    event.$on("LogGigStatusChange", (data: any): void => {
+      this.$store.dispatch("app/getGigs");
+      if (data.status === 0) {
+        this.fireToast(
+          "Gig created",
+          `Gig #${data.gigId} has been created`,
+          BootstrapVariant.SUCCESS
+        );
+      } else {
+        this.fireToast(
+          "Status change",
+          `Gig #${data.gigId} is now status '${
+            GIG_STATUS_MAPPING[data.status]
+          }'`,
+          BootstrapVariant.WARNING
+        );
+      }
+    });
+    event.$on("LogEnrolled", (data: any): void => {
+      this.$store.dispatch("app/getGigs");
+      this.fireToast(
+        "Enrolled",
+        `Your are now enrolled to Gig #${data.gigId}`,
+        BootstrapVariant.SUCCESS
+      );
+    });
+    event.$on("LogWorkSubmitted", (data: any): void => {
+      this.$store.dispatch("app/getGigs");
+      this.fireToast(
+        "Work submitted",
+        `Your work has been submitted to Gig #${data.gigId}`,
+        BootstrapVariant.SUCCESS
+      );
+    });
+  },
+  async mounted(): Promise<void> {
+    const { ethereum } = window;
+    if (ethereum) await this.$store.dispatch("ethers/init");
+  },
+  computed: {
+    ethersInitialized: function(): string {
+      return this.$store.state.ethers.user;
+    }
+  },
+  methods: {
+    fireToast(title: string, text: string, variant: BootstrapVariant): void {
+      this.$bvToast.toast(text, {
+        title,
+        toaster: "b-toaster-bottom-right",
+        solid: true,
+        variant,
+        autoHideDelay: 5000
+      });
+    }
+  },
+  watch: {
+    ethersInitialized: function(newUser: String, oldUser: string): void {
+      if (newUser) {
+        this.fireToast(
+          "Success",
+          `You're connected!`,
+          BootstrapVariant.SUCCESS
+        );
+        this.$store.dispatch("app/getGigs");
+      }
+    }
+  }
+});
+</script>
