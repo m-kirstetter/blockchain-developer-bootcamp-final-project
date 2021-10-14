@@ -3,13 +3,10 @@ import {
   TransactionRequest,
   TransactionResponse
 } from "@ethersproject/abstract-provider";
-import { Logger } from "@ethersproject/logger";
 import { Gig, GigFormInput, GigWorkFormat } from "~/interfaces/gig";
 import { ERRORS } from "~/constants/ethers.constant";
 import { getContract, getContractRw } from "~/services/ethers";
 import { GIG_STATUS_MAPPING } from "~/constants/gig-status.constant";
-
-const logger = new Logger("address/5.4.7");
 
 export interface GigsServiceResponse {
   gigsCount: number;
