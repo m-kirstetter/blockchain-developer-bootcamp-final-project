@@ -17,26 +17,41 @@ localVue.use(Vuelidate);
 localVue.use(BootstrapVue);
 
 describe("Navbar", () => {
-  let actions;
-  let state;
+  let ethersActions;
+  let ethersState;
+  let appActions;
+  let appState;
   let store;
 
   beforeEach(() => {
-    actions = {
+    ethersActions = {
       handler: () => {},
       walletConnect: jest.fn(),
       disconnect: jest.fn()
     };
-    state = {
+    ethersState = {
       connected: false,
-      user: "" // 0xcB49CEDB000Db856aa56038EF4fd09704e2d617b
+      user: "", // 0xcB49CEDB000Db856aa56038EF4fd09704e2d617b
+      loading: false
+    };
+    appActions = {
+      handler: () => {},
+      resetGigs: jest.fn()
+    };
+    appState = {
+      loading: false
     };
     store = new Vuex.Store({
       modules: {
         ethers: {
           namespaced: true,
-          actions,
-          state
+          actions: ethersActions,
+          state: ethersState
+        },
+        app: {
+          namespaced: true,
+          actions: appActions,
+          state: appState
         }
       }
     });
@@ -85,12 +100,12 @@ describe("Navbar", () => {
       stubs: { FontAwesomeIcon }
     });
     wrapper.find("#button-connect").trigger("click");
-    expect(actions.walletConnect).toHaveBeenCalled();
+    expect(ethersActions.walletConnect).toHaveBeenCalled();
   });
 
   test("it should show button disconnect if user connected", () => {
-    state.connected = true;
-    state.user = "0xcB49CEDB000Db856aa56038EF4fd09704e2d617b";
+    ethersState.connected = true;
+    ethersState.user = "0xcB49CEDB000Db856aa56038EF4fd09704e2d617b";
     const wrapper = shallowMount(Navbar, {
       store,
       localVue,
@@ -100,8 +115,8 @@ describe("Navbar", () => {
   });
 
   test("it should show button disconnect text as user address truncated", () => {
-    state.connected = true;
-    state.user = "0xcB49CEDB000Db856aa56038EF4fd09704e2d617b";
+    ethersState.connected = true;
+    ethersState.user = "0xcB49CEDB000Db856aa56038EF4fd09704e2d617b";
     const wrapper = shallowMount(Navbar, {
       store,
       localVue,
@@ -113,14 +128,14 @@ describe("Navbar", () => {
   });
 
   test("it should call disconnect method on disconnect button click", () => {
-    state.connected = true;
-    state.user = "0xcB49CEDB000Db856aa56038EF4fd09704e2d617b";
+    ethersState.connected = true;
+    ethersState.user = "0xcB49CEDB000Db856aa56038EF4fd09704e2d617b";
     const wrapper = shallowMount(Navbar, {
       store,
       localVue,
       stubs: { FontAwesomeIcon }
     });
     wrapper.find("#button-disconnect").trigger("click");
-    expect(actions.disconnect).toHaveBeenCalled();
+    expect(ethersActions.disconnect).toHaveBeenCalled();
   });
 });

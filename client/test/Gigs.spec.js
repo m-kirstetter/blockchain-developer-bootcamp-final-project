@@ -1,8 +1,9 @@
-import { shallowMount, createLocalVue } from "@vue/test-utils";
+import { shallowMount, createLocalVue, mount } from "@vue/test-utils";
 import Vuex from "vuex";
 import Vuelidate from "vuelidate";
 import { BootstrapVue } from "bootstrap-vue";
 import Gigs from "~/components/Gigs.vue";
+import Gig from "~/components/Gig.vue";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -71,12 +72,12 @@ describe("Gigs", () => {
   });
 
   test("is a Vue instance", () => {
-    const wrapper = shallowMount(Gigs, { store, localVue });
+    const wrapper = shallowMount(Gigs, { store, localVue, stubs: { Gig } });
     expect(wrapper.vm).toBeTruthy();
   });
 
   test("is showing no gigs by default", () => {
-    const wrapper = shallowMount(Gigs, { store, localVue });
+    const wrapper = shallowMount(Gigs, { store, localVue, stubs: { Gig } });
     expect(wrapper.find("#no-gigs-placeholder").exists()).toBe(true);
   });
 
@@ -95,7 +96,7 @@ describe("Gigs", () => {
         awardedTo: "Ox000000000000000000000"
       }
     ];
-    const wrapper = shallowMount(Gigs, { store, localVue });
+    const wrapper = mount(Gigs, { store, localVue, components: { Gig } });
     expect(wrapper.find("#gigs-list").exists()).toBe(true);
   });
 });
