@@ -96,5 +96,7 @@ export const ERRORS: { [key: string]: string } = {
   //   - hash: original transaction hash
   //   - replacement: the full TransactionsResponse for the replacement
   //   - receipt: the receipt of the replacement
-  TRANSACTION_REPLACED: "Transaction Replaced"
+  TRANSACTION_REPLACED: "Transaction Replaced",
+
+  "4001": "You have cancelled the transaction, please retry."
 };

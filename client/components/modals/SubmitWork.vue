@@ -9,7 +9,13 @@
     no-close-on-backdrop
     no-close-on-esc
   >
-    <b-alert variant="danger" :show="error ? true : false">{{ error }}</b-alert>
+    <b-alert variant="danger" :show="!!error">{{ error }}</b-alert>
+    <b-alert
+      variant="danger"
+      :show="!$v.work.contract.isAddress && $v.work.contract.$dirty"
+    >
+      This does not look like an Ethereum address.
+    </b-alert>
     <b-form>
       <b-row class="mt-2">
         <b-col cols="12">
@@ -88,7 +94,8 @@ export default Vue.extend({
           gigId: this.gigId,
           contract: this.work.contract
         })
-        .then(() => {
+        .then(result => {
+          console.log(result);
           this.reset();
         })
         .catch(error => {
