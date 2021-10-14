@@ -24,6 +24,7 @@ const EthersActions: ActionTree<EthersRootState, EthersRootState> = {
 
       const wallet = getWallet();
       if (!wallet) throw new Error(EthersMessages.NO_WALLET);
+
       const address = await getWalletAddress();
       const network = await getNetName();
 
@@ -38,7 +39,7 @@ const EthersActions: ActionTree<EthersRootState, EthersRootState> = {
         event.$emit(EVENT_CHANNEL, EthersMessages.ETHERS_VUEX_READY);
 
         // now check for .eth address too
-        if (await hasEns()) {
+        if ((await hasEns()) && address) {
           console.log("Net supports ENS. Checking...");
           commit("SET_ENS", await provider.lookupAddress(address));
           if (state.ens) {

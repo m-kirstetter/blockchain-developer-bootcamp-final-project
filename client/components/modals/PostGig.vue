@@ -147,8 +147,14 @@ export default Vue.extend({
       event.preventDefault();
       this.$v.gig.$touch();
       if (this.$v.gig.$anyError) return;
-      this.$store.dispatch("app/create", this.gig);
-      this.reset();
+      this.$store
+        .dispatch("app/create", this.gig)
+        .then(() => {
+          this.reset();
+        })
+        .catch(error => {
+          return console.log(error.message);
+        });
     },
     cancel(event: Event) {
       event.preventDefault();

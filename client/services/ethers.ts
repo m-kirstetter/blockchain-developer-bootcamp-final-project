@@ -1,12 +1,9 @@
 /* eslint-disable */
 // @TODO: type correctly
 import Vue from "vue";
-import {
-  providers,
-  Contract as ContractModule,
-  utils as utilsModule,
-  ethers
-} from "ethers";
+import { providers, Contract, Signer, ethers } from "ethers";
+// import { Provider } from "@ethersproject/abstract-provider";
+import { JsonRpcProvider } from "@ethersproject/providers";
 import { EthersMessages } from "~/enums/ethers-messages";
 import {
   PROVIDER_CHECK_MS,
@@ -24,20 +21,17 @@ if (process.env.NUXT_ENV_CONTRACT) {
   throw new Error("NUXT_ENV_CONTRACT environment variable is not set");
 }
 
-// use vue as a simple event channel
+// use another vue instance as a simple event bus
 export const event = new Vue();
-// expose ethers modules
-export const utils = utilsModule;
-export const Contract = ContractModule;
 
 // for ethers
 let ethereum: any;
-let provider: any;
-let contract: any;
-let contract_rw: any;
-let chainId: any;
-let userWallet: any;
-let currentAccount: any;
+let provider: JsonRpcProvider | undefined;
+let contract: Contract | undefined;
+let contract_rw: Contract | undefined;
+let chainId: string | null;
+let userWallet: Signer | undefined;
+let currentAccount: string | undefined;
 let providerInterval: any;
 let initialized: boolean;
 
@@ -45,14 +39,14 @@ function getEthereum(): any {
   return window.ethereum;
 }
 
-function ethereumOk(): any {
+function ethereumOk(): boolean {
   const em = getEthereum();
   return em && em.isConnected();
 }
 
 // get the name of this network
 export async function getNetName(): Promise<string> {
-  switch (chainId as any) {
+  switch (chainId as string) {
     case "0x1":
       return "Mainnet";
     case "0x2":
@@ -76,13 +70,14 @@ export async function getNetName(): Promise<string> {
 
 // if this net has ens
 export async function hasEns(): Promise<boolean> {
-  return ENS_NETS.includes(chainId);
+  return chainId ? ENS_NETS.includes(chainId) : false;
 }
 
 // get deployed address for a contract from its networks object and current network id or null
 export async function getNetworkAddress(networks: any) {
-  if (!networks[chainId] || !networks[chainId].address) return null;
-  return networks[chainId].address;
+  if (chainId && !(networks[chainId] || !networks[chainId].address))
+    return null;
+  return chainId ? networks[chainId].address : null;
 }
 
 export function getProvider() {
@@ -101,7 +96,7 @@ export function getWallet() {
   return userWallet;
 }
 
-export async function getWalletAddress(): Promise<string> {
+export async function getWalletAddress(): Promise<string | undefined> {
   const addr = userWallet && (await userWallet.getAddress());
   return addr;
 }
@@ -115,17 +110,18 @@ export async function startProviderWatcher(): Promise<void> {
   async function updateProvider(): Promise<void> {
     try {
       ethereum = getEthereum();
+
       if (!ethereum) return;
+
       // set ethers provider
       provider = new providers.Web3Provider(ethereum);
       initialized = true;
 
-      // first reset all listeners
+      // first reset all listeners from former contract and grab new contract
       if (contract) contract.removeAllListeners();
+      contract = new Contract(contractAddress, abi, provider);
 
       // set contract & event listeners
-      contract = new ethers.Contract(contractAddress, abi, provider);
-
       contract.on(
         "LogGigStatusChange",
         async (gigId: number, status: string): Promise<void> => {
@@ -165,7 +161,7 @@ export async function startProviderWatcher(): Promise<void> {
       /***********************************************************/
 
       const accounts = await ethereum.request({ method: "eth_accounts" });
-      await handleAccountsChanged(accounts);
+      handleAccountsChanged(accounts);
       ethereum.on("accountsChanged", handleAccountsChanged);
     } catch (err) {
       // console.error("Error requesting ethereum accounts", err);
@@ -177,10 +173,10 @@ export async function startProviderWatcher(): Promise<void> {
     // handle changes of availability of ethereum provider
     if (ethereum && !ethereumOk()) {
       ethereum = null;
-      provider = null;
-      chainId = null;
-      currentAccount = null;
-      userWallet = null;
+      provider = undefined;
+      chainId = "";
+      currentAccount = undefined;
+      userWallet = undefined;
       event.$emit(EVENT_CHANNEL, EthersMessages.NOT_READY);
     } else if (!ethereum && ethereumOk()) {
       updateProvider();

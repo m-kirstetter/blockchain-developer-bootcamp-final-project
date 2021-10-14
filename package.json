@@ -11,6 +11,9 @@
     "test-dev": "jest client --watchAll"
   },
   "dependencies": {
+    "@ethersproject/abstract-provider": "^5.4.1",
+    "@ethersproject/address": "^5.4.0",
+    "@ethersproject/providers": "^5.4.5",
     "@nuxtjs/axios": "^5.13.1",
     "@nuxtjs/pwa": "^3.3.5",
     "bootstrap": "^4.6.0",

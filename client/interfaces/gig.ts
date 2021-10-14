@@ -19,3 +19,8 @@ export interface GigFormInput {
   freelancers: number;
   compensation: number;
 }
+
+export interface GigWorkFormat {
+  gigId: string;
+  contract: string;
+}
