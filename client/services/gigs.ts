@@ -23,52 +23,46 @@ export async function getGigsService(): Promise<GigsServiceResponse> {
   const localContract = getContract();
   if (!localContract) throw new Error("No contract.");
 
-  try {
-    gigsCount = parseInt(await localContract.gigsCount());
+  gigsCount = parseInt(
+    await localContract.gigsCount().catch((error: any) => {
+      throw new Error(ERRORS[error.code]);
+    })
+  );
 
-    if (gigsCount > 0) {
-      for (let i = 1; i < gigsCount + 1; i++) {
-        const gig = await localContract.gigs(i.toString());
+  if (gigsCount > 0) {
+    for (let i = 1; i < gigsCount + 1; i++) {
+      const gig = await localContract.gigs(i.toString());
 
-        // get enrolled freelancers
-        const enrolled = gig.enrolled;
-        let freelancers = [];
-        if (enrolled > 0) {
-          for (let j = 0; j < enrolled; j++) {
-            const freelancer = await localContract.enrolledFreelancers(
-              i.toString(),
-              j.toString()
-            );
-            freelancers.push(freelancer);
-          }
+      // get enrolled freelancers
+      const enrolled = gig.enrolled;
+      let freelancers = [];
+      if (enrolled > 0) {
+        for (let j = 0; j < enrolled; j++) {
+          const freelancer = await localContract
+            .enrolledFreelancers(i.toString(), j.toString())
+            .catch((error: any) => {
+              throw new Error(ERRORS[error.code]);
+            });
+          freelancers.push(freelancer);
         }
-
-        // get enrolled freelancers submitted works
-        const worksNumber = gig.works;
-        let works = [];
-        if (worksNumber > 0) {
-          for (let k = 0; k < worksNumber; k++) {
-            const submittedWork = await localContract.worksByGig(
-              i.toString(),
-              k.toString()
-            );
-            works.push(submittedWork.owner);
-          }
-        }
-
-        // push to array
-        gigs.push(formatGig(gig, freelancers, works, i));
       }
-    }
-  } catch (error) {
-    if (error) {
-      // console.log(error);
-      // logger.throwError(
-      //   "Something went wrong getting gigs.",
-      //   ErrorCode.UNKNOWN_ERROR,
-      //   error
-      // );
-      // throw new Error("Something went wrong getting gigs.");
+
+      // get enrolled freelancers submitted works
+      const worksNumber = gig.works;
+      let works = [];
+      if (worksNumber > 0) {
+        for (let k = 0; k < worksNumber; k++) {
+          const submittedWork = await localContract
+            .worksByGig(i.toString(), k.toString())
+            .catch((error: any) => {
+              throw new Error(ERRORS[error.code]);
+            });
+          works.push(submittedWork.owner);
+        }
+      }
+
+      // push to array
+      gigs.push(formatGig(gig, freelancers, works, i));
     }
   }
 
@@ -107,14 +101,10 @@ export async function enrollGigService(
   const localContractRw = getContractRw();
   if (!localContractRw) throw new Error("No contract.");
 
-  try {
-    result = await localContractRw.enroll(id.toString());
-  } catch (error) {
-    if (error) {
-      console.log(error);
-      throw new Error("Something went wrong enrolling gig.");
-    }
-  }
+  result = await localContractRw.enroll(id.toString()).catch((error: any) => {
+    throw new Error(ERRORS[error.code]);
+  });
+
   return result;
 }
 
@@ -126,17 +116,11 @@ export async function submitGigService(
   const localContractRw = getContractRw();
   if (!localContractRw) throw new Error("No contract.");
 
-  try {
-    result = await localContractRw.submitWork(
-      work.gigId.toString(),
-      work.contract
-    );
-  } catch (error) {
-    if (error) {
-      console.log(error);
-      throw new Error("Something went wrong enrolling gig.");
-    }
-  }
+  result = await localContractRw
+    .submitWork(work.gigId.toString(), work.contract)
+    .catch((error: any) => {
+      throw new Error(ERRORS[error.code]);
+    });
   return result;
 }
 
