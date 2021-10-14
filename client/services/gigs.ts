@@ -3,9 +3,13 @@ import {
   TransactionRequest,
   TransactionResponse
 } from "@ethersproject/abstract-provider";
+import { Logger } from "@ethersproject/logger";
 import { Gig, GigFormInput, GigWorkFormat } from "~/interfaces/gig";
+import { ERRORS } from "~/constants/ethers.constant";
 import { getContract, getContractRw } from "~/services/ethers";
 import { GIG_STATUS_MAPPING } from "~/constants/gig-status.constant";
+
+const logger = new Logger("address/5.4.7");
 
 export interface GigsServiceResponse {
   gigsCount: number;
@@ -58,8 +62,13 @@ export async function getGigsService(): Promise<GigsServiceResponse> {
     }
   } catch (error) {
     if (error) {
-      console.log(error);
-      throw new Error("Something went wrong getting gigs.");
+      // console.log(error);
+      // logger.throwError(
+      //   "Something went wrong getting gigs.",
+      //   ErrorCode.UNKNOWN_ERROR,
+      //   error
+      // );
+      // throw new Error("Something went wrong getting gigs.");
     }
   }
 
@@ -77,22 +86,15 @@ export async function createGigService(
   const localContractRw = getContractRw();
   if (!localContractRw) throw new Error("No contract.");
 
-  try {
-    const request: TransactionRequest = {
-      value: utils.parseEther(gig.compensation.toString())
-    };
+  const request: TransactionRequest = {
+    value: utils.parseEther(gig.compensation.toString())
+  };
 
-    result = await localContractRw.createGig(
-      gig.title,
-      gig.freelancers.toString(),
-      request
-    );
-  } catch (error) {
-    if (error) {
-      console.log(error);
-      throw new Error("Something went wrong creating gig.");
-    }
-  }
+  result = await localContractRw
+    .createGig(gig.title, gig.freelancers.toString(), request)
+    .catch((error: any) => {
+      throw new Error(ERRORS[error.code]);
+    });
 
   return result;
 }

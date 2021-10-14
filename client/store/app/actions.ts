@@ -1,4 +1,5 @@
 import { ActionTree } from "vuex";
+import { TransactionResponse } from "@ethersproject/abstract-provider";
 import { AppRootState } from "./index";
 import { GigFormInput, GigWorkFormat } from "~/interfaces/gig";
 import {
@@ -22,34 +23,31 @@ const AppActions: ActionTree<AppRootState, AppRootState> = {
       });
   },
 
-  async create({ commit, state, dispatch }, gig: GigFormInput): Promise<void> {
+  async create(
+    { commit, state, dispatch },
+    gig: GigFormInput
+  ): Promise<TransactionResponse> {
     commit("SET_LOADING", true);
 
-    createGigService(gig).then(result => {
-      // @TODO push to pending tx store
-      console.log(result);
-    });
+    return createGigService(gig);
   },
 
-  async enroll({ commit, state, dispatch }, id: string): Promise<void> {
+  async enroll(
+    { commit, state, dispatch },
+    id: string
+  ): Promise<TransactionResponse> {
     commit("SET_LOADING", true);
 
-    enrollGigService(id).then(result => {
-      // @TODO push to pending tx store
-      console.log(result);
-    });
+    return enrollGigService(id);
   },
 
   async submit(
     { commit, state, dispatch },
     work: GigWorkFormat
-  ): Promise<void> {
+  ): Promise<TransactionResponse> {
     commit("SET_LOADING", true);
 
-    submitGigService(work).then(result => {
-      // @TODO push to pending tx store
-      console.log(result);
-    });
+    return submitGigService(work);
   },
 
   resetGigs({ commit, state, dispatch }): void {

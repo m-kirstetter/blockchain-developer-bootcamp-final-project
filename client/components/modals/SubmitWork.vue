@@ -9,12 +9,7 @@
     no-close-on-backdrop
     no-close-on-esc
   >
-    <b-alert :show="error" variant="danger">
-      <h4 class="alert-heading">Error!</h4>
-      <p class="mb-0">
-        Something went wrong with the contract you just submitted.
-      </p>
-    </b-alert>
+    <b-alert variant="danger" :show="error ? true : false">{{ error }}</b-alert>
     <b-form>
       <b-row class="mt-2">
         <b-col cols="12">
@@ -34,7 +29,8 @@
 <script lang="ts">
 import Vue from "vue";
 import { Modal } from "~/interfaces/modal";
-import { required, minLength, between, url } from "vuelidate/lib/validators";
+import { isAddress } from "@ethersproject/address";
+import { required } from "vuelidate/lib/validators";
 
 export default Vue.extend({
   data: function() {
@@ -42,7 +38,7 @@ export default Vue.extend({
       work: {
         contract: ""
       },
-      error: false
+      error: null as null | string
     };
   },
   computed: {
@@ -56,7 +52,8 @@ export default Vue.extend({
   validations: {
     work: {
       contract: {
-        required
+        required,
+        isAddress
       }
     }
   },
@@ -67,6 +64,8 @@ export default Vue.extend({
       return dirty ? !error : null;
     },
     reset() {
+      this.error = null;
+
       this.work = {
         contract: ""
       };
@@ -91,8 +90,11 @@ export default Vue.extend({
         })
         .then(() => {
           this.reset();
+        })
+        .catch(error => {
+          this.$store.commit("app/SET_LOADING", false);
+          this.error = error.message;
         });
-      this.reset();
     },
     cancel(event: Event) {
       event.preventDefault();

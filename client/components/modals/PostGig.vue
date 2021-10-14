@@ -9,6 +9,7 @@
     no-close-on-backdrop
     no-close-on-esc
   >
+    <b-alert variant="danger" :show="!!error">{{ error }}</b-alert>
     <b-form>
       <b-row>
         <b-col cols="6">
@@ -92,7 +93,8 @@ export default Vue.extend({
         description: "",
         freelancers: 1,
         compensation: 0.1
-      } as GigFormInput
+      } as GigFormInput,
+      error: null as null | string
     };
   },
   computed: {
@@ -127,6 +129,8 @@ export default Vue.extend({
       return dirty ? !error : null;
     },
     reset() {
+      this.error = null;
+
       this.gig = {
         title: "",
         description: "",
@@ -153,7 +157,8 @@ export default Vue.extend({
           this.reset();
         })
         .catch(error => {
-          return console.log(error.message);
+          this.$store.commit("app/SET_LOADING", false);
+          this.error = error.message;
         });
     },
     cancel(event: Event) {
