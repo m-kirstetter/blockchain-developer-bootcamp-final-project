@@ -54,6 +54,7 @@ const AppActions: ActionTree<AppRootState, AppRootState> = {
 
   resetGigs({ commit, state, dispatch }): void {
     commit("SET_GIGS", []);
+    commit("SET_GIGS_COUNT", 0);
   }
 };
 

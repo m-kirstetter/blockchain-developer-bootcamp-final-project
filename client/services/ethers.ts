@@ -2,7 +2,6 @@
 // @TODO: type correctly
 import Vue from "vue";
 import { providers, Contract, Signer, ethers } from "ethers";
-// import { Provider } from "@ethersproject/abstract-provider";
 import { JsonRpcProvider } from "@ethersproject/providers";
 import { EthersMessages } from "~/enums/ethers-messages";
 import {

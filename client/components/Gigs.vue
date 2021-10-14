@@ -10,12 +10,12 @@
       class="text-center"
       v-if="$store.state.app.gigs.length === 0"
     >
-      <p v-if="gigsLoading">Gigs loading....</p>
-      <p v-else>Sorry, no gigs found.</p>
-      <p v-if="!user">
+      <p v-if="gigsLoading && user">Gigs loading....</p>
+      <p v-else-if="!user">
         You're not connected to Metamask, you can connect
         <a href="#" @click="connect">here</a>.
       </p>
+      <p v-else>Sorry, no gigs found.</p>
     </div>
   </div>
 </template>

@@ -9,6 +9,7 @@
 
 <script lang="ts">
 import Vue from "vue";
+import { isAddress } from "@ethersproject/address";
 import { GIG_STATUS_MAPPING } from "~/constants/gig-status.constant";
 import { BootstrapVariant } from "~/enums/bootstrap-variant";
 import { event } from "~/services/ethers";
@@ -57,7 +58,7 @@ export default Vue.extend({
     if (ethereum) await this.$store.dispatch("ethers/init");
   },
   computed: {
-    ethersInitialized: function(): string {
+    user: function(): string {
       return this.$store.state.ethers.user;
     }
   },
@@ -73,14 +74,18 @@ export default Vue.extend({
     }
   },
   watch: {
-    ethersInitialized: function(newUser: String, oldUser: string): void {
-      if (newUser) {
+    user: function(newUser: string, oldUser: string): void {
+      if (isAddress(newUser)) {
         this.fireToast(
           "Success",
           `You're connected!`,
           BootstrapVariant.SUCCESS
         );
         this.$store.dispatch("app/getGigs");
+      } else {
+        this.$store.dispatch("ethers/disconnect");
+        this.$store.dispatch("app/resetGigs");
+        this.fireToast("Oops", `You're disconnected!`, BootstrapVariant.DANGER);
       }
     }
   }
