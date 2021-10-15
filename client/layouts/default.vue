@@ -10,6 +10,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { isAddress } from "@ethersproject/address";
+import { EthersMessages } from "~/enums/ethers-messages";
 import { GIG_STATUS_MAPPING } from "~/constants/gig-status.constant";
 import { BootstrapVariant } from "~/enums/bootstrap-variant";
 import { event } from "~/services/ethers";
@@ -52,10 +53,24 @@ export default Vue.extend({
         BootstrapVariant.SUCCESS
       );
     });
+    event.$on("NoMetamask", (data: EthersMessages): void => {
+      this.fireToast("Metamask Not Found", data, BootstrapVariant.DANGER);
+    });
+    event.$on("NotRopsten", (data: EthersMessages): void => {
+      this.fireToast("Wrong Network", data, BootstrapVariant.DANGER);
+    });
   },
   async mounted(): Promise<void> {
     const { ethereum } = window;
-    if (ethereum) await this.$store.dispatch("ethers/init");
+    if (ethereum && ethereum !== "undefined") {
+      await this.$store.dispatch("ethers/init");
+    } else {
+      this.$store.dispatch("app/alert", {
+        text: EthersMessages.NOT_METAMASK,
+        variant: BootstrapVariant.DANGER,
+        show: true
+      });
+    }
   },
   computed: {
     user: function(): string {

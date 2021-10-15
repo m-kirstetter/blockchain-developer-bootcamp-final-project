@@ -6,12 +6,14 @@ import {
   ready,
   getProvider,
   getWallet,
+  getChainId,
   getWalletAddress,
   getNetName,
   hasEns
 } from "~/services/ethers";
 import { EthersMessages } from "~/enums/ethers-messages";
 import { EVENT_CHANNEL } from "~/constants/ethers.constant";
+import { BootstrapVariant } from "~/enums/bootstrap-variant";
 
 const EthersActions: ActionTree<EthersRootState, EthersRootState> = {
   async connect({ commit, state, dispatch }): Promise<void> {
@@ -24,6 +26,20 @@ const EthersActions: ActionTree<EthersRootState, EthersRootState> = {
 
       const wallet = getWallet();
       if (!wallet) throw new Error(EthersMessages.NO_WALLET);
+
+      const chainId = getChainId();
+      if (chainId !== "0x3") {
+        dispatch(
+          "app/alert",
+          {
+            text: EthersMessages.NOT_ROPSTEN,
+            variant: BootstrapVariant.DANGER,
+            show: true
+          },
+          { root: true }
+        );
+        throw new Error(EthersMessages.NOT_ROPSTEN);
+      }
 
       const address = await getWalletAddress();
       const network = await getNetName();
@@ -74,7 +90,9 @@ const EthersActions: ActionTree<EthersRootState, EthersRootState> = {
   async init({ commit, state, dispatch }): Promise<void> {
     commit("SET_LOADING", true);
 
-    event.$on(EVENT_CHANNEL, async function(message: EthersMessages) {
+    event.$on(EVENT_CHANNEL, async function(
+      message: EthersMessages
+    ): Promise<void> {
       console.log("Ethers event received", message);
       switch (message) {
         case EthersMessages.NOT_READY:

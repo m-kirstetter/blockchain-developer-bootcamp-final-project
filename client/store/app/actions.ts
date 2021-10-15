@@ -1,7 +1,10 @@
+import Vue from "Vue";
 import { ActionTree } from "vuex";
 import { TransactionResponse } from "@ethersproject/abstract-provider";
 import { AppRootState } from "./index";
 import { GigFormInput, GigWorkFormat } from "~/interfaces/gig";
+import { BootstrapVariant } from "~/enums/bootstrap-variant";
+import { Alert } from "~/interfaces/app";
 import {
   getGigsService,
   createGigService,
@@ -53,6 +56,26 @@ const AppActions: ActionTree<AppRootState, AppRootState> = {
   resetGigs({ commit, state, dispatch }): void {
     commit("SET_GIGS", []);
     commit("SET_GIGS_COUNT", 0);
+  },
+
+  alert(
+    { commit, state, dispatch },
+    { text, title, variant, show }: Alert
+  ): void {
+    commit("SET_ALERT", {
+      text,
+      title,
+      variant,
+      show
+    });
+  },
+
+  resetAlert({ commit, state, dispatch }): void {
+    commit("SET_ALERT", {
+      text: "",
+      variant: BootstrapVariant.SUCCESS,
+      show: false
+    });
   }
 };
 

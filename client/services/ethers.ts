@@ -44,6 +44,7 @@ function ethereumOk(): boolean {
 }
 
 // get the name of this network
+// @TODO: extract to enum
 export async function getNetName(): Promise<string> {
   switch (chainId as string) {
     case "0x1":
@@ -95,6 +96,10 @@ export function getWallet() {
   return userWallet;
 }
 
+export function getChainId() {
+  return chainId;
+}
+
 export async function getWalletAddress(): Promise<string | undefined> {
   const addr = userWallet && (await userWallet.getAddress());
   return addr;
@@ -111,6 +116,10 @@ export async function startProviderWatcher(): Promise<void> {
       ethereum = getEthereum();
 
       if (!ethereum) return;
+
+      // Normally, we would recommend the 'eth_chainId' RPC method, but it currently
+      // returns incorrectly formatted chain ID values.
+      chainId = ethereum.chainId;
 
       // set ethers provider
       provider = new providers.Web3Provider(ethereum);
@@ -148,10 +157,6 @@ export async function startProviderWatcher(): Promise<void> {
       /**********************************************************/
       /* Handle chain (network) and chainChanged (per EIP-1193) */
       /**********************************************************/
-
-      // Normally, we would recommend the 'eth_chainId' RPC method, but it currently
-      // returns incorrectly formatted chain ID values.
-      chainId = ethereum.chainId;
 
       ethereum.on("chainChanged", handleChainChanged);
 
@@ -209,10 +214,12 @@ function handleAccountsChanged(accounts: any) {
 /* Access the user's accounts (per EIP-1102) */
 /*********************************************/
 
-export async function connect() {
+export async function connect(): Promise<void> {
   try {
-    if (!ethereum)
-      return event.$emit(EVENT_CHANNEL, EthersMessages.NOT_CONNECTED);
+    if (!ethereum) {
+      event.$emit(EVENT_CHANNEL, EthersMessages.NOT_CONNECTED);
+      throw new Error(EthersMessages.NOT_CONNECTED);
+    }
     const accounts = await ethereum.request({ method: "eth_requestAccounts" });
     handleAccountsChanged(accounts);
     event.$emit(EVENT_CHANNEL, EthersMessages.ACCOUNT_CHANGED);
@@ -228,8 +235,12 @@ export async function stopWatchProvider() {
 }
 
 // start ethereum provider checker, only on client side
-if (process.client) {
+// warning if Metamask not found
+if (process.client && typeof window.ethereum !== "undefined") {
   startProviderWatcher();
+} else {
+  event.$emit(EVENT_CHANNEL, EthersMessages.NOT_METAMASK);
+  throw new Error(EthersMessages.NOT_METAMASK);
 }
 
 export default {
@@ -237,6 +248,7 @@ export default {
   ethereumOk,
   getNetName,
   hasEns,
+  getChainId,
   getProvider,
   getContract,
   getContractRw,
