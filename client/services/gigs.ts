@@ -52,7 +52,6 @@ export async function getGigsService(): Promise<GigsServiceResponse> {
           const submittedWork = await localContract
             .worksByGig(i.toString(), k.toString())
             .catch((error: any) => {
-              console.log(error);
               throw new Error(ERRORS[error.code]);
             });
           works.push(submittedWork.owner);

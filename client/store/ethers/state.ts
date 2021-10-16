@@ -1,13 +1,13 @@
 const EthersDefaultState = () => ({
-  initialized: false as boolean,
-  connected: false as boolean,
+  initialized: false,
+  connected: false,
   error: null as any,
   // user is ens or address
-  user: "" as string,
-  address: "" as string,
-  network: "" as string,
+  user: "",
+  address: "",
+  network: "",
   ens: null as string | null,
-  loading: false as boolean
+  loading: false
 });
 
 export default EthersDefaultState;
