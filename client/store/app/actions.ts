@@ -1,4 +1,3 @@
-import Vue from "Vue";
 import { ActionTree } from "vuex";
 import { TransactionResponse } from "@ethersproject/abstract-provider";
 import { AppRootState } from "./index";
