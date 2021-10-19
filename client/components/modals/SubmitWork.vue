@@ -80,7 +80,7 @@ export default Vue.extend({
       this.$store.commit("modals/SET_SUBMITWORK_MODAL", {
         text: "",
         variant: BootstrapVariant.PRIMARY,
-        show: true
+        show: false
       } as ModalInterface);
 
       this.$nextTick(() => {

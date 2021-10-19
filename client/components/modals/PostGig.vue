@@ -142,7 +142,7 @@ export default Vue.extend({
       this.$store.commit("modals/SET_POSTGIG_MODAL", {
         text: "",
         variant: BootstrapVariant.PRIMARY,
-        show: true
+        show: false
       } as ModalInterface);
 
       this.$nextTick(() => {
