@@ -81,9 +81,10 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { Modal } from "~/interfaces/modal";
+import { ModalInterface } from "~/store/modals/state";
 import { GigFormInput } from "~/interfaces/gig";
 import { required, minLength, between, url } from "vuelidate/lib/validators";
+import { BootstrapVariant } from "~/enums/bootstrap-variant";
 
 export default Vue.extend({
   data: function() {
@@ -139,9 +140,10 @@ export default Vue.extend({
       };
 
       this.$store.commit("modals/SET_POSTGIG_MODAL", {
-        show: false,
-        data: {}
-      } as Modal);
+        text: "",
+        variant: BootstrapVariant.PRIMARY,
+        show: true
+      } as ModalInterface);
 
       this.$nextTick(() => {
         this.$v.$reset();

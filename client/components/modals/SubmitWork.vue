@@ -34,7 +34,8 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { Modal } from "~/interfaces/modal";
+import { ModalInterface } from "~/store/modals/state";
+import { BootstrapVariant } from "~/enums/bootstrap-variant";
 import { isAddress } from "@ethersproject/address";
 import { required } from "vuelidate/lib/validators";
 
@@ -77,9 +78,10 @@ export default Vue.extend({
       };
 
       this.$store.commit("modals/SET_SUBMITWORK_MODAL", {
-        show: false,
-        data: {}
-      } as Modal);
+        text: "",
+        variant: BootstrapVariant.PRIMARY,
+        show: true
+      } as ModalInterface);
 
       this.$nextTick(() => {
         this.$v.$reset();

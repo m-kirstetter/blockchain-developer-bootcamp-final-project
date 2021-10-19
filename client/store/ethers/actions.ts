@@ -1,19 +1,20 @@
 import { ActionTree } from "vuex";
 import { EthersRootState } from "./index";
+import { ErrorCode } from "@ethersproject/logger";
 import {
   connect,
   event,
   ready,
   getProvider,
   getWallet,
-  getChainId,
   getWalletAddress,
-  getNetName,
+  getNetwork,
   hasEns
 } from "~/services/ethers";
 import { EthersMessages } from "~/enums/ethers-messages";
 import { EVENT_CHANNEL } from "~/constants/ethers.constant";
 import { BootstrapVariant } from "~/enums/bootstrap-variant";
+import { ModalInterface } from "../modals/state";
 
 const EthersActions: ActionTree<EthersRootState, EthersRootState> = {
   async connect({ commit, state, dispatch }): Promise<void> {
@@ -27,24 +28,26 @@ const EthersActions: ActionTree<EthersRootState, EthersRootState> = {
       const wallet = getWallet();
       if (!wallet) throw new Error(EthersMessages.NO_WALLET);
 
-      const chainId = getChainId();
-      if (chainId !== "0x3") {
+      const address = await getWalletAddress();
+      const network = getNetwork();
+
+      if (network?.name !== "ropsten") {
         dispatch(
           "app/alert",
           {
             text: EthersMessages.NOT_ROPSTEN,
             variant: BootstrapVariant.DANGER,
             show: true
-          },
+          } as ModalInterface,
           { root: true }
         );
         throw new Error(EthersMessages.NOT_ROPSTEN);
       }
 
-      const address = await getWalletAddress();
-      const network = await getNetName();
-
-      if (network !== oldNetwork || address !== oldAddress) {
+      if (
+        network?.chainId !== oldNetwork?.chainId ||
+        (address && address !== oldAddress)
+      ) {
         commit("SET_CONNECTED", true);
         commit("SET_ERROR", null);
         commit("SET_ADDRESS", address);
@@ -55,34 +58,30 @@ const EthersActions: ActionTree<EthersRootState, EthersRootState> = {
         event.$emit(EVENT_CHANNEL, EthersMessages.ETHERS_VUEX_READY);
 
         // now check for .eth address too
-        if ((await hasEns()) && address) {
+        if (hasEns() && address) {
           console.log("Net supports ENS. Checking...");
           commit("SET_ENS", await provider.lookupAddress(address));
-          if (state.ens) {
-            commit("SET_USER", state.ens);
-          }
+          if (state.ens) commit("SET_USER", state.ens);
         }
       }
-    } catch (err) {
-      dispatch("disconnect", err);
+    } catch (error) {
+      dispatch("disconnect", error as ErrorCode);
     }
   },
-  async disconnect({ commit, state, dispatch }, err: any): Promise<void> {
-    const oldAddress = state.address;
+  async disconnect(
+    { commit, state, dispatch },
+    error?: ErrorCode
+  ): Promise<void> {
     commit("SET_CONNECTED", false);
-    commit("SET_ERROR", err);
-    commit("SET_ADDRESS", "");
-    commit("SET_USER", "");
-    commit("SET_NETWORK", "");
+    commit("SET_ERROR", error);
+    commit("SET_ADDRESS", null);
+    commit("SET_USER", null);
+    commit("SET_NETWORK", null);
     commit("SET_ENS", null);
   },
   async logout({ commit, state, dispatch }): Promise<void> {
-    commit("SET_ADDRESS", "");
-    commit("SET_USER", "");
-  },
-  async notConnected({ commit, state, dispatch }): Promise<void> {
-    commit("SET_ADDRESS", "");
-    commit("SET_USER", "");
+    commit("SET_ADDRESS", null);
+    commit("SET_USER", null);
   },
   async walletConnect({ commit, state, dispatch }): Promise<void> {
     await connect();
@@ -113,8 +112,6 @@ const EthersActions: ActionTree<EthersRootState, EthersRootState> = {
     if (ready()) {
       await dispatch("connect");
       event.$emit(EVENT_CHANNEL, EthersMessages.ETHERS_VUEX_INITIALIZED);
-    } else {
-      // await connect();
     }
 
     commit("SET_INITIALIZED", true);

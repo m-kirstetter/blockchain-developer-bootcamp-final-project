@@ -8,7 +8,7 @@ export interface Gig {
   owner: string;
   freelancersNumber: number;
   freelancers: string[];
-  worksSubmitted: string[];
+  worksSubmitted: number;
   works: string[];
   awardedTo: string;
 }

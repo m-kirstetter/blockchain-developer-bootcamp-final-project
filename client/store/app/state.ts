@@ -1,12 +1,19 @@
-import Vue from "vue";
 import { Gig } from "~/interfaces/gig";
 import { Alert } from "~/interfaces/app";
+import { BootstrapVariant } from "~/enums/bootstrap-variant";
 
-const AppDefaultState = () => ({
+interface AppState {
+  gigsCount: number;
+  gigs: Gig[];
+  loading: boolean;
+  alert: Alert;
+}
+
+const AppDefaultState = (): AppState => ({
   gigsCount: 0,
-  gigs: [] as Gig[],
+  gigs: [],
   loading: false,
-  alert: { show: false } as Alert
+  alert: { show: false, text: "", variant: BootstrapVariant.PRIMARY }
 });
 
 export default AppDefaultState;

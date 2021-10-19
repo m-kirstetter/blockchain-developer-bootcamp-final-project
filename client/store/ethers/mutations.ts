@@ -1,4 +1,6 @@
 import { MutationTree } from "vuex";
+import { Network } from "@ethersproject/networks";
+import { ErrorCode } from "@ethersproject/logger";
 import { EthersRootState } from "./index";
 
 const EthersMutations: MutationTree<EthersRootState> = {
@@ -8,7 +10,7 @@ const EthersMutations: MutationTree<EthersRootState> = {
   SET_CONNECTED: function(state, value: boolean): void {
     state.connected = value;
   },
-  SET_ERROR: function(state, value: object): void {
+  SET_ERROR: function(state, value: ErrorCode): void {
     state.error = value;
   },
   SET_USER: function(state, value: string): void {
@@ -17,7 +19,7 @@ const EthersMutations: MutationTree<EthersRootState> = {
   SET_ADDRESS: function(state, value: string): void {
     state.address = value;
   },
-  SET_NETWORK: function(state, value: string): void {
+  SET_NETWORK: function(state, value: Network): void {
     state.network = value;
   },
   SET_ENS: function(state, value: string): void {

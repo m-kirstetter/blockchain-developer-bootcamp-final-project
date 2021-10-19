@@ -1,17 +1,20 @@
-/* eslint-disable */
-// @TODO: type correctly
+// NOTE: Metamask 'ethereum' can't be properly typed, all is excluded from ts-coverage
 import Vue from "vue";
-import { providers, Contract, Signer, ethers } from "ethers";
-import { JsonRpcProvider } from "@ethersproject/providers";
+import { providers, Contract, ethers, BigNumber } from "ethers";
+import detectEthereumProvider from "@metamask/detect-provider";
+import { JsonRpcProvider, JsonRpcSigner } from "@ethersproject/providers";
 import { EthersMessages } from "~/enums/ethers-messages";
+import { EthersEvent } from "~/interfaces/ethers";
+import {
+  Network,
+  getNetwork as getEthersNetwork
+} from "@ethersproject/networks";
 import {
   PROVIDER_CHECK_MS,
   ENS_NETS,
   EVENT_CHANNEL
 } from "~/constants/ethers.constant";
 import abi from "./contracts_SmartGigs_sol_SmartGigs.json";
-
-declare let window: any;
 
 let contractAddress: string;
 if (process.env.NUXT_ENV_CONTRACT) {
@@ -21,86 +24,61 @@ if (process.env.NUXT_ENV_CONTRACT) {
 }
 
 // use another vue instance as a simple event bus
-export const event = new Vue();
+export const event: Vue = new Vue();
 
 // for ethers
+// type-coverage:ignore-next-line
 let ethereum: any;
-let provider: JsonRpcProvider | undefined;
-let contract: Contract | undefined;
-let contract_rw: Contract | undefined;
-let chainId: string | null;
-let userWallet: Signer | undefined;
-let currentAccount: string | undefined;
-let providerInterval: any;
+let provider: JsonRpcProvider | null;
+let contract: Contract | null;
+let contract_rw: Contract | null;
+let network: Network | null;
+let userWallet: JsonRpcSigner | null;
+let currentAccount: string | null;
+let providerInterval: NodeJS.Timeout | null;
 let initialized: boolean;
 
-function getEthereum(): any {
-  return window.ethereum;
+async function detectEthereum(): Promise<boolean> {
+  // type-coverage:ignore-next-line
+  const ethereum = await detectEthereumProvider();
+  // type-coverage:ignore-next-line
+  return ethereum ? true : false;
 }
 
-function ethereumOk(): boolean {
-  const em = getEthereum();
-  return em && em.isConnected();
+// type-coverage:ignore-next-line
+async function getEthereum(): Promise<any> {
+  // type-coverage:ignore-next-line
+  const ethereum = await (window as any).ethereum;
+  // type-coverage:ignore-next-line
+  return ethereum ?? null;
 }
 
-// get the name of this network
-// @TODO: extract to enum
-export async function getNetName(): Promise<string> {
-  switch (chainId as string) {
-    case "0x1":
-      return "Mainnet";
-    case "0x2":
-      return "Morden (deprecated)";
-    case "0x3":
-      return "Ropsten Test Network";
-    case "0x4":
-      return "Rinkeby Test Network";
-    case "0x5":
-      return "Goerli Test Network";
-    case "0x2a":
-      return "Kovan Test Network";
-    case undefined:
-    case null:
-      return "No Chain!";
-    // if you give your ganache an id your can detect it here if you want
-    default:
-      return "Unknown";
-  }
+export function getNetwork(): Network | null {
+  return network;
 }
 
 // if this net has ens
-export async function hasEns(): Promise<boolean> {
-  return chainId ? ENS_NETS.includes(chainId) : false;
+export function hasEns(): boolean {
+  return network?.chainId ? ENS_NETS.includes(network?.chainId) : false;
 }
 
-// get deployed address for a contract from its networks object and current network id or null
-export async function getNetworkAddress(networks: any) {
-  if (chainId && !(networks[chainId] || !networks[chainId].address))
-    return null;
-  return chainId ? networks[chainId].address : null;
-}
-
-export function getProvider() {
+export function getProvider(): JsonRpcProvider | null {
   return provider;
 }
 
-export function getContract() {
+export function getContract(): Contract | null {
   return contract;
 }
 
-export function getContractRw() {
+export function getContractRw(): Contract | null {
   return contract_rw;
 }
 
-export function getWallet() {
+export function getWallet(): JsonRpcSigner | null {
   return userWallet;
 }
 
-export function getChainId() {
-  return chainId;
-}
-
-export async function getWalletAddress(): Promise<string | undefined> {
+export async function getWalletAddress(): Promise<string | null> {
   const addr = userWallet && (await userWallet.getAddress());
   return addr;
 }
@@ -113,17 +91,19 @@ export async function startProviderWatcher(): Promise<void> {
   // this should only be run when a ethereum provider is detected and set at the ethereum value above
   async function updateProvider(): Promise<void> {
     try {
-      ethereum = getEthereum();
+      // type-coverage:ignore-next-line
+      ethereum = await getEthereum();
 
+      // type-coverage:ignore-next-line
       if (!ethereum) return;
 
-      // Normally, we would recommend the 'eth_chainId' RPC method, but it currently
-      // returns incorrectly formatted chain ID values.
-      chainId = ethereum.chainId;
-
       // set ethers provider
+      // type-coverage:ignore-next-line
       provider = new providers.Web3Provider(ethereum);
       initialized = true;
+
+      const { chainId } = await provider.getNetwork();
+      network = getEthersNetwork(chainId);
 
       // first reset all listeners from former contract and grab new contract
       if (contract) contract.removeAllListeners();
@@ -132,25 +112,29 @@ export async function startProviderWatcher(): Promise<void> {
       // set contract & event listeners
       contract.on(
         "LogGigStatusChange",
-        async (gigId: number, status: string): Promise<void> => {
+        async (gigId: BigNumber, status: number): Promise<void> => {
           event.$emit("LogGigStatusChange", {
-            gigId: gigId.toString(),
+            gigId: gigId.toNumber(),
             status
-          });
+          } as EthersEvent);
         }
       );
 
       contract.on(
         "LogEnrolled",
-        async (gigId: number): Promise<void> => {
-          event.$emit("LogEnrolled", { gigId: gigId.toString() });
+        async (gigId: BigNumber): Promise<void> => {
+          event.$emit("LogEnrolled", {
+            gigId: gigId.toNumber()
+          } as EthersEvent);
         }
       );
 
       contract.on(
         "LogWorkSubmitted",
-        async (gigId: number): Promise<void> => {
-          event.$emit("LogWorkSubmitted", { gigId: gigId.toString() });
+        async (gigId: BigNumber): Promise<void> => {
+          event.$emit("LogWorkSubmitted", {
+            gigId: gigId.toNumber()
+          } as EthersEvent);
         }
       );
 
@@ -158,31 +142,39 @@ export async function startProviderWatcher(): Promise<void> {
       /* Handle chain (network) and chainChanged (per EIP-1193) */
       /**********************************************************/
 
+      // type-coverage:ignore-next-line
       ethereum.on("chainChanged", handleChainChanged);
 
       /***********************************************************/
       /* Handle user accounts and accountsChanged (per EIP-1193) */
       /***********************************************************/
 
-      const accounts = await ethereum.request({ method: "eth_accounts" });
+      // type-coverage:ignore-next-line
+      const accounts: string[] = await ethereum.request({
+        method: "eth_accounts"
+      });
       handleAccountsChanged(accounts);
+      // type-coverage:ignore-next-line
       ethereum.on("accountsChanged", handleAccountsChanged);
-    } catch (err) {
-      // console.error("Error requesting ethereum accounts", err);
+    } catch (error) {
+      // console.error("Error requesting ethereum accounts", error);
       event.$emit(EVENT_CHANNEL, EthersMessages.NO_WALLET);
     }
   }
 
-  function checkProvider() {
+  function checkProvider(): void {
     // handle changes of availability of ethereum provider
-    if (ethereum && !ethereumOk()) {
+    // type-coverage:ignore-next-line
+    if (ethereum && !detectEthereum()) {
+      // type-coverage:ignore-next-line
       ethereum = null;
-      provider = undefined;
-      chainId = "";
-      currentAccount = undefined;
-      userWallet = undefined;
+      provider = null;
+      network = null;
+      currentAccount = null;
+      userWallet = null;
       event.$emit(EVENT_CHANNEL, EthersMessages.NOT_READY);
-    } else if (!ethereum && ethereumOk()) {
+      // type-coverage:ignore-next-line
+    } else if (!ethereum && detectEthereum()) {
       updateProvider();
     }
   }
@@ -193,19 +185,20 @@ export async function startProviderWatcher(): Promise<void> {
   providerInterval = setInterval(checkProvider, PROVIDER_CHECK_MS);
 }
 
-function handleChainChanged(_chainId: string) {
-  chainId = _chainId;
+function handleChainChanged(chainId: string): void {
+  network = getEthersNetwork(chainId);
   window.location.reload();
 }
 
-function handleAccountsChanged(accounts: any) {
+function handleAccountsChanged(accounts: string[]): void {
   if (accounts.length === 0) {
-    // console.log("No ethereum accounts available");
     event.$emit(EVENT_CHANNEL, EthersMessages.NO_WALLET);
   } else if (accounts[0] !== currentAccount) {
     currentAccount = accounts[0];
-    userWallet = provider && provider.getSigner(currentAccount);
-    contract_rw = new ethers.Contract(contractAddress, abi, userWallet);
+    if (currentAccount !== null)
+      userWallet = provider && provider.getSigner(currentAccount);
+    if (userWallet !== null)
+      contract_rw = new ethers.Contract(contractAddress, abi, userWallet);
     event.$emit(EVENT_CHANNEL, EthersMessages.ACCOUNT_CHANGED);
   }
 }
@@ -216,27 +209,30 @@ function handleAccountsChanged(accounts: any) {
 
 export async function connect(): Promise<void> {
   try {
+    // type-coverage:ignore-next-line
     if (!ethereum) {
       event.$emit(EVENT_CHANNEL, EthersMessages.NOT_CONNECTED);
       throw new Error(EthersMessages.NOT_CONNECTED);
     }
+    // type-coverage:ignore-next-line
     const accounts = await ethereum.request({ method: "eth_requestAccounts" });
     handleAccountsChanged(accounts);
     event.$emit(EVENT_CHANNEL, EthersMessages.ACCOUNT_CHANGED);
-  } catch (err) {
-    event.$emit(EVENT_CHANNEL, EthersMessages.NOT_READY, err);
+  } catch (error) {
+    event.$emit(EVENT_CHANNEL, EthersMessages.NOT_READY, error);
   }
 }
 
 // stop interval looking for ethereum provider changes
-export async function stopWatchProvider() {
+export function stopWatchProvider(): void {
   if (providerInterval) clearInterval(providerInterval);
   providerInterval = null;
 }
 
 // start ethereum provider checker, only on client side
 // warning if Metamask not found
-if (process.client && typeof window.ethereum !== "undefined") {
+// type-coverage:ignore-next-line
+if (process.client && typeof (window as any).ethereum !== "undefined") {
   startProviderWatcher();
 } else {
   event.$emit(EVENT_CHANNEL, EthersMessages.NOT_METAMASK);
@@ -245,15 +241,11 @@ if (process.client && typeof window.ethereum !== "undefined") {
 
 export default {
   connect,
-  ethereumOk,
-  getNetName,
   hasEns,
-  getChainId,
   getProvider,
   getContract,
   getContractRw,
   getWallet,
   getWalletAddress,
-  getNetworkAddress,
   ready
 };

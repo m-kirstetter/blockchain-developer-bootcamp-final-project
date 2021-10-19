@@ -1,14 +1,27 @@
-import { Modal } from "~/interfaces/modal";
+import { BootstrapVariant } from "~/enums/bootstrap-variant";
 
-const ModalsDefaultState = () => ({
+export interface ModalInterface {
+  show: boolean;
+  variant: BootstrapVariant;
+  text?: string;
+  title?: string;
+  data?: object;
+}
+
+interface ModalsInterface {
+  submitWork: ModalInterface;
+  postGig: ModalInterface;
+}
+
+const ModalsDefaultState = (): ModalsInterface => ({
   submitWork: {
     show: false,
-    data: {}
-  } as Modal,
+    variant: BootstrapVariant.PRIMARY
+  },
   postGig: {
     show: false,
-    data: {}
-  } as Modal
+    variant: BootstrapVariant.PRIMARY
+  }
 });
 
 export default ModalsDefaultState;

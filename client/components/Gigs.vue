@@ -22,7 +22,8 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { Modal } from "~/interfaces/modal";
+import { BootstrapVariant } from "~/enums/bootstrap-variant";
+import { ModalInterface } from "~/store/modals/state";
 
 export default Vue.extend({
   computed: {
@@ -43,10 +44,11 @@ export default Vue.extend({
     submit(id: number) {
       this.$store.dispatch("modals/openSubmitWorkModal", {
         show: true,
+        variant: BootstrapVariant.PRIMARY,
         data: {
           gigId: id
         }
-      } as Modal);
+      } as ModalInterface);
     }
   }
 });

@@ -14,12 +14,13 @@ import { EthersMessages } from "~/enums/ethers-messages";
 import { GIG_STATUS_MAPPING } from "~/constants/gig-status.constant";
 import { BootstrapVariant } from "~/enums/bootstrap-variant";
 import { event } from "~/services/ethers";
+import { EthersEvent } from "~/interfaces/ethers";
 
 declare let window: any;
 
 export default Vue.extend({
   created() {
-    event.$on("LogGigStatusChange", (data: any): void => {
+    event.$on("LogGigStatusChange", (data: EthersEvent): void => {
       this.$store.dispatch("app/getGigs");
       if (data.status === 0) {
         this.fireToast(
@@ -37,7 +38,7 @@ export default Vue.extend({
         );
       }
     });
-    event.$on("LogEnrolled", (data: any): void => {
+    event.$on("LogEnrolled", (data: EthersEvent): void => {
       this.$store.dispatch("app/getGigs");
       this.fireToast(
         "Enrolled",
@@ -45,7 +46,7 @@ export default Vue.extend({
         BootstrapVariant.SUCCESS
       );
     });
-    event.$on("LogWorkSubmitted", (data: any): void => {
+    event.$on("LogWorkSubmitted", (data: EthersEvent): void => {
       this.$store.dispatch("app/getGigs");
       this.fireToast(
         "Work submitted",

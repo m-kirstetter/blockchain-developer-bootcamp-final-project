@@ -7,37 +7,45 @@ import { Gig, GigFormInput, GigWorkFormat } from "~/interfaces/gig";
 import { ERRORS } from "~/constants/ethers.constant";
 import { getContract, getContractRw } from "~/services/ethers";
 import { GIG_STATUS_MAPPING } from "~/constants/gig-status.constant";
-
-export interface GigsServiceResponse {
-  gigsCount: number;
-  gigs: Gig[];
-}
+import {
+  EthersErrorResponse,
+  GigsServiceResponse,
+  GigEthersResponse,
+  WorkEthersResponse
+} from "~/interfaces/ethers";
 
 export async function getGigsService(): Promise<GigsServiceResponse> {
   let gigsCount = 0;
-  let gigs = [];
+  let gigs: Gig[] = [];
 
   const localContract = getContract();
   if (!localContract) throw new Error("No contract.");
 
   gigsCount = parseInt(
-    await localContract.gigsCount().catch((error: any) => {
+    // @TODO: Create types from ABI
+    // type-coverage:ignore-next-line
+    await localContract.gigsCount().catch((error: EthersErrorResponse) => {
       throw new Error(ERRORS[error.code]);
     })
   );
 
   if (gigsCount > 0) {
     for (let i = 1; i < gigsCount + 1; i++) {
-      const gig = await localContract.gigs(i.toString());
+      // @TODO: Create types from ABI
+      // type-coverage:ignore-next-line
+      const gig: GigEthersResponse = await localContract.gigs(i.toString());
 
       // get enrolled freelancers
-      const enrolled = gig.enrolled;
-      let freelancers = [];
+      const enrolled: number = gig.enrolled;
+      let freelancers: string[] = [];
       if (enrolled > 0) {
         for (let j = 0; j < enrolled; j++) {
-          const freelancer = await localContract
+          // @TODO: Create types from ABI
+          const freelancer: string = await localContract
+            // type-coverage:ignore-next-line
             .enrolledFreelancers(i.toString(), j.toString())
-            .catch((error: any) => {
+            // type-coverage:ignore-next-line
+            .catch((error: EthersErrorResponse) => {
               throw new Error(ERRORS[error.code]);
             });
           freelancers.push(freelancer);
@@ -45,13 +53,16 @@ export async function getGigsService(): Promise<GigsServiceResponse> {
       }
 
       // get enrolled freelancers submitted works
-      const worksNumber = gig.works;
-      let works = [];
+      const worksNumber: number = gig.works;
+      let works: string[] = [];
       if (worksNumber > 0) {
         for (let k = 0; k < worksNumber; k++) {
-          const submittedWork = await localContract
+          // @TODO: Create types from ABI
+          const submittedWork: WorkEthersResponse = await localContract
+            // type-coverage:ignore-next-line
             .worksByGig(i.toString(), k.toString())
-            .catch((error: any) => {
+            // type-coverage:ignore-next-line
+            .catch((error: EthersErrorResponse) => {
               throw new Error(ERRORS[error.code]);
             });
           works.push(submittedWork.owner);
@@ -72,7 +83,7 @@ export async function getGigsService(): Promise<GigsServiceResponse> {
 export async function createGigService(
   gig: GigFormInput
 ): Promise<TransactionResponse> {
-  let result;
+  let result: TransactionResponse;
 
   const localContractRw = getContractRw();
   if (!localContractRw) throw new Error("No contract.");
@@ -81,9 +92,12 @@ export async function createGigService(
     value: utils.parseEther(gig.compensation.toString())
   };
 
+  // @TODO: Create types from ABI
   result = await localContractRw
+    // type-coverage:ignore-next-line
     .createGig(gig.title, gig.freelancers.toString(), request)
-    .catch((error: any) => {
+    // type-coverage:ignore-next-line
+    .catch((error: EthersErrorResponse) => {
       throw new Error(ERRORS[error.code]);
     });
 
@@ -93,14 +107,19 @@ export async function createGigService(
 export async function enrollGigService(
   id: string
 ): Promise<TransactionResponse> {
-  let result;
+  let result: TransactionResponse;
 
   const localContractRw = getContractRw();
   if (!localContractRw) throw new Error("No contract.");
 
-  result = await localContractRw.enroll(id.toString()).catch((error: any) => {
-    throw new Error(ERRORS[error.code]);
-  });
+  // @TODO: Create types from ABI
+  result = await localContractRw
+    // type-coverage:ignore-next-line
+    .enroll(id.toString())
+    // type-coverage:ignore-next-line
+    .catch((error: EthersErrorResponse) => {
+      throw new Error(ERRORS[error.code]);
+    });
 
   return result;
 }
@@ -108,21 +127,25 @@ export async function enrollGigService(
 export async function submitGigService(
   work: GigWorkFormat
 ): Promise<TransactionResponse> {
-  let result;
+  let result: TransactionResponse;
 
   const localContractRw = getContractRw();
   if (!localContractRw) throw new Error("No contract.");
 
+  // @TODO: Create types from ABI
   result = await localContractRw
+    // type-coverage:ignore-next-line
     .submitWork(work.gigId.toString(), work.contract)
-    .catch((error: any) => {
+    // type-coverage:ignore-next-line
+    .catch((error: EthersErrorResponse) => {
       throw new Error(ERRORS[error.code]);
     });
+
   return result;
 }
 
 function formatGig(
-  gig: any,
+  gig: GigEthersResponse,
   freelancers: string[],
   works: string[],
   id: number
