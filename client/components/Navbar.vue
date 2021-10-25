@@ -45,6 +45,7 @@ export default Vue.extend({
   methods: {
     connect(): void {
       this.$store.dispatch("ethers/walletConnect");
+      this.$store.dispatch("auth/nonce");
     },
     disconnect(): void {
       this.$store.dispatch("ethers/disconnect");
