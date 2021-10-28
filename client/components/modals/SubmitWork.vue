@@ -40,7 +40,7 @@ import { isAddress } from "@ethersproject/address";
 import { required } from "vuelidate/lib/validators";
 
 export default Vue.extend({
-  data: function() {
+  data() {
     return {
       work: {
         contract: ""
@@ -48,14 +48,17 @@ export default Vue.extend({
       error: null as null | string
     };
   },
+
   computed: {
     gigId(): number {
       return this.$store.state.modals.submitWork.data.gigId;
     },
+
     show(): boolean {
       return this.$store.state.modals.submitWork.show;
     }
   },
+
   validations: {
     work: {
       contract: {
@@ -64,18 +67,18 @@ export default Vue.extend({
       }
     }
   },
+
   methods: {
     validateState(name: string) {
       const dirty = this.$v.work[name]?.$dirty;
       const error = this.$v.work[name]?.$error;
       return dirty ? !error : null;
     },
+
     reset() {
       this.error = null;
 
-      this.work = {
-        contract: ""
-      };
+      this.work.contract = "";
 
       this.$store.commit("modals/SET_SUBMITWORK_MODAL", {
         text: "",
@@ -87,6 +90,7 @@ export default Vue.extend({
         this.$v.$reset();
       });
     },
+
     async submit(event: Event) {
       event.preventDefault();
       this.$v.work.$touch();
@@ -105,6 +109,7 @@ export default Vue.extend({
           this.error = error.message;
         });
     },
+
     cancel(event: Event) {
       event.preventDefault();
       this.reset();

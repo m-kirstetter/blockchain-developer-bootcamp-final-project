@@ -1,18 +1,24 @@
 <template>
   <b-container>
-    <b-alert :show="alert.show" :variant="alert.variant" class="mt-4">
-      {{ alert.text }}
-    </b-alert>
-    <b-row class="mt-4 mb-3">
-      <b-col cols="6">
-        <h4 class="mb-0">Current Gigs</h4>
-        <small>{{ $store.state.app.gigsCount }} gigs posted</small>
-      </b-col>
-      <b-col cols="6">
-        <PostGigButton />
+    <b-row class="vh-100 text-center" align-v="center">
+      <b-col>
+        <b-spinner
+          variant="primary"
+          label="Spinning"
+          v-if="loading"
+          style="width: 3rem; height: 3rem; border-width: 0.4rem"
+        />
+        <b-button
+          class="main-navigation-button"
+          variant="primary"
+          size="lg"
+          @click="connect"
+          v-else
+        >
+          Connect with Metamask
+        </b-button>
       </b-col>
     </b-row>
-    <Gigs />
   </b-container>
 </template>
 
@@ -20,9 +26,41 @@
 import Vue from "vue";
 
 export default Vue.extend({
+  layout: "landing",
+
   computed: {
-    alert() {
-      return this.$store.state.app.alert;
+    loading(): boolean {
+      return this.$store.state.auth1.loading;
+    },
+
+    user(): string {
+      return this.$store.state.ethers.user;
+    }
+  },
+
+  methods: {
+    connect() {
+      this.$store.dispatch("auth1/connectMetamask");
+    },
+
+    disconnect() {
+      this.$store.dispatch("ethers/disconnect");
+      this.$store.dispatch("app/resetGigs");
+      this.$auth.logout();
+    }
+  },
+
+  watch: {
+    user: function(newUser: string, oldUser: string) {
+      if (newUser && newUser !== oldUser) {
+        this.$store.dispatch("auth1/authenticate").catch(error => {
+          // disconnect everything if error occured
+          this.disconnect();
+        });
+      } else {
+        // disconnect everything if no user
+        this.disconnect();
+      }
     }
   }
 });

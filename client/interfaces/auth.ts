@@ -7,5 +7,15 @@ export interface AuthServiceUser {
 }
 
 export interface AuthServiceUserResponse {
-  user: AuthServiceUser
+  user: AuthServiceUser;
+}
+
+export interface AuthServiceTokenResponse {
+  expires: Date;
+  token: string;
+}
+
+export interface AuthServiceTokensResponse {
+  access: AuthServiceTokenResponse;
+  refresh: AuthServiceTokenResponse;
 }

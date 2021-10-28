@@ -3,7 +3,6 @@ import { EthersRootState } from "./index";
 import { ErrorCode } from "@ethersproject/logger";
 import {
   connect,
-  event,
   ready,
   getProvider,
   getWallet,
@@ -12,9 +11,8 @@ import {
   hasEns
 } from "~/services/ethers";
 import { EthersMessages } from "~/enums/ethers-messages";
-import { EVENT_CHANNEL } from "~/constants/ethers.constant";
+import { EventBus } from "~/plugins/event-bus";
 import { BootstrapVariant } from "~/enums/bootstrap-variant";
-import { ModalInterface } from "../modals/state";
 
 const EthersActions: ActionTree<EthersRootState, EthersRootState> = {
   async connect({ commit, state, dispatch }): Promise<void> {
@@ -32,15 +30,12 @@ const EthersActions: ActionTree<EthersRootState, EthersRootState> = {
       const network = getNetwork();
 
       if (network?.name !== "ropsten") {
-        dispatch(
-          "app/alert",
-          {
-            text: EthersMessages.NOT_ROPSTEN,
-            variant: BootstrapVariant.DANGER,
-            show: true
-          } as ModalInterface,
-          { root: true }
-        );
+        EventBus.$emit("Toast", {
+          variant: BootstrapVariant.DANGER,
+          text: EthersMessages.NOT_ROPSTEN,
+          title: "Wrong Network"
+        });
+
         throw new Error(EthersMessages.NOT_ROPSTEN);
       }
 
@@ -55,7 +50,7 @@ const EthersActions: ActionTree<EthersRootState, EthersRootState> = {
         commit("SET_NETWORK", network);
 
         // Other vuex stores can wait for this
-        event.$emit(EVENT_CHANNEL, EthersMessages.ETHERS_VUEX_READY);
+        EventBus.$emit("Ethers", EthersMessages.ETHERS_VUEX_READY);
 
         // now check for .eth address too
         if (hasEns() && address) {
@@ -68,6 +63,7 @@ const EthersActions: ActionTree<EthersRootState, EthersRootState> = {
       dispatch("disconnect", error as ErrorCode);
     }
   },
+
   async disconnect(
     { commit, state, dispatch },
     error?: ErrorCode
@@ -79,39 +75,51 @@ const EthersActions: ActionTree<EthersRootState, EthersRootState> = {
     commit("SET_NETWORK", null);
     commit("SET_ENS", null);
   },
+
   async logout({ commit, state, dispatch }): Promise<void> {
+    // We disconnect everything, user will need to sign again to authenticate
+    await dispatch("ethers/disconnect", {}, { root: true });
+    await dispatch("app/resetGigs", {}, { root: true });
     commit("SET_ADDRESS", null);
     commit("SET_USER", null);
+    this.$auth.logout();
   },
-  async walletConnect({ commit, state, dispatch }): Promise<void> {
-    await connect();
+
+  async connectMetamask(context): Promise<void> {
+    await connect().catch(error => {
+      context.commit("SET_LOADING", false);
+      context.commit("auth1/SET_LOADING", false, { root: true });
+    });
   },
+
   async init({ commit, state, dispatch }): Promise<void> {
     commit("SET_LOADING", true);
 
-    event.$on(EVENT_CHANNEL, async function(
+    EventBus.$on("Ethers", async function(
       message: EthersMessages
     ): Promise<void> {
       console.log("Ethers event received", message);
       switch (message) {
         case EthersMessages.NOT_READY:
           await dispatch("disconnect");
+          await dispatch("logout");
           break;
         case EthersMessages.NO_WALLET:
           await dispatch("logout");
           break;
         case EthersMessages.ACCOUNT_CHANGED:
-          await dispatch("connect");
+          await dispatch("logout");
           break;
         case EthersMessages.NOT_CONNECTED:
           await dispatch("notConnected");
+          await dispatch("logout");
           break;
       }
     });
 
     if (ready()) {
       await dispatch("connect");
-      event.$emit(EVENT_CHANNEL, EthersMessages.ETHERS_VUEX_INITIALIZED);
+      EventBus.$emit("Ethers", EthersMessages.ETHERS_VUEX_INITIALIZED);
     }
 
     commit("SET_INITIALIZED", true);

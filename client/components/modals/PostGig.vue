@@ -87,7 +87,7 @@ import { required, minLength, between, url } from "vuelidate/lib/validators";
 import { BootstrapVariant } from "~/enums/bootstrap-variant";
 
 export default Vue.extend({
-  data: function() {
+  data() {
     return {
       gig: {
         title: "",
@@ -98,11 +98,13 @@ export default Vue.extend({
       error: null as null | string
     };
   },
+
   computed: {
     show(): boolean {
       return this.$store.state.modals.postGig.show;
     }
   },
+
   validations: {
     gig: {
       title: {
@@ -123,12 +125,14 @@ export default Vue.extend({
       }
     }
   },
+
   methods: {
     validateState(name: string) {
       const dirty = this.$v.gig[name]?.$dirty;
       const error = this.$v.gig[name]?.$error;
       return dirty ? !error : null;
     },
+
     reset() {
       this.error = null;
 
@@ -149,6 +153,7 @@ export default Vue.extend({
         this.$v.$reset();
       });
     },
+
     create(event: Event) {
       event.preventDefault();
       this.$v.gig.$touch();
@@ -163,6 +168,7 @@ export default Vue.extend({
           this.error = error.message;
         });
     },
+
     cancel(event: Event) {
       event.preventDefault();
       this.reset();

@@ -30,7 +30,7 @@ import Vue from "vue";
 
 export default Vue.extend({
   methods: {
-    post(): void {
+    post() {
       this.$store.dispatch("modals/openPostGigModal", {
         show: true,
         data: {}

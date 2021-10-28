@@ -1,20 +1,18 @@
 // NOTE: Metamask 'ethereum' can't be properly typed, all is excluded from ts-coverage
-import Vue from "vue";
-import { providers, Contract, ethers, BigNumber } from "ethers";
+import { providers, Contract, ethers, BigNumber, errors } from "ethers";
 import detectEthereumProvider from "@metamask/detect-provider";
 import { JsonRpcProvider, JsonRpcSigner } from "@ethersproject/providers";
 import { EthersMessages } from "~/enums/ethers-messages";
-import { EthersEvent } from "~/interfaces/ethers";
+import { EthersErrorResponse } from "~/interfaces/ethers";
 import {
   Network,
   getNetwork as getEthersNetwork
 } from "@ethersproject/networks";
-import {
-  PROVIDER_CHECK_MS,
-  ENS_NETS,
-  EVENT_CHANNEL
-} from "~/constants/ethers.constant";
+import { PROVIDER_CHECK_MS, ENS_NETS } from "~/constants/ethers.constant";
 import abi from "./contracts_SmartGigs_sol_SmartGigs.json";
+import { EventBus } from "~/plugins/event-bus";
+import { BootstrapVariant } from "~/enums/bootstrap-variant";
+import { GIG_STATUS_MAPPING } from "~/constants/gig-status.constant";
 
 let contractAddress: string;
 if (process.env.NUXT_ENV_CONTRACT) {
@@ -22,9 +20,6 @@ if (process.env.NUXT_ENV_CONTRACT) {
 } else {
   throw new Error("NUXT_ENV_CONTRACT environment variable is not set");
 }
-
-// use another vue instance as a simple event bus
-export const event: Vue = new Vue();
 
 // for ethers
 // type-coverage:ignore-next-line
@@ -109,32 +104,48 @@ export async function startProviderWatcher(): Promise<void> {
       if (contract) contract.removeAllListeners();
       contract = new Contract(contractAddress, abi, provider);
 
-      // set contract & event listeners
+      // set contract event listeners
       contract.on(
         "LogGigStatusChange",
         async (gigId: BigNumber, status: number): Promise<void> => {
-          event.$emit("LogGigStatusChange", {
-            gigId: gigId.toNumber(),
-            status
-          } as EthersEvent);
+          EventBus.$emit("GetGigs");
+          if (status === 0) {
+            EventBus.$emit("Toast", {
+              variant: BootstrapVariant.SUCCESS,
+              text: `Gig #${gigId} has been created`,
+              title: "Success"
+            });
+          } else {
+            EventBus.$emit("Toast", {
+              variant: BootstrapVariant.WARNING,
+              text: `Gig #${gigId} is now status '${GIG_STATUS_MAPPING[status]}'`,
+              title: "Status change"
+            });
+          }
         }
       );
 
       contract.on(
         "LogEnrolled",
         async (gigId: BigNumber): Promise<void> => {
-          event.$emit("LogEnrolled", {
-            gigId: gigId.toNumber()
-          } as EthersEvent);
+          EventBus.$emit("GetGigs");
+          EventBus.$emit("Toast", {
+            variant: BootstrapVariant.SUCCESS,
+            text: `Your are now enrolled to Gig #${gigId}`,
+            title: "Enrolled"
+          });
         }
       );
 
       contract.on(
         "LogWorkSubmitted",
         async (gigId: BigNumber): Promise<void> => {
-          event.$emit("LogWorkSubmitted", {
-            gigId: gigId.toNumber()
-          } as EthersEvent);
+          EventBus.$emit("GetGigs");
+          EventBus.$emit("Toast", {
+            variant: BootstrapVariant.SUCCESS,
+            text: `Your work has been submitted to Gig #${gigId.toNumber()}`,
+            title: "Work submitted"
+          });
         }
       );
 
@@ -153,12 +164,19 @@ export async function startProviderWatcher(): Promise<void> {
       const accounts: string[] = await ethereum.request({
         method: "eth_accounts"
       });
-      handleAccountsChanged(accounts);
+
+      await handleAccountsChanged(accounts);
+
       // type-coverage:ignore-next-line
       ethereum.on("accountsChanged", handleAccountsChanged);
     } catch (error) {
       // console.error("Error requesting ethereum accounts", error);
-      event.$emit(EVENT_CHANNEL, EthersMessages.NO_WALLET);
+      EventBus.$emit("Ethers", EthersMessages.NO_WALLET);
+      EventBus.$emit("Toast", {
+        variant: BootstrapVariant.WARNING,
+        text: EthersMessages.NO_WALLET,
+        title: "Warning"
+      });
     }
   }
 
@@ -172,7 +190,13 @@ export async function startProviderWatcher(): Promise<void> {
       network = null;
       currentAccount = null;
       userWallet = null;
-      event.$emit(EVENT_CHANNEL, EthersMessages.NOT_READY);
+
+      EventBus.$emit("Ethers", EthersMessages.NOT_READY);
+      EventBus.$emit("Toast", {
+        variant: BootstrapVariant.WARNING,
+        text: EthersMessages.NOT_READY,
+        title: "Warning"
+      });
       // type-coverage:ignore-next-line
     } else if (!ethereum && detectEthereum()) {
       updateProvider();
@@ -190,16 +214,19 @@ function handleChainChanged(chainId: string): void {
   window.location.reload();
 }
 
-function handleAccountsChanged(accounts: string[]): void {
+async function handleAccountsChanged(accounts: string[]): Promise<void> {
   if (accounts.length === 0) {
-    event.$emit(EVENT_CHANNEL, EthersMessages.NO_WALLET);
+    EventBus.$emit("Ethers", EthersMessages.NO_WALLET);
   } else if (accounts[0] !== currentAccount) {
     currentAccount = accounts[0];
+
     if (currentAccount !== null)
       userWallet = provider && provider.getSigner(currentAccount);
+
     if (userWallet !== null)
       contract_rw = new ethers.Contract(contractAddress, abi, userWallet);
-    event.$emit(EVENT_CHANNEL, EthersMessages.ACCOUNT_CHANGED);
+
+    EventBus.$emit("Ethers", EthersMessages.ACCOUNT_CHANGED);
   }
 }
 
@@ -211,15 +238,43 @@ export async function connect(): Promise<void> {
   try {
     // type-coverage:ignore-next-line
     if (!ethereum) {
-      event.$emit(EVENT_CHANNEL, EthersMessages.NOT_CONNECTED);
+      EventBus.$emit("Ethers", EthersMessages.NOT_CONNECTED);
+
+      EventBus.$emit("Toast", {
+        variant: BootstrapVariant.DANGER,
+        text: EthersMessages.NOT_CONNECTED,
+        title: "Error"
+      });
+
       throw new Error(EthersMessages.NOT_CONNECTED);
     }
+
     // type-coverage:ignore-next-line
     const accounts = await ethereum.request({ method: "eth_requestAccounts" });
     handleAccountsChanged(accounts);
-    event.$emit(EVENT_CHANNEL, EthersMessages.ACCOUNT_CHANGED);
+
+    EventBus.$emit("Ethers", EthersMessages.ACCOUNT_CHANGED);
   } catch (error) {
-    event.$emit(EVENT_CHANNEL, EthersMessages.NOT_READY, error);
+    // EventBus.$emit("Ethers", EthersMessages.NOT_READY, error);
+    const ethersError = error as EthersErrorResponse;
+
+    // Toast if user did not allow app to access Metamask accounts
+    if (ethersError.code === 4001) {
+      EventBus.$emit("Ethers", EthersMessages.NOT_SIGNED, error);
+      EventBus.$emit("Toast", {
+        variant: BootstrapVariant.DANGER,
+        text: EthersMessages.NOT_SIGNED,
+        title: "Error"
+      });
+      throw new Error(EthersMessages.NOT_SIGNED);
+    } else {
+      EventBus.$emit("Ethers", EthersMessages.NOT_READY, error);
+      EventBus.$emit("Toast", {
+        variant: BootstrapVariant.DANGER,
+        text: EthersMessages.NOT_READY,
+        title: "Error"
+      });
+    }
   }
 }
 
@@ -235,7 +290,12 @@ export function stopWatchProvider(): void {
 if (process.client && typeof (window as any).ethereum !== "undefined") {
   startProviderWatcher();
 } else {
-  event.$emit(EVENT_CHANNEL, EthersMessages.NOT_METAMASK);
+  EventBus.$emit("Ethers", EthersMessages.NOT_METAMASK);
+  EventBus.$emit("Toast", {
+    variant: BootstrapVariant.DANGER,
+    text: EthersMessages.NOT_METAMASK,
+    title: "Metamask Not Found"
+  });
   throw new Error(EthersMessages.NOT_METAMASK);
 }
 
@@ -243,6 +303,7 @@ export default {
   connect,
   hasEns,
   getProvider,
+  getNetwork,
   getContract,
   getContractRw,
   getWallet,

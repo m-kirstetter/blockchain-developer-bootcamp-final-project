@@ -82,10 +82,12 @@ export default Vue.extend({
   props: {
     gig: { type: Object as PropType<Gig>, required: true }
   },
+
   computed: {
     variant(): BootstrapVariant {
       return GIG_STATUS_VARIANT[this.gig.status];
     },
+
     status(): string {
       return this.gig.status.charAt(0).toUpperCase() + this.gig.status.slice(1);
     }

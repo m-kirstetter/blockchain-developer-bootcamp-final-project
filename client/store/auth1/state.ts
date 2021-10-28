@@ -1,9 +1,9 @@
 export interface AuthInterface {
-  nonce: string | null;
+  loading: boolean;
 }
 
 const AuthDefaultState = (): AuthInterface => ({
-  nonce: null
+  loading: false
 });
 
 export default AuthDefaultState;

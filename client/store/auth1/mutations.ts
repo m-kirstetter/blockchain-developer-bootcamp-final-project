@@ -2,8 +2,8 @@ import { MutationTree } from "vuex";
 import { AuthRootState } from "./index";
 
 const AuthMutations: MutationTree<AuthRootState> = {
-  SET_NONCE(state, value): void {
-    state.nonce = value;
+  SET_LOADING(state, value: boolean): void {
+    state.loading = value;
   }
 };
 

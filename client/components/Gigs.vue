@@ -12,8 +12,7 @@
     >
       <p v-if="gigsLoading && user">Gigs loading....</p>
       <p v-else-if="!user">
-        You're not connected to Metamask, you can connect
-        <a href="#" @click="connect">here</a>.
+        Please connect to Metamask.
       </p>
       <p v-else>Sorry, no gigs found.</p>
     </div>
@@ -27,20 +26,20 @@ import { ModalInterface } from "~/store/modals/state";
 
 export default Vue.extend({
   computed: {
-    user: function(): string {
+    user(): string {
       return this.$store.state.ethers.user;
     },
-    gigsLoading: function(): boolean {
+
+    gigsLoading(): boolean {
       return this.$store.state.app.loading;
     }
   },
+
   methods: {
-    connect(): void {
-      this.$store.dispatch("ethers/walletConnect");
-    },
     enroll(id: number) {
       this.$store.dispatch("app/enroll", id);
     },
+
     submit(id: number) {
       this.$store.dispatch("modals/openSubmitWorkModal", {
         show: true,

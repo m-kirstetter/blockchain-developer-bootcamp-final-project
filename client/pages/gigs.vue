@@ -1,0 +1,28 @@
+<template>
+  <b-container>
+    <b-row class="mt-4 mb-3">
+      <b-col cols="6">
+        <h4 class="mb-0">Current Gigs</h4>
+        <small>{{ $store.state.app.gigsCount }} gigs posted</small>
+      </b-col>
+      <b-col cols="6">
+        <PostGigButton />
+      </b-col>
+    </b-row>
+    <Gigs />
+  </b-container>
+</template>
+
+<script lang="ts">
+import Vue from "vue";
+
+export default Vue.extend({
+  middleware: ["ethersConnected", "auth"],
+
+  async fetch(): Promise<void> {
+    await this.$store.dispatch("app/getGigs");
+  }
+});
+</script>
+
+<style></style>
