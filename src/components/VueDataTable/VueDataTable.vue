@@ -7,7 +7,7 @@
 
       <vue-box v-if="showSearch" padding="24 16">
         <vue-columns space="16">
-          <vue-column :width="'70%'">
+          <vue-column :width="groupByOptions && groupByOptions.length > 0 ? '80%' : null">
             <vue-input
               :id="`search-query-${id}`"
               v-model="searchQuery"
@@ -277,9 +277,7 @@ export default defineComponent({
     const selectedRecords = ref<Array<string | number>>([]);
     const selectedAllRecords = ref(false);
     const activeGroupBy = ref(props.groupBy);
-    // Computed
     const hasBulkActions = computed(() => props.bulkActions?.length > 0);
-    // Columns
     const sanitizedColumns = computed(() => {
       return Object.keys(props.columns).map((key: string) => {
         const column: IDataTableColumn = props.columns[key];
@@ -308,7 +306,6 @@ export default defineComponent({
     const visibleColumns = computed(() => {
       return sanitizedColumns.value.filter((column: IDataTableColumn) => column.visible);
     });
-    // Rows
     const filteredRecords = computed(() => {
       if (props.asyncMode) {
         return props.records;
@@ -359,7 +356,6 @@ export default defineComponent({
     });
     const groups = computed<Array<IDataTableRowGroup>>(() => {
       if (activeGroupBy.value) {
-        // map array index to group by value, e.g. 'pending':0
         const valueIndexMapping: any = {};
         const groups: Array<IDataTableRowGroup> = [];
 
@@ -477,7 +473,6 @@ export default defineComponent({
 
       return Math.ceil(count.value / activeMaxRows.value);
     });
-    // Methods
     const columnClick = (column: IDataTableColumn) => {
       if (activeSortKey.value === column.sortKey && activeSortDirection.value === 'desc') {
         activeSortKey.value = null;
@@ -562,7 +557,6 @@ export default defineComponent({
 
       activeGroupBy.value = option.value;
     };
-    // Watcher
     watch(
       () => props.sortKey,
       (value) => (activeSortKey.value = value),
@@ -649,7 +643,7 @@ $table-group-header-bg: var(--brand-bg-default-high);
         cursor: default;
         background: $table-header-bg;
         position: sticky;
-        top: $navbar-height;
+        top: 0;
         z-index: 1;
         box-shadow: $table-header-elevation;
         user-select: none;

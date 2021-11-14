@@ -1,6 +1,7 @@
 import { fireEvent, render, RenderResult, waitFor } from '@testing-library/vue';
 import { triggerDocument } from '@/test/test-utils';
 import VueDatePicker from './VueDatePicker.vue';
+import { getUTCDate } from '@/components/VueCalendar/utils';
 
 describe('VueDatePicker.vue', () => {
   let harness: RenderResult;
@@ -50,7 +51,7 @@ describe('VueDatePicker.vue', () => {
   });
 
   test('should emit input event', async () => {
-    const tomorrow = new Date();
+    const tomorrow = new Date('2021-03');
     const { getByPlaceholderText, getByTestId, queryAllByText, emitted } = harness;
 
     tomorrow.setDate(tomorrow.getDate() + 1);
@@ -62,7 +63,7 @@ describe('VueDatePicker.vue', () => {
     await fireEvent.click(queryAllByText('2021')[1]);
     await fireEvent.click(queryAllByText(tomorrow.getDate())[0]);
 
-    expect(emitted().input).toEqual([[new Date(`2021-03-${tomorrow.getDate()}T00:00:00.000Z`)]]);
+    expect(emitted().input).toEqual([[getUTCDate(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate())]]);
   });
 
   test('should open calendar and close it via escape keypress', async () => {
