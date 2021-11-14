@@ -1,16 +1,18 @@
 import Vuex, { Store } from 'vuex';
 import { GigDefaultState } from '@/store/gig/state';
 import { IState } from '@/interfaces/IState';
-import { IGig } from '@/interfaces/IGig';
+import { IGigFrontend } from '@/interfaces/IGig';
 import { GigActions } from '@/store/gig/actions';
 import { GigMutations } from '@/store/gig/mutations';
 import { GigGetters } from '@/store/gig/getters';
 import { AxiosMock, getAxiosMock } from '@/test/test-utils';
+import { Schema } from 'mongoose';
+import { IStatuses } from '@/interfaces/IStatuses';
 
 describe('GigActions', () => {
   let store: Store<IState>;
   let axiosMock: AxiosMock;
-  let fixture: IGig;
+  let fixture: IGigFrontend;
 
   const GigModule = {
     namespaced: true,
@@ -32,7 +34,19 @@ describe('GigActions', () => {
     store.$axios = axiosMock;
     store.commit = jest.fn();
 
-    fixture = { id: '1' };
+    fixture = {
+      _id: 1,
+      title: 'title',
+      description: 'description',
+      details: 'details',
+      skills: 'skills',
+      owner: ('570b570b570bfffffffffffb' as unknown) as Schema.Types.ObjectId,
+      status: 'Registered' as IStatuses,
+      budget: {
+        min: 1,
+        max: 4,
+      },
+    };
   });
 
   describe('fetchGigs', () => {

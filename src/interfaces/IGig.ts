@@ -1,16 +1,7 @@
-import { GigStatus } from '@/enums/GigStatus';
+import { IBaseGig } from '@/api/models/gig.model';
 
-export interface IGig {
-  id: number;
-  name: string;
-  compensation: string;
-  status: GigStatus;
-  owner: string;
-  freelancersNumber: number;
-  freelancers: string[];
-  worksSubmitted: number;
-  works: string[];
-  awardedTo: string;
+export interface IGigFrontend extends IBaseGig {
+  _id: number;
 }
 
 export interface IGigFormInput {

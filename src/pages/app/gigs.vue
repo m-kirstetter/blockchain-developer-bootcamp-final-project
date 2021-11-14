@@ -61,7 +61,7 @@
               <vue-badge v-else-if="row.status === 'Open'" status="primary">{{ row.status }}</vue-badge>
               <vue-badge v-else-if="row.status === 'Registered'" status="info">{{ row.status }}</vue-badge>
             </td>
-            <td>{{ $d(row.created, 'dayMonthYearNumeric', 'de') }}</td>
+            <td>{{ $moment(row.createdAt).format('ll') }}</td>
             <td>
               <vue-dropdown button-text="Select" :items="[{ label: 'Edit', value: 'edit' }]" align-menu="right" />
             </td>

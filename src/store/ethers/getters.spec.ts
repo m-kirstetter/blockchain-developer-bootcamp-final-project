@@ -9,10 +9,6 @@ describe('EthersGetters', () => {
   });
 
   test('it should get the ethers', () => {
-    expect(EthersGetters.ethers(testState)).toEqual(testState.ethers);
-  });
-
-  test('it should get the ethers', () => {
-    expect(EthersGetters.currentEther(testState)).toEqual(testState.currentEther);
+    expect(EthersGetters.connected(testState)).toEqual(testState.connected);
   });
 });

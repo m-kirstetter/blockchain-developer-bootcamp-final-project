@@ -1,7 +1,7 @@
-import { IGig } from '@/interfaces/IGig';
+import { IGigFrontend } from '@/interfaces/IGig';
 
 export interface IGigState {
-  gigs: IGig[];
+  gigs: IGigFrontend[];
 }
 
 export const GigDefaultState = (): IGigState => {

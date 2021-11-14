@@ -1,5 +1,5 @@
 import { Schema, model, Model, models, SchemaTypes } from 'mongoose';
-import { TokenTypes } from '../enums/tokenTypes';
+import { TokenTypes } from '../enums/TokenTypes';
 // import { toJSON } from './plugins/toJSON.plugin.js';
 
 export interface IToken {

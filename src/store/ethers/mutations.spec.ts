@@ -8,37 +8,39 @@ describe('EthersMutations', () => {
     testState = EthersDefaultState();
   });
 
-  test('it should set ethers', () => {
-    const expected = [{ id: '1' }];
+  test('it should set connected', () => {
+    const expected = true;
 
-    EthersMutations.SET_ETHERS(testState, expected);
-    expect(testState.ethers).toEqual(expected);
+    EthersMutations.SET_CONNECTED(testState, expected);
+    expect(testState.connected).toEqual(expected);
   });
 
-  test('it should set currentEther', () => {
-    const expected = { id: '1' };
+  // TODO: TESTS
 
-    EthersMutations.SET_CURRENT_ETHER(testState, expected);
-    expect(testState.currentEther).toEqual(expected);
-  });
+  // test('it should set currentEther', () => {
+  //   const expected = { id: '1' };
 
-  test('it should add and update a ether', () => {
-    const ether = { id: '1' };
-    EthersMutations.ADD_ETHER(testState, ether);
-    expect(testState.ethers).toEqual([ether]);
+  //   EthersMutations.SET_CURRENT_ETHER(testState, expected);
+  //   expect(testState.currentEther).toEqual(expected);
+  // });
 
-    ether.id = '2';
+  // test('it should add and update a ether', () => {
+  //   const ether = { id: '1' };
+  //   EthersMutations.ADD_ETHER(testState, ether);
+  //   expect(testState.ethers).toEqual([ether]);
 
-    EthersMutations.UPDATE_ETHER(testState, ether);
-    expect(testState.ethers).toEqual([ether]);
-  });
+  //   ether.id = '2';
 
-  test('it should delete a ether', () => {
-    const ether = { id: '1' };
-    EthersMutations.ADD_ETHER(testState, ether);
-    expect(testState.ethers).toHaveLength(1);
+  //   EthersMutations.UPDATE_ETHER(testState, ether);
+  //   expect(testState.ethers).toEqual([ether]);
+  // });
 
-    EthersMutations.DELETE_ETHER(testState, ether);
-    expect(testState.ethers).toHaveLength(0);
-  });
+  // test('it should delete a ether', () => {
+  //   const ether = { id: '1' };
+  //   EthersMutations.ADD_ETHER(testState, ether);
+  //   expect(testState.ethers).toHaveLength(1);
+
+  //   EthersMutations.DELETE_ETHER(testState, ether);
+  //   expect(testState.ethers).toHaveLength(0);
+  // });
 });

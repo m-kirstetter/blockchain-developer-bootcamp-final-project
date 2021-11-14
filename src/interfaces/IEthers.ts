@@ -1,5 +1,5 @@
 import { BigNumber } from 'ethers';
-import { IGig } from '@/interfaces/IGig';
+import { IGigFrontend } from '@/interfaces/IGig';
 import { Network } from '@ethersproject/networks';
 import { ErrorCode } from '@ethersproject/logger';
 
@@ -41,7 +41,7 @@ export interface IEthereumRequestArguments {
 
 export interface IGigsServiceResponse {
   gigsCount: number;
-  gigs: IGig[];
+  gigs: IGigFrontend[];
 }
 
 export interface IGigEthersResponse {

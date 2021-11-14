@@ -74,6 +74,7 @@ const config: Configuration = {
     '@nuxtjs/eslint-module',
     '@nuxtjs/html-validator',
     '@nuxtjs/color-mode',
+    '@nuxtjs/moment',
   ],
   colorMode: {
     preference: 'system',

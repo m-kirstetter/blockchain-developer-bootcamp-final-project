@@ -11,8 +11,4 @@ describe('GigGetters', () => {
   test('it should get the gigs', () => {
     expect(GigGetters.gigs(testState)).toEqual(testState.gigs);
   });
-
-  test('it should get the gigs', () => {
-    expect(GigGetters.currentGig(testState)).toEqual(testState.currentGig);
-  });
 });

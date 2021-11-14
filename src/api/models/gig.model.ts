@@ -11,7 +11,7 @@ export interface IGigBudget {
 
 export type GigBudgetModel = Model<IGigBudget>;
 
-export interface IGig extends Document {
+export interface IBaseGig {
   title: string;
   description: string;
   details: string;
@@ -22,6 +22,8 @@ export interface IGig extends Document {
   freelancer?: Schema.Types.ObjectId;
   deadline?: Date;
 }
+
+export type IGig = Document & IBaseGig;
 
 export interface IGigsQueryResult extends IQueryResult {
   results: IGig[];
