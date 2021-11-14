@@ -1,18 +1,60 @@
 module.exports = {
+  globals: {
+    window: true,
+    'ts-jest': {
+      tsconfig: 'tsconfig.test.json',
+    },
+    'vue-jest': {
+      experimentalCSSCompile: false,
+    },
+  },
+  rootDir: '.',
+  setupFiles: ['<rootDir>/src/test/jestsetup.ts'],
+  setupFilesAfterEnv: ['<rootDir>/src/test/jest-dom-importer.ts'],
   moduleNameMapper: {
-    "^@/(.*)$": "<rootDir>/client/$1",
-    "^~/(.*)$": "<rootDir>/client/$1",
-    "^vue$": "vue/dist/vue.common.js"
+    '^@/(.*)$': '<rootDir>/src/$1',
+    '^vue$': 'vue/dist/vue.common.js',
+    '@nuxtjs/composition-api': '@nuxtjs/composition-api/lib/entrypoint.js',
+    '@vue/apollo-composable': '@vue/apollo-composable/dist/index.js',
   },
-  moduleFileExtensions: ["ts", "js", "vue", "json"],
+  moduleFileExtensions: ['ts', 'js', 'vue'],
   transform: {
-    "^.+\\.ts$": "ts-jest",
-    "^.+\\.js$": "babel-jest",
-    ".*\\.(vue)$": "vue-jest"
+    '.*\\.(vue)$': '<rootDir>/node_modules/vue-jest',
+    '.(ts|tsx)$': 'ts-jest',
+    '^.+\\.js?$': 'babel-jest',
   },
+  transformIgnorePatterns: ['/node_modules/(?!@vue/apollo-composable).+\\.js$'],
+  testRegex: '(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$',
+  testPathIgnorePatterns: ['/cypress/'],
   collectCoverage: true,
-  collectCoverageFrom: [
-    "<rootDir>/client/components/**/*.vue",
-    "<rootDir>/client/pages/**/*.vue"
-  ]
+  collectCoverageFrom: ['src/**/*', '!src/**/*.stories.ts', '!src/**/*.d.ts'],
+  coveragePathIgnorePatterns: [
+    '/node_modules/',
+    '/api/',
+    '/assets/',
+    '/enums/',
+    '/fixtures/',
+    '/interfaces/',
+    '/layouts/',
+    '/plugins/',
+    '/services/',
+    '/static/',
+    '/test/',
+    'src/store/index.ts',
+    'src/interfaces/graphql',
+    'src/interfaces/swagger',
+    'src/components/global.ts',
+  ],
+  coverageThreshold: {
+    global: {
+      statements: 100,
+      branches: 100,
+      functions: 100,
+      lines: 100,
+    },
+  },
+  coverageDirectory: './coverage',
+  coverageReporters: ['html', 'text', 'lcov', 'json'],
+  preset: 'ts-jest',
+  testMatch: null,
 };
