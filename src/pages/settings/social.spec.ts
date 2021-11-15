@@ -2,9 +2,9 @@ import { render, RenderResult } from '@testing-library/vue';
 import Vuex, { Store } from 'vuex';
 import { IState } from '@/interfaces/IState';
 import { AuthStoreModule } from '@/test/test-utils';
-import SettingsGeneralForm from './SettingsGeneralForm.vue';
+import Social from './social.vue';
 
-describe('SettingsGeneralForm.vue', () => {
+describe('Settings.vue', () => {
   let store: Store<IState>;
   let harness: RenderResult;
 
@@ -15,10 +15,7 @@ describe('SettingsGeneralForm.vue', () => {
       },
     } as any);
 
-    harness = render(SettingsGeneralForm, {
-      props: {
-        id: 'test',
-      },
+    harness = render(Social, {
       mocks: {
         $nuxt: {
           context: {
@@ -31,8 +28,8 @@ describe('SettingsGeneralForm.vue', () => {
   });
 
   test('renders component', () => {
-    const { getByText } = harness;
+    const { getAllByTestId } = harness;
 
-    getByText('Save Settings');
+    getAllByTestId('social-page');
   });
 });

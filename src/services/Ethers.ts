@@ -3,10 +3,11 @@ import { ExternalProvider, JsonRpcProvider, JsonRpcSigner } from '@ethersproject
 import { Network } from '@ethersproject/networks';
 import { EthersErrors } from '@/enums/Ethers';
 import { IEthersErrorResponse } from '@/interfaces/IEthers';
-import { ENS_NETS } from '@/constants/Ethers';
 import { MetaMaskInpageProvider } from '@metamask/providers';
 import metamaskService from './Metamask';
 import { EventBus } from './EventBus';
+
+const ENS_NETS: number[] = [1, 3, 4];
 
 export default class EthersConnect {
   contractAddress: string;

@@ -1,5 +1,5 @@
 <template>
-  <vue-content-block :class="$style.profile">
+  <vue-content-block :class="$style.settings" data-testid="settings-page">
     <vue-box :padding="['24 16', '24 16', 24, 32]">
       <vue-stack :space="[16, 16, 24, 32]">
         <vue-card tabindex="0" role="region">
@@ -22,7 +22,7 @@ import VueCard from '@/components/data-display/VueCard/VueCard.vue';
 import VueBox from '@/components/layout/VueBox/VueBox.vue';
 import VueStack from '@/components/layout/VueStack/VueStack.vue';
 import VueText from '@/components/typography/VueText/VueText.vue';
-import SettingsGeneralForm from '@/components/app/forms/SettingsGeneralForm/SettingsGeneralForm.vue';
+import SettingsGeneralForm from '@/components/app/Forms/SettingsGeneralForm/SettingsGeneralForm.vue';
 
 export default defineComponent({
   name: 'SettingsPage',
@@ -47,7 +47,7 @@ export default defineComponent({
 <style lang="scss" module>
 @import '~@/assets/design-system';
 
-.profile {
+.settings {
   padding-top: $navbar-height;
 }
 </style>

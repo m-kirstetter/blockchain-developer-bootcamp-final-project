@@ -1,5 +1,5 @@
 <template>
-  <vue-sidebar>
+  <vue-sidebar data-testid="profile-sidebar">
     <vue-sidebar-group name="Navigation">
       <vue-sidebar-group-item leading-icon="chevron-double-left" name="Back" to="/app/gigs" />
     </vue-sidebar-group>

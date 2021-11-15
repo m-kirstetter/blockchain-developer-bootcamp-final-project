@@ -1,5 +1,5 @@
 <template>
-  <vue-content-block :class="$style.docs">
+  <vue-content-block :class="$style.docs" data-testid="docs-page">
     <vue-box :padding="['24 16', '24 16', 24, 32]">
       <vue-stack :space="[16, 16, 24, 32]">
         <vue-card tabindex="0" role="region">

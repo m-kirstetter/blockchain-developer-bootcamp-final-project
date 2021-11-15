@@ -1,5 +1,5 @@
 <template>
-  <vue-content-block :class="$style.dao">
+  <vue-content-block :class="$style.dao" data-testid="dao-page">
     <vue-box :padding="['24 16', '24 16', 24, 32]">
       <vue-stack :space="[16, 16, 24, 32]">
         <vue-card tabindex="0" role="region">

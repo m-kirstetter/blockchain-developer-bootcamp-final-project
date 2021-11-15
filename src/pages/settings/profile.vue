@@ -1,5 +1,5 @@
 <template>
-  <vue-content-block :class="$style.settings">
+  <vue-content-block :class="$style.settings" data-testid="profile-page">
     <vue-box :padding="['24 16', '24 16', 24, 32]">
       <vue-stack :space="[16, 16, 24, 32]">
         <vue-card tabindex="0" role="region">
@@ -22,7 +22,7 @@ import VueContentBlock from '@/components/layout/VueContentBlock/VueContentBlock
 import VueBox from '@/components/layout/VueBox/VueBox.vue';
 import VueCard from '@/components/data-display/VueCard/VueCard.vue';
 import VueStack from '@/components/layout/VueStack/VueStack.vue';
-import SettingsProfileForm from '@/components/app/forms/SettingsProfileForm/SettingsProfileForm.vue';
+import SettingsProfileForm from '@/components/app/Forms/SettingsProfileForm/SettingsProfileForm.vue';
 
 export default defineComponent({
   name: 'ProfilePage',

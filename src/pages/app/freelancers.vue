@@ -1,11 +1,11 @@
 <template>
-  <vue-content-block :class="$style.gigs">
+  <vue-content-block :class="$style.freelancers" data-testid="freelancers-page">
     <vue-box :padding="['24 16', '24 16', 24, 32]">
       <vue-stack :space="[16, 16, 24, 32]">
         <vue-data-table
-          id="gigs-table"
-          primary-key="id"
-          title="Users"
+          id="freelancers-table"
+          primary-key="id-freelancers-table"
+          title="Freelancers"
           :class="$style.table"
           :columns="columns"
           :records="records"
@@ -17,7 +17,7 @@
           :number-of-records-suffix="numberOfRecordsSuffix"
           :sort-key="sortKey"
           :sort-direction="sortDirection.value"
-          @row-click="onRowClick"
+          @row-click="console.log('search', $event)"
           @paginate="page = $event"
           @max-rows-change="
             maxRows = $event;
@@ -25,7 +25,7 @@
           "
           @sorting-key-change="sortKey = $event"
           @sorting-direction-change="sortDirection = $event"
-          @search="onSearch"
+          @search="console.log('search', $event)"
         >
           <template #user="{ row }">
             <vue-columns space="12" align-y="center">
@@ -47,7 +47,7 @@
           </template>
 
           <template #date="{ cell }">
-            {{ $d(cell.value, 'dayMonthYearNumeric', 'de') }}
+            {{ $moment(cell.value).format('ll') }}
           </template>
 
           <template #actions="{ cell, row }">
@@ -107,7 +107,7 @@ export default defineComponent({
     const showSearch = true;
     const searchPlaceholder = 'Search for firstname, lastname, status or id...';
     const numberOfRecordsSuffix = 'Users';
-    const sortKey = 'id';
+    const sortKey = 'createdAt';
     const sortDirection = { label: 'Ascending', value: 'asc' };
     const clearSelection = true;
 
@@ -132,7 +132,7 @@ export default defineComponent({
 <style lang="scss" module>
 @import '~@/assets/design-system';
 
-.gigs {
+.freelancers {
   padding-top: $navbar-height;
 }
 </style>

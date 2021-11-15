@@ -1,5 +1,5 @@
 <template>
-  <vue-content-block :class="$style.membership">
+  <vue-content-block :class="$style.membership" data-testid="membership-page">
     <vue-box :padding="['24 16', '24 16', 24, 32]">
       <vue-stack :space="[16, 16, 24, 32]">
         <vue-card tabindex="0" role="region">
