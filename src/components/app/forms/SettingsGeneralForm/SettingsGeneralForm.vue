@@ -72,9 +72,10 @@ import VueSelect from '@/components/input-and-actions/VueSelect/VueSelect.vue';
 import VueButton from '@/components/input-and-actions/VueButton/VueButton.vue';
 import VueStack from '@/components/layout/VueStack/VueStack.vue';
 import VueTiles from '@/components/layout/VueTiles/VueTiles.vue';
-import { onMounted, useContext } from '@nuxtjs/composition-api';
+import { computed, onMounted, useContext } from '@nuxtjs/composition-api';
 import { addToast } from '@/components/utils';
 import { Roles } from '@/api/enums/Roles';
+import { IAuthServiceUser } from '@/interfaces/IAuth';
 
 export default defineComponent({
   name: 'SettingsGeneralForm',
@@ -92,6 +93,8 @@ export default defineComponent({
   setup() {
     const { store, $axios, $auth } = useContext();
 
+    onMounted(() => setLocalUser());
+
     const firstname = ref<string>(null);
     const lastname = ref<string>(null);
     const email = ref<string>(null);
@@ -104,12 +107,14 @@ export default defineComponent({
 
     const isLoading = ref(false);
 
-    onMounted(() => {
-      firstname.value = store.$auth.user.firstname as string;
-      lastname.value = store.$auth.user.lastname as string;
-      email.value = store.$auth.user.email as string;
-      role.value = roleOptions.find((role) => role.value === store.$auth.user.role);
-    });
+    const user = computed<IAuthServiceUser>(() => store.state.auth.user);
+
+    const setLocalUser = () => {
+      firstname.value = user.value.firstname;
+      lastname.value = user.value.lastname;
+      email.value = user.value.email;
+      role.value = roleOptions.find((role) => role.value === user.value.role);
+    };
 
     const onSubmit = async () => {
       isLoading.value = true;

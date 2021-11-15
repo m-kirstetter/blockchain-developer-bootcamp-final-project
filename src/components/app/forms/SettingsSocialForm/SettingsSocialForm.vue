@@ -54,7 +54,7 @@ export default defineComponent({
     const isLoading = ref(false);
 
     onMounted(() => {
-      linkedin.value = store.$auth.user.linkedin as string;
+      linkedin.value = store.state.auth.user.linkedin;
     });
 
     const onSubmit = async () => {

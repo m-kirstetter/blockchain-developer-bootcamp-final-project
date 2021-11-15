@@ -13,6 +13,6 @@ describe('CreateGigForm.vue', () => {
   test('renders component', () => {
     const { getByText } = harness;
 
-    getByText('CreateGigForm');
+    getByText('Post Gig');
   });
 });

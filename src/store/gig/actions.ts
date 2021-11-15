@@ -6,26 +6,31 @@ import { IGigState } from './state';
 
 export interface IGigActions {
   fetchGigs(context: ActionContext<IGigState, IState>): Promise<any>;
-  fetchGig(context: ActionContext<IGigState, IState>, id: string): Promise<any>;
   createGig(context: ActionContext<IGigState, IState>, gig: IGigFrontend): Promise<any>;
   updateGig(context: ActionContext<IGigState, IState>, gig: IGigFrontend): Promise<any>;
-  deleteGig(context: ActionContext<IGigState, IState>, gig: IGigFrontend): Promise<any>;
 }
 
 export const GigActions: IGigActions = {
   async fetchGigs({ commit }) {
-    const data = await this.$axios.$get('/api/v1/gigs', {
-      params: { status: 'Registered', sortBy: 'title:asc' },
-    });
-    commit('SET_GIGS', data.gigs.results);
-  },
-  async fetchGig({ commit }, id) {
-    const data = await this.$axios.$get(`/gigs/${id}`);
-    commit('SET_CURRENT_GIG', data);
-  },
-  async createGig({ dispatch }, gig) {
     try {
-      await this.$axios.$post('/api/v1/gigs', gig);
+      const response = await this.$axios.$get('/api/v1/gigs', {
+        params: { status: 'Registered', sortBy: 'title:asc' },
+      });
+
+      const { results } = response.gigs;
+
+      commit('SET_GIGS', results);
+    } catch (error) {
+      addToast({
+        title: 'Error fetching Gigs!',
+        type: 'danger',
+        text: error,
+      });
+    }
+  },
+  async createGig({ commit }, newGig) {
+    try {
+      const response = await this.$axios.$post('/api/v1/gigs', newGig);
 
       addToast({
         title: 'Success!',
@@ -33,7 +38,9 @@ export const GigActions: IGigActions = {
         text: 'Gig has been posted.',
       });
 
-      dispatch('fetchGigs');
+      const { gig } = response;
+
+      commit('ADD_GIG', gig);
     } catch (error) {
       addToast({
         title: 'Error!',
@@ -43,12 +50,8 @@ export const GigActions: IGigActions = {
     }
   },
   async updateGig({ commit }, gig) {
-    const data = await this.$axios.$put('/gigs/' + gig._id, gig);
+    const data = await this.$axios.$put('/api/v1/gigs/' + gig._id, gig);
     commit('UPDATE_GIG', data);
-  },
-  async deleteGig({ commit }, gig) {
-    await this.$axios.$delete('/gigs/' + gig._id);
-    commit('DELETE_GIG', gig);
   },
 };
 

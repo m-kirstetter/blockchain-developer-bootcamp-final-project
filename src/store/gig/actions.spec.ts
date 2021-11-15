@@ -1,7 +1,7 @@
 import Vuex, { Store } from 'vuex';
 import { GigDefaultState } from '@/store/gig/state';
 import { IState } from '@/interfaces/IState';
-import { IGigFrontend } from '@/interfaces/IGig';
+import { IGigFrontend, IGigFrontendQueryResult } from '@/interfaces/IGig';
 import { GigActions } from '@/store/gig/actions';
 import { GigMutations } from '@/store/gig/mutations';
 import { GigGetters } from '@/store/gig/getters';
@@ -12,7 +12,8 @@ import { IStatuses } from '@/interfaces/IStatuses';
 describe('GigActions', () => {
   let store: Store<IState>;
   let axiosMock: AxiosMock;
-  let fixture: IGigFrontend;
+  let gig: IGigFrontend;
+  let gigs: IGigFrontendQueryResult;
 
   const GigModule = {
     namespaced: true,
@@ -34,8 +35,8 @@ describe('GigActions', () => {
     store.$axios = axiosMock;
     store.commit = jest.fn();
 
-    fixture = {
-      _id: 1,
+    gig = {
+      _id: '618f74e652e1bd099b345a03',
       title: 'title',
       description: 'description',
       details: 'details',
@@ -43,23 +44,68 @@ describe('GigActions', () => {
       owner: ('570b570b570bfffffffffffb' as unknown) as Schema.Types.ObjectId,
       status: 'Registered' as IStatuses,
       budget: {
+        _id: '618f74e652e1bd099b345a03',
         min: 1,
         max: 4,
       },
+      createdAt: '2021-11-13T08:18:46.652Z',
+      updatedAt: '2021-11-13T08:18:46.652Z',
+    };
+
+    // try with nested gigs object
+    gigs = {
+      limit: 10,
+      page: 1,
+      totalPages: 1,
+      totalResults: 2,
+      results: [
+        {
+          _id: '618f74e652e1bd099b345a03',
+          title: 'title',
+          description: 'description',
+          details: 'details',
+          skills: 'skills',
+          owner: ('570b570b570bfffffffffffb' as unknown) as Schema.Types.ObjectId,
+          status: 'Registered' as IStatuses,
+          budget: {
+            _id: '618f74e652e1bd099b345a03',
+            min: 1,
+            max: 4,
+          },
+          createdAt: '2021-11-13T08:18:46.652Z',
+          updatedAt: '2021-11-13T08:18:46.652Z',
+        },
+        {
+          _id: '618f74e652e1bd099b345a03',
+          title: 'title',
+          description: 'description',
+          details: 'details',
+          skills: 'skills',
+          owner: ('570b570b570bfffffffffffb' as unknown) as Schema.Types.ObjectId,
+          status: 'Registered' as IStatuses,
+          budget: {
+            _id: '618f74e652e1bd099b345a03',
+            min: 1,
+            max: 4,
+          },
+          createdAt: '2021-11-13T08:18:46.652Z',
+          updatedAt: '2021-11-13T08:18:46.652Z',
+        },
+      ],
     };
   });
 
   describe('fetchGigs', () => {
     test('it should call SET_GIGS on success', async () => {
-      axiosMock.onGet('/gigs').reply(200, fixture);
+      axiosMock.onGet('/api/v1/gigs').reply(200, { gigs });
 
       await store.dispatch('gig/fetchGigs');
 
-      expect(store.commit).toHaveBeenCalledWith('gig/SET_GIGS', fixture, undefined);
+      expect(store.commit).toHaveBeenCalledWith('gig/SET_GIGS', gigs.results, undefined);
     });
 
     test('it should throw an error on failure', async () => {
-      axiosMock.onGet('/gigs').reply(500);
+      axiosMock.onGet('/api/v1/gigs').reply(500);
 
       try {
         await store.dispatch('gig/fetchGigs');
@@ -69,80 +115,20 @@ describe('GigActions', () => {
     });
   });
 
-  describe('fetchGig', () => {
-    test('it should call SET_CURRENT_GIG on success', async () => {
-      axiosMock.onGet('/gigs/1').reply(200, fixture);
-
-      await store.dispatch('gig/fetchGig', '1');
-
-      expect(store.commit).toHaveBeenCalledWith('gig/SET_CURRENT_GIG', fixture, undefined);
-    });
-
-    test('it should throw an error on failure', async () => {
-      axiosMock.onGet('/gigs/1').reply(500);
-
-      try {
-        await store.dispatch('gig/fetchGig', '1');
-      } catch (e) {
-        expect(e.message).toEqual('Request failed with status code 500');
-      }
-    });
-  });
-
   describe('createGig', () => {
     test('it should call ADD_GIG on success', async () => {
-      axiosMock.onPost('/gigs').reply(200, fixture);
+      axiosMock.onPost('/api/v1/gigs').reply(200, { gig });
 
-      await store.dispatch('gig/createGig', fixture);
+      await store.dispatch('gig/createGig', gig);
 
-      expect(store.commit).toHaveBeenCalledWith('gig/ADD_GIG', fixture, undefined);
+      expect(store.commit).toHaveBeenCalledWith('gig/ADD_GIG', gig, undefined);
     });
 
     test('it should throw an error on failure', async () => {
-      axiosMock.onPost('/gigs').reply(500);
+      axiosMock.onPost('/api/v1/gigs').reply(500);
 
       try {
-        await store.dispatch('gig/createGig', fixture);
-      } catch (e) {
-        expect(e.message).toEqual('Request failed with status code 500');
-      }
-    });
-  });
-
-  describe('updateGig', () => {
-    test('it should call UPDATE_GIG on success', async () => {
-      axiosMock.onPut('/gigs/1').reply(200, fixture);
-
-      await store.dispatch('gig/updateGig', fixture);
-
-      expect(store.commit).toHaveBeenCalledWith('gig/UPDATE_GIG', fixture, undefined);
-    });
-
-    test('it should throw an error on failure', async () => {
-      axiosMock.onPut('/gigs/1').reply(500);
-
-      try {
-        await store.dispatch('gig/updateGig', fixture);
-      } catch (e) {
-        expect(e.message).toEqual('Request failed with status code 500');
-      }
-    });
-  });
-
-  describe('deleteGig', () => {
-    test('it should call DELETE_GIG on success', async () => {
-      axiosMock.onDelete('/gigs/1').reply(200, fixture);
-
-      await store.dispatch('gig/deleteGig', fixture);
-
-      expect(store.commit).toHaveBeenCalledWith('gig/DELETE_GIG', fixture, undefined);
-    });
-
-    test('it should throw an error on failure', async () => {
-      axiosMock.onDelete('/gigs/1').reply(500);
-
-      try {
-        await store.dispatch('gig/deleteGig', fixture);
+        await store.dispatch('gig/createGig', gig);
       } catch (e) {
         expect(e.message).toEqual('Request failed with status code 500');
       }

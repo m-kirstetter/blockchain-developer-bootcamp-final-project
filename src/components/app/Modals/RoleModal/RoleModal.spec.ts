@@ -10,9 +10,11 @@ describe('RoleModal.vue', () => {
     });
   });
 
-  test('renders component', () => {
-    const { getByText } = harness;
+  test('renders component', async () => {
+    const { getByText, updateProps } = harness;
 
-    getByText('RoleModal');
+    await updateProps({ show: true });
+
+    getByText('New User');
   });
 });

@@ -2,28 +2,43 @@ import { getIntInRange } from '@vuesion/utils/dist/randomGenerator';
 import { IDataTableColumns } from './IDataTable';
 
 export const dataTableColumnsFixture = (): IDataTableColumns => ({
-  _id: {
+  id: {
     visible: false,
   },
-  title: {
-    title: 'Title',
-    slot: 'title',
+  avatar: {
+    visible: false,
+    searchable: false,
   },
-  description: {
+  firstname: {
     visible: false,
   },
-  details: {
+  lastname: {
     visible: false,
   },
-  skills: {
-    visible: false,
+  user: {
+    title: 'User',
+    slot: 'user',
+    searchable: false,
+  },
+  age: {
+    title: 'Age',
+    slot: 'age',
+    cssClass: 'ageColumn',
+  },
+  address: {
+    title: 'Address',
   },
   status: {
     title: 'Status',
     slot: 'status',
   },
-  createdAt: {
+  created: {
     title: 'Created',
+    slot: 'date',
+    searchable: false,
+  },
+  updated: {
+    title: 'Updated',
     slot: 'date',
     searchable: false,
   },

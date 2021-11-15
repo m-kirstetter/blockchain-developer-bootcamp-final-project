@@ -86,6 +86,15 @@
                     <vue-text look="description">
                       <vue-markdown> {{ row.skills }} </vue-markdown>
                     </vue-text>
+
+                    <vue-button
+                      v-if="$auth.user.role === 'FREELANCER'"
+                      look="secondary"
+                      leading-icon="lightning-bolt"
+                      block
+                    >
+                      Apply
+                    </vue-button>
                   </vue-stack>
                 </vue-box>
               </td>
@@ -128,7 +137,7 @@ import VueButton from '@/components/input-and-actions/VueButton/VueButton.vue';
 import VueCard from '@/components/data-display/VueCard/VueCard.vue';
 import VueMarkdown from '@/components/data-display/VueMarkdown/VueMarkdown.vue';
 import CreateGigForm from '@/components/app/forms/CreateGigForm/CreateGigForm.vue';
-import { dataTableRecordsFixture, dataTableColumnsFixture } from '@/components/VueDataTable/DataTableFixtures';
+import { dataTableRecordsFixture, dataTableColumnsFixture } from '@/components/VueDataTable/GigsDataTableFixtures';
 
 export default defineComponent({
   name: 'GigsPage',

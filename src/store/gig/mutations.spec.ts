@@ -13,7 +13,7 @@ describe('GigMutations', () => {
   test('it should set gigs', () => {
     const expected = [
       {
-        _id: 1,
+        _id: '1',
         title: 'title',
         description: 'description',
         details: 'details',
@@ -21,12 +21,15 @@ describe('GigMutations', () => {
         owner: ('570b570b570bfffffffffffb' as unknown) as Schema.Types.ObjectId,
         status: 'Registered' as IStatuses,
         budget: {
+          _id: '1',
           min: 1,
           max: 4,
         },
+        createdAt: '2021-11-10T08:18:46.652Z',
+        updatedAt: '2021-11-13T08:18:46.652Z',
       },
       {
-        _id: 2,
+        _id: '2',
         title: 'title 2',
         description: 'description 2',
         details: 'details 2',
@@ -34,9 +37,12 @@ describe('GigMutations', () => {
         owner: ('570b570b570bfffffffffffc' as unknown) as Schema.Types.ObjectId,
         status: 'Registered' as IStatuses,
         budget: {
+          _id: '1',
           min: 2,
           max: 3,
         },
+        createdAt: '2021-11-10T08:18:46.652Z',
+        updatedAt: '2021-11-13T08:18:46.652Z',
       },
     ];
 
@@ -46,17 +52,20 @@ describe('GigMutations', () => {
 
   test('it should add and update a gig', () => {
     const gig = {
-      _id: 2,
+      _id: '1',
       title: 'title',
       description: 'description',
       details: 'details',
       skills: 'skills',
-      owner: ('570b570b570bfffffffffffc' as unknown) as Schema.Types.ObjectId,
+      owner: ('570b570b570bfffffffffffb' as unknown) as Schema.Types.ObjectId,
       status: 'Registered' as IStatuses,
       budget: {
-        min: 2,
-        max: 3,
+        _id: '1',
+        min: 1,
+        max: 4,
       },
+      createdAt: '2021-11-10T08:18:46.652Z',
+      updatedAt: '2021-11-13T08:18:46.652Z',
     };
     GigMutations.ADD_GIG(testState, gig);
     expect(testState.gigs).toEqual([gig]);
@@ -65,26 +74,5 @@ describe('GigMutations', () => {
 
     GigMutations.UPDATE_GIG(testState, gig);
     expect(testState.gigs).toEqual([gig]);
-  });
-
-  test('it should delete a gig', () => {
-    const gig = {
-      _id: 2,
-      title: 'title',
-      description: 'description',
-      details: 'details',
-      skills: 'skills',
-      owner: ('570b570b570bfffffffffffc' as unknown) as Schema.Types.ObjectId,
-      status: 'Registered' as IStatuses,
-      budget: {
-        min: 2,
-        max: 3,
-      },
-    };
-    GigMutations.ADD_GIG(testState, gig);
-    expect(testState.gigs).toHaveLength(1);
-
-    GigMutations.DELETE_GIG(testState, gig);
-    expect(testState.gigs).toHaveLength(0);
   });
 });

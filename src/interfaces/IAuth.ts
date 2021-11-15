@@ -1,9 +1,21 @@
 export interface IAuthServiceUser {
-  role: string;
-  isEmailVerified: boolean;
+  // role: string;
+  // isEmailVerified: boolean;
+  // address: string;
+  // nonce: number;
+  // id: string;
+  _id: string;
   address: string;
+  bio: string;
+  createdAt: string;
+  email: string;
+  firstname: string;
+  fullname: string;
+  isEmailVerified: boolean;
+  lastname: string;
   nonce: number;
-  id: string;
+  role: string;
+  updatedAt: string;
 }
 
 export interface IAuthServiceUserResponse {

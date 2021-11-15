@@ -46,7 +46,7 @@ export default defineComponent({
     const isLoading = ref(false);
 
     onMounted(() => {
-      bio.value = store.$auth.user.bio as string;
+      bio.value = store.state.auth.user.bio;
     });
 
     const onSubmit = async () => {

@@ -7,7 +7,12 @@ describe('VueToast.vue', () => {
   let harness: RenderResult;
 
   beforeEach(() => {
-    harness = render(VueToast);
+    harness = render(VueToast, {
+      mocks: {
+        $route: { path: '' },
+      },
+      stubs: ['nuxt-link'],
+    });
   });
 
   test('displays toast for a user specified time (100ms)', async () => {

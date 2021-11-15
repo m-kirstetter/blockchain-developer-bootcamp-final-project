@@ -1,18 +1,38 @@
 import { render, RenderResult } from '@testing-library/vue';
+import Vuex, { Store } from 'vuex';
+import { IState } from '@/interfaces/IState';
+import { AuthStoreModule } from '@/test/test-utils';
 import SettingsGeneralForm from './SettingsGeneralForm.vue';
 
 describe('SettingsGeneralForm.vue', () => {
+  let store: Store<IState>;
   let harness: RenderResult;
 
   beforeEach(() => {
+    store = new Vuex.Store({
+      modules: {
+        auth: AuthStoreModule,
+      },
+    } as any);
+
     harness = render(SettingsGeneralForm, {
-      stubs: ['nuxt-link'],
+      props: {
+        id: 'test',
+      },
+      mocks: {
+        $nuxt: {
+          context: {
+            store,
+          },
+        },
+        stubs: ['nuxt-link'],
+      },
     });
   });
 
   test('renders component', () => {
     const { getByText } = harness;
 
-    getByText('SettingsGeneralForm');
+    getByText('Save Settings');
   });
 });

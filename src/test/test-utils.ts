@@ -1,6 +1,7 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import { NuxtAxiosInstance } from '@nuxtjs/axios';
+import { IAuthServiceUser } from '@/interfaces/IAuth';
 
 export const TestComponent = (
   setup: (props?: any, options?: any) => void,
@@ -94,4 +95,52 @@ export const getAxiosMock = (): AxiosMock => {
 
 export const sleep = (ms: number): Promise<unknown> => {
   return new Promise((resolve) => setTimeout(resolve, ms));
+};
+
+// to mock $auth store
+interface IAuthState {
+  loggedIn: boolean;
+  strategy: string;
+  user: IAuthServiceUser;
+}
+
+const AuthDefaultState = (): IAuthState => {
+  return {
+    loggedIn: true,
+    strategy: 'local',
+    user: {
+      _id: '1',
+      firstname: 'John',
+      lastname: 'Doe',
+      fullname: 'fullname',
+      isEmailVerified: false,
+      email: 'john.doe@example.com',
+      role: 'FREELANCER',
+      address: 'address',
+      nonce: 3856853475,
+      bio: 'bio',
+      createdAt: '2021-11-13T08:18:46.652Z',
+      updatedAt: '2021-11-13T08:18:46.652Z',
+    },
+  };
+};
+
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+interface IAuthActions {}
+const AuthActions: IAuthActions = {};
+
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+interface IAuthMutations {}
+const AuthMutations: IAuthMutations = {};
+
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+interface IAuthGetters {}
+const AuthGetters: IAuthGetters = {};
+
+export const AuthStoreModule = {
+  namespaced: true,
+  state: () => AuthDefaultState(),
+  mutations: AuthMutations,
+  actions: AuthActions,
+  getters: AuthGetters,
 };
