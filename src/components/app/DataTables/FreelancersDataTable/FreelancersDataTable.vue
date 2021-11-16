@@ -1,5 +1,5 @@
 <template>
-  <div :class="$style.gigsDataTable" data-testid="gigs-data-table">
+  <div :class="$style.gigsDataTable" data-testid="freelancers-data-table">
     <vue-stack :space="[16, 16, 24, 32]">
       <vue-data-table
         id="freelancers-table"
