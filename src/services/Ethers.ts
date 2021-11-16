@@ -10,11 +10,11 @@ import { EventBus } from './EventBus';
 const ENS_NETS: number[] = [1, 3, 4];
 
 export default class EthersConnect {
-  private _contractAddress: string;
-  private _abi: string;
-  private _ethereum: MetaMaskInpageProvider;
-  private _currentAccount: string;
-  private _checkInterval: NodeJS.Timeout;
+  #contractAddress: string;
+  #abi: string;
+  #ethereum: MetaMaskInpageProvider;
+  #currentAccount: string;
+  #checkInterval: NodeJS.Timeout;
 
   provider: JsonRpcProvider;
   contract: Contract;
@@ -23,11 +23,11 @@ export default class EthersConnect {
   userWallet: JsonRpcSigner;
 
   constructor(contractAddress: string, abi: string) {
-    this._contractAddress = contractAddress;
-    this._abi = abi;
+    this.#contractAddress = contractAddress;
+    this.#abi = abi;
 
     // Start Ethereum provider check
-    this._checkInterval = setInterval(this.checkProvider.bind(this), 500);
+    this.#checkInterval = setInterval(this.checkProvider.bind(this), 500);
   }
 
   hasEns() {
@@ -44,15 +44,15 @@ export default class EthersConnect {
 
   async checkProvider() {
     // If Ethereum is set, we stop interval
-    if (this._ethereum) {
-      clearInterval(this._checkInterval);
+    if (this.#ethereum) {
+      clearInterval(this.#checkInterval);
       return false;
     } else if (
       // If client && ethereum available && ethereum unset,
       // update provider
       process.client &&
       typeof window?.ethereum !== 'undefined' &&
-      !this._ethereum &&
+      !this.#ethereum &&
       (await metamaskService.getEthereum())
     ) {
       await this._updateProvider();
@@ -61,10 +61,10 @@ export default class EthersConnect {
 
   async connect() {
     try {
-      if (!this._ethereum) throw EthersErrors.NOT_CONNECTED;
+      if (!this.#ethereum) throw EthersErrors.NOT_CONNECTED;
       // Request accounts access
       // WARNING: cast Partial<unknown> to string[]....
-      const accounts: string[] = await this._ethereum.request({ method: 'eth_requestAccounts' });
+      const accounts: string[] = await this.#ethereum.request({ method: 'eth_requestAccounts' });
       this._handleAccountsChanged(accounts);
     } catch (error) {
       const ethersErrorResponse = error as IEthersErrorResponse;
@@ -79,12 +79,12 @@ export default class EthersConnect {
 
   private async _updateProvider() {
     // Set Ethereum or throw error
-    this._ethereum = await metamaskService.getEthereum();
-    if (!this._ethereum) throw EthersErrors.NO_ETHEREUM;
+    this.#ethereum = await metamaskService.getEthereum();
+    if (!this.#ethereum) throw EthersErrors.NO_ETHEREUM;
 
     // Set Provider or throw error
     // WARNING: cast MetaMaskInpageProvider to ExternalProvider....
-    this.provider = new providers.Web3Provider(this._ethereum as ExternalProvider);
+    this.provider = new providers.Web3Provider(this.#ethereum as ExternalProvider);
     if (!this.provider) throw EthersErrors.NO_PROVIDER;
 
     // Set Network and Event to alert if not Ropsten
@@ -92,12 +92,12 @@ export default class EthersConnect {
 
     // If contract already set, we remove all listeners first
     if (this.contract) this.contract.removeAllListeners();
-    this.contract = new Contract(this._contractAddress, this._abi, this.provider);
+    this.contract = new Contract(this.#contractAddress, this.#abi, this.provider);
 
-    this._ethereum.on('chainChanged', this._handleChainChanged);
+    this.#ethereum.on('chainChanged', this._handleChainChanged);
 
     // Set accounts
-    const accounts: string[] = await this._ethereum.request({
+    const accounts: string[] = await this.#ethereum.request({
       method: 'eth_accounts',
     });
 
@@ -105,14 +105,14 @@ export default class EthersConnect {
   }
 
   private _handleAccountsChanged(accounts: string[]) {
-    if (accounts[0] !== this._currentAccount) {
-      this._ethereum.on('accountsChanged', this._handleChainChanged);
-      this._currentAccount = accounts[0];
+    if (accounts[0] !== this.#currentAccount) {
+      this.#ethereum.on('accountsChanged', this._handleChainChanged);
+      this.#currentAccount = accounts[0];
 
-      if (this._currentAccount !== null)
-        this.userWallet = this.provider && this.provider.getSigner(this._currentAccount);
+      if (this.#currentAccount !== null)
+        this.userWallet = this.provider && this.provider.getSigner(this.#currentAccount);
       if (this.userWallet !== null)
-        this.contractRw = new ethers.Contract(this._contractAddress, this._abi, this.userWallet);
+        this.contractRw = new ethers.Contract(this.#contractAddress, this.#abi, this.userWallet);
     }
   }
 
