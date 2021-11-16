@@ -115,7 +115,7 @@
 
         <template #filters>
           <vue-button v-if="user.role === 'RECRUITER'" look="outline" size="sm" @click.prevent="onToggleOwnGigs">
-            {{ `Show ${ownGigs ? 'all' : 'own'} gigs` }}
+            {{ `Show ${filters.owner ? 'all' : 'own'} gigs` }}
           </vue-button>
         </template>
       </vue-data-table>
@@ -125,7 +125,6 @@
 
 <script lang="ts">
 import { defineComponent, ref, useContext, computed, Ref, onMounted } from '@nuxtjs/composition-api';
-import { dataTableRecordsFixture } from '@/components/VueDataTable/GigsDataTableFixtures';
 import VueDataTable from '@/components/VueDataTable/VueDataTable.vue';
 import VueBadge from '@/components/data-display/VueBadge/VueBadge.vue';
 import VueText from '@/components/typography/VueText/VueText.vue';
@@ -162,7 +161,10 @@ export default defineComponent({
   setup() {
     const { store } = useContext();
 
-    onMounted(() => fetch());
+    onMounted((): void => {
+      if (user.value.role === 'RECRUITER') filters.value = { owner: userId.value };
+      fetch();
+    });
 
     const isLoading = ref(false);
     const columns: IDataTableColumns = {
@@ -200,9 +202,9 @@ export default defineComponent({
       },
     };
 
-    const records = dataTableRecordsFixture(100);
     const page = ref(1);
     const maxRows = ref(10);
+    const filters: Ref<Partial<Pick<IGig, 'owner'>>> = ref({});
     const ownGigs = ref(false);
     const showTitle = false;
     const showSearch = false;
@@ -221,15 +223,11 @@ export default defineComponent({
     const fetch = async () => {
       isLoading.value = true;
 
-      const filters: Partial<Pick<IGig, 'owner'>> = {};
-
-      if (ownGigs.value) filters.owner = userId.value;
-
       const query: IGigsQuery = {
         limit: maxRows.value,
         sortBy: `${sortKey.value}:${sortDirection.value.value}`,
         page: page.value,
-        ...filters,
+        ...filters.value,
       };
 
       try {
@@ -283,7 +281,11 @@ export default defineComponent({
     };
 
     const onToggleOwnGigs = () => {
-      ownGigs.value = !ownGigs.value;
+      if (filters.value.owner) {
+        delete filters.value.owner;
+      } else {
+        filters.value = { owner: userId.value };
+      }
       onPaginate(1);
     };
 
@@ -291,9 +293,9 @@ export default defineComponent({
       isLoading,
       ownGigs,
       columns,
-      records,
       page,
       maxRows,
+      filters,
       expandedRows,
       showTitle,
       showSearch,
