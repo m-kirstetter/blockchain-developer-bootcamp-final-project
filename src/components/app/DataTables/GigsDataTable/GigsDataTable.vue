@@ -115,7 +115,7 @@
 
         <template #filters>
           <vue-button v-if="user.role === 'RECRUITER'" look="outline" size="sm" @click.prevent="onToggleOwnGigs">
-            {{ `Show ${ownGigs ? 'own' : 'all'} gigs` }}
+            {{ `Show ${ownGigs ? 'all' : 'own'} gigs` }}
           </vue-button>
         </template>
       </vue-data-table>
@@ -191,7 +191,7 @@ export default defineComponent({
 
       const filters: Partial<Pick<IGig, 'owner'>> = {};
 
-      if (ownGigs) filters.owner = userId.value;
+      if (ownGigs.value) filters.owner = userId.value;
 
       const query: IGigsQuery = {
         limit: maxRows.value,
