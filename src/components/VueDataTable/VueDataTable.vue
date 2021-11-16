@@ -643,7 +643,7 @@ $table-group-header-bg: var(--brand-bg-default-high);
         cursor: default;
         background: $table-header-bg;
         position: sticky;
-        top: 0;
+        top: $navbar-height;
         z-index: 1;
         box-shadow: $table-header-elevation;
         user-select: none;

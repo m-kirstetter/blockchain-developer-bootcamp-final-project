@@ -1,12 +1,18 @@
-import { IGigFrontend } from '@/interfaces/IGig';
+import { IGigFrontendQueryResult } from '@/interfaces/IGig';
 
 export interface IGigState {
-  gigs: IGigFrontend[];
+  gigs: IGigFrontendQueryResult;
 }
 
 export const GigDefaultState = (): IGigState => {
   return {
-    gigs: [],
+    gigs: {
+      results: [],
+      limit: 10,
+      page: 1,
+      totalPages: 1,
+      totalResults: 0,
+    },
   };
 };
 

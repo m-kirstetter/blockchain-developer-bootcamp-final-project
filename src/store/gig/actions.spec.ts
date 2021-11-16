@@ -101,7 +101,7 @@ describe('GigActions', () => {
 
       await store.dispatch('gig/fetchGigs');
 
-      expect(store.commit).toHaveBeenCalledWith('gig/SET_GIGS', gigs.results, undefined);
+      expect(store.commit).toHaveBeenCalledWith('gig/SET_GIGS', gigs, undefined);
     });
 
     test('it should throw an error on failure', async () => {

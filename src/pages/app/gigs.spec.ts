@@ -50,7 +50,15 @@ const gigs = [
 ];
 
 const GigDefaultState = (): IGigState => {
-  return { gigs };
+  return {
+    gigs: {
+      results: gigs,
+      limit: 10,
+      page: 1,
+      totalPages: 1,
+      totalResults: 0,
+    },
+  };
 };
 
 describe('Gigs.vue', () => {

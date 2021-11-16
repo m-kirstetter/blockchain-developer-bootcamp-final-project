@@ -14,27 +14,28 @@
         id="gigs-table"
         primary-key="id-gigs-table"
         title="Gigs"
+        :async-mode="true"
+        :is-loading="isLoading"
         :class="$style.table"
         :columns="columns"
-        :records="gigs"
+        :records="response.results"
         :page="page"
         :max-rows="maxRows"
         :show-title="showTitle"
         :show-search="showSearch"
         show-action
         :search-placeholder="searchPlaceholder"
+        :number-of-records="response.totalResults"
         :number-of-records-suffix="numberOfRecordsSuffix"
         :sort-key="sortKey"
         :sort-direction="sortDirection.value"
+        :sort-enabled="false"
         @row-click="onExpand($event._id)"
-        @paginate="page = $event"
-        @max-rows-change="
-          maxRows = $event;
-          page = 1;
-        "
-        @sorting-key-change="sortKey = $event"
-        @sorting-direction-change="sortDirection = $event"
-        @search="console.log('search', $event)"
+        @sorting-key-change="onSortKeyChange"
+        @sorting-direction-change="onSortDirectionChange"
+        @paginate="onPaginate"
+        @max-rows-change="onMaxRowsChange"
+        @search="onSearch"
       >
         <template #row="{ row }">
           <td>
@@ -116,7 +117,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, useContext, computed, Ref } from '@nuxtjs/composition-api';
+import { defineComponent, ref, useContext, computed, Ref, onMounted } from '@nuxtjs/composition-api';
 import { dataTableRecordsFixture, dataTableColumnsFixture } from '@/components/VueDataTable/GigsDataTableFixtures';
 import VueDataTable from '@/components/VueDataTable/VueDataTable.vue';
 import VueBadge from '@/components/data-display/VueBadge/VueBadge.vue';
@@ -130,6 +131,8 @@ import VueButton from '@/components/input-and-actions/VueButton/VueButton.vue';
 import VueCard from '@/components/data-display/VueCard/VueCard.vue';
 import VueMarkdown from '@/components/data-display/VueMarkdown/VueMarkdown.vue';
 import CreateGigForm from '@/components/app/Forms/CreateGigForm/CreateGigForm.vue';
+import { addToast } from '@/components/utils';
+import { IPaginationQueryOptions } from '@/interfaces/IPaginationQueryOptions';
 
 export default defineComponent({
   name: 'GigsDataTable',
@@ -151,25 +154,50 @@ export default defineComponent({
   setup() {
     const { store } = useContext();
 
+    onMounted(() => fetch());
+
+    const isLoading = ref(false);
     const columns = {
       expand: { sortable: false, searchable: false, slot: 'expand', title: ' ', inlineStyle: { width: '64px' } },
       ...dataTableColumnsFixture(),
     };
     const records = dataTableRecordsFixture(100);
-    const page = 1;
-    const maxRows = 25;
+    const page = ref(1);
+    const maxRows = ref(10);
     const showTitle = false;
     const showSearch = true;
     const searchPlaceholder = 'Search for firstname, lastname, status or id...';
     const numberOfRecordsSuffix = 'Gigs';
-    const sortKey = 'createdAt';
-    const sortDirection = { label: 'Ascending', value: 'asc' };
+    const sortKey = ref('createdAt');
+    const sortDirection = ref({ label: 'Descending', value: 'desc' });
     const clearSelection = true;
     const showPostGigForm = ref(false);
     const expandedRows: Ref<number[]> = ref([]);
 
-    const gigs = computed(() => store.state.gig.gigs);
+    const response = computed(() => store.state.gig.gigs);
     const user = computed(() => store.state.auth.user);
+
+    const fetch = async () => {
+      isLoading.value = true;
+
+      const query: Partial<IPaginationQueryOptions> = {
+        limit: maxRows.value,
+        sortBy: `${sortKey.value}:${sortDirection.value.value}`,
+        page: page.value,
+      };
+
+      try {
+        await store.dispatch('gig/fetchGigs', query);
+      } catch (error) {
+        addToast({
+          title: 'Error fetching Gigs!',
+          type: 'danger',
+          text: error,
+        });
+      }
+
+      isLoading.value = false;
+    };
 
     const onExpand = (id: number) => {
       if (expandedRows.value.includes(id)) {
@@ -179,7 +207,37 @@ export default defineComponent({
       }
     };
 
+    const onSortKeyChange = (key: string) => {
+      sortKey.value = key ?? 'createdAt';
+    };
+
+    const onSortDirectionChange = (direction: string) => {
+      if (direction === 'desc') {
+        sortDirection.value = { label: 'Descending', value: 'desc' };
+      } else if (direction === 'asc') {
+        sortDirection.value = { label: 'Ascending', value: 'asc' };
+      }
+      onPaginate(1);
+    };
+
+    const onPaginate = (toPage: number) => {
+      page.value = toPage;
+      fetch();
+    };
+
+    const onMaxRowsChange = (rows: number) => {
+      maxRows.value = rows;
+      onPaginate(1);
+    };
+
+    const onSearch = () => {
+      isLoading.value = true;
+
+      isLoading.value = false;
+    };
+
     return {
+      isLoading,
       columns,
       records,
       page,
@@ -193,9 +251,14 @@ export default defineComponent({
       sortDirection,
       clearSelection,
       showPostGigForm,
-      gigs,
+      response,
       user,
       onExpand,
+      onSortKeyChange,
+      onSortDirectionChange,
+      onPaginate,
+      onMaxRowsChange,
+      onSearch,
     };
   },
 });
@@ -204,7 +267,8 @@ export default defineComponent({
 <style lang="scss" module>
 @import '~@/assets/design-system';
 
-.gigsDataTable {
-  // this class is only applied if you add css properties
+tr.noHover:hover {
+  background: $card-bg !important;
+  cursor: initial !important;
 }
 </style>

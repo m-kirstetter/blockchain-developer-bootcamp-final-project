@@ -2,24 +2,23 @@ import { ActionContext } from 'vuex';
 import { IState } from '@/interfaces/IState';
 import { IGigFrontend } from '@/interfaces/IGig';
 import { addToast } from '@/components/utils';
+import { IPaginationQueryOptions } from '@/interfaces/IPaginationQueryOptions';
 import { IGigState } from './state';
 
 export interface IGigActions {
-  fetchGigs(context: ActionContext<IGigState, IState>): Promise<any>;
+  fetchGigs(context: ActionContext<IGigState, IState>, query: Partial<IPaginationQueryOptions>): Promise<any>;
   createGig(context: ActionContext<IGigState, IState>, gig: IGigFrontend): Promise<any>;
   updateGig(context: ActionContext<IGigState, IState>, gig: IGigFrontend): Promise<any>;
 }
 
 export const GigActions: IGigActions = {
-  async fetchGigs({ commit }) {
+  async fetchGigs({ commit }, query) {
     try {
       const response = await this.$axios.$get('/api/v1/gigs', {
-        params: { status: 'Registered', sortBy: 'title:asc' },
+        params: query,
       });
 
-      const { results } = response.gigs;
-
-      commit('SET_GIGS', results);
+      commit('SET_GIGS', response.gigs);
     } catch (error) {
       addToast({
         title: 'Error fetching Gigs!',

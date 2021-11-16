@@ -1,8 +1,8 @@
-import { IGigFrontend } from '@/interfaces/IGig';
+import { IGigFrontendQueryResult } from '@/interfaces/IGig';
 import { IGigState } from './state';
 
 export interface IGigGetters {
-  gigs(state: IGigState): IGigFrontend[];
+  gigs(state: IGigState): IGigFrontendQueryResult;
 }
 
 export const GigGetters: IGigGetters = {

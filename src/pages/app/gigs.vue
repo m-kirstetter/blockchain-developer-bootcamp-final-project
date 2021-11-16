@@ -7,11 +7,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, useMeta, useAsync, useContext } from '@nuxtjs/composition-api';
+import { defineComponent, useMeta } from '@nuxtjs/composition-api';
 import VueContentBlock from '@/components/layout/VueContentBlock/VueContentBlock.vue';
 import VueBox from '@/components/layout/VueBox/VueBox.vue';
 import GigsDataTable from '@/components/app/DataTables/GigsDataTable/GigsDataTable.vue';
-import { addToast } from '@/components/utils';
 
 export default defineComponent({
   name: 'GigsPage',
@@ -22,20 +21,7 @@ export default defineComponent({
     GigsDataTable,
   },
   setup() {
-    const { store } = useContext();
     useMeta({ title: 'Gigs' });
-
-    useAsync(async () => {
-      try {
-        await store.dispatch('gig/fetchGigs');
-      } catch (error) {
-        addToast({
-          title: 'Error fetching Gigs!',
-          type: 'danger',
-          text: error,
-        });
-      }
-    }, 'key');
 
     return {};
   },
@@ -48,10 +34,5 @@ export default defineComponent({
 
 .gigs {
   padding-top: $navbar-height;
-}
-
-tr.noHover:hover {
-  background: $card-bg !important;
-  cursor: initial !important;
 }
 </style>
