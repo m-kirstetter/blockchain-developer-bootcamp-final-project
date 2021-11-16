@@ -1,4 +1,5 @@
 import Joi from 'joi';
+import { Schema } from 'mongoose';
 import { ContainerTypes, ValidatedRequestSchema } from 'express-joi-validation';
 import { IPaginationQueryOptions } from '@/interfaces/IPaginationQueryOptions';
 import { IStatuses } from '@/interfaces/IStatuses';
@@ -25,12 +26,8 @@ export interface createGigValidationRequestSchema extends ValidatedRequestSchema
 
 export const getGigsValidation = {
   query: Joi.object().keys({
-    title: Joi.string(),
-    description: Joi.string(),
-    details: Joi.string(),
-    skills: Joi.string(),
-    status: Joi.string(),
-    budget: Joi.number(),
+    status: Joi.array(),
+    owner: Joi.string(),
     sortBy: Joi.string(),
     limit: Joi.number().integer(),
     page: Joi.number().integer(),
@@ -38,8 +35,11 @@ export const getGigsValidation = {
 };
 
 export interface getGigsValidationRequest extends IPaginationQueryOptions {
-  status: IStatuses;
-  budget: number;
+  status: IStatuses[];
+  owner: Schema.Types.ObjectId;
+  sortBy: string;
+  limit: number;
+  page: number;
 }
 
 export interface getGigsValidationRequestSchema extends ValidatedRequestSchema {

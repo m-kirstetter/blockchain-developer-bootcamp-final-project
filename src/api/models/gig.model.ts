@@ -25,6 +25,9 @@ export interface IBaseGig {
 
 export type IGig = Document & IBaseGig;
 
+export type IGigsQuery = Partial<IPaginationQueryOptions> &
+  Partial<Omit<IGig, '_id' | 'title' | 'description' | 'skills' | 'details'>>;
+
 export interface IGigsQueryResult extends IQueryResult {
   results: IGig[];
 }

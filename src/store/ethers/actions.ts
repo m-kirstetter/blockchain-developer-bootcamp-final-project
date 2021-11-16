@@ -21,7 +21,7 @@ export const EthersActions: IEthersActions = {
       // Connect to Metamask & get address + network
       await this.$ethers.connect();
       const address = await this.$ethers.getWalletAddress();
-      const network = this.$ethers.getNetwork();
+      const network = this.$ethers.network;
 
       // Commit everything
       commit('SET_CONNECTED', true);
@@ -69,7 +69,7 @@ export const EthersActions: IEthersActions = {
     // Sign message
     const nonce = await getNonce({ address });
     const bytes32Nonce = ethers.utils.formatBytes32String(nonce.toString());
-    const signer = this.$ethers.getWallet();
+    const signer = this.$ethers.userWallet;
     if (!signer) throw EthersErrors.NOT_CONNECTED;
 
     // Get user to sign and validate the message (login)

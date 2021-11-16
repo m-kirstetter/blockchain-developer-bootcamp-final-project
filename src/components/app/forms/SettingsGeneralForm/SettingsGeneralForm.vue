@@ -45,6 +45,7 @@
             placeholder="Role"
             validation="required"
             required
+            :disabled="true"
           />
         </vue-tiles>
 

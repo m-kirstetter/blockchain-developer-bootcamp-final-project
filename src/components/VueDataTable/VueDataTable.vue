@@ -5,10 +5,11 @@
         <vue-text look="large-title">{{ title }}</vue-text>
       </vue-box>
 
-      <vue-box v-if="showSearch" padding="24 16">
+      <vue-box padding="24 16">
         <vue-columns space="16">
           <vue-column :width="groupByOptions && groupByOptions.length > 0 ? '80%' : null">
             <vue-input
+              v-if="showSearch"
               :id="`search-query-${id}`"
               v-model="searchQuery"
               :name="`search-query-${id}`"
@@ -37,6 +38,12 @@
             <slot name="action" />
           </vue-column>
         </vue-columns>
+      </vue-box>
+
+      <vue-box v-if="showFilters" padding="4 16">
+        <vue-inline space="8">
+          <slot name="filters" />
+        </vue-inline>
       </vue-box>
 
       <div :class="[$style.tableWrapper, showSearch === false && showTitle === false && $style.noSearchbar]">
@@ -257,7 +264,8 @@ export default defineComponent({
     maxRows: { type: [Number, String], default: 10 },
     showTitle: { type: Boolean, default: true },
     showSearch: { type: Boolean, default: true },
-    showAction: { type: Boolean, default: true },
+    showAction: { type: Boolean, default: false },
+    showFilters: { type: Boolean, default: false },
     isLoading: { type: Boolean, default: false },
     searchPlaceholder: { type: String, default: 'Search...' },
     sortKey: { type: String, default: null },

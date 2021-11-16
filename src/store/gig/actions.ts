@@ -2,11 +2,11 @@ import { ActionContext } from 'vuex';
 import { IState } from '@/interfaces/IState';
 import { IGigFrontend } from '@/interfaces/IGig';
 import { addToast } from '@/components/utils';
-import { IPaginationQueryOptions } from '@/interfaces/IPaginationQueryOptions';
+import { IGigsQuery } from '@/api/models/gig.model';
 import { IGigState } from './state';
 
 export interface IGigActions {
-  fetchGigs(context: ActionContext<IGigState, IState>, query: Partial<IPaginationQueryOptions>): Promise<any>;
+  fetchGigs(context: ActionContext<IGigState, IState>, query: Partial<IGigsQuery>): Promise<any>;
   createGig(context: ActionContext<IGigState, IState>, gig: IGigFrontend): Promise<any>;
   updateGig(context: ActionContext<IGigState, IState>, gig: IGigFrontend): Promise<any>;
 }

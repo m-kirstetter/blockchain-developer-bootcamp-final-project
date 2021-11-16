@@ -24,6 +24,7 @@
         :show-title="showTitle"
         :show-search="showSearch"
         show-action
+        show-filters
         :search-placeholder="searchPlaceholder"
         :number-of-records="response.totalResults"
         :number-of-records-suffix="numberOfRecordsSuffix"
@@ -111,6 +112,12 @@
             Post Gig
           </vue-button>
         </template>
+
+        <template #filters>
+          <vue-button v-if="user.role === 'RECRUITER'" look="outline" size="sm" @click.prevent="onToggleOwnGigs">
+            {{ `Show ${ownGigs ? 'own' : 'all'} gigs` }}
+          </vue-button>
+        </template>
       </vue-data-table>
     </vue-stack>
   </div>
@@ -132,7 +139,7 @@ import VueCard from '@/components/data-display/VueCard/VueCard.vue';
 import VueMarkdown from '@/components/data-display/VueMarkdown/VueMarkdown.vue';
 import CreateGigForm from '@/components/app/Forms/CreateGigForm/CreateGigForm.vue';
 import { addToast } from '@/components/utils';
-import { IPaginationQueryOptions } from '@/interfaces/IPaginationQueryOptions';
+import { IGig, IGigsQuery } from '@/api/models/gig.model';
 
 export default defineComponent({
   name: 'GigsDataTable',
@@ -164,8 +171,9 @@ export default defineComponent({
     const records = dataTableRecordsFixture(100);
     const page = ref(1);
     const maxRows = ref(10);
+    const ownGigs = ref(false);
     const showTitle = false;
-    const showSearch = true;
+    const showSearch = false;
     const searchPlaceholder = 'Search for firstname, lastname, status or id...';
     const numberOfRecordsSuffix = 'Gigs';
     const sortKey = ref('createdAt');
@@ -176,14 +184,20 @@ export default defineComponent({
 
     const response = computed(() => store.state.gig.gigs);
     const user = computed(() => store.state.auth.user);
+    const userId = computed(() => store.state.auth.user._id);
 
     const fetch = async () => {
       isLoading.value = true;
 
-      const query: Partial<IPaginationQueryOptions> = {
+      const filters: Partial<Pick<IGig, 'owner'>> = {};
+
+      if (ownGigs) filters.owner = userId.value;
+
+      const query: IGigsQuery = {
         limit: maxRows.value,
         sortBy: `${sortKey.value}:${sortDirection.value.value}`,
         page: page.value,
+        ...filters,
       };
 
       try {
@@ -236,8 +250,14 @@ export default defineComponent({
       isLoading.value = false;
     };
 
+    const onToggleOwnGigs = () => {
+      ownGigs.value = !ownGigs.value;
+      onPaginate(1);
+    };
+
     return {
       isLoading,
+      ownGigs,
       columns,
       records,
       page,
@@ -259,6 +279,7 @@ export default defineComponent({
       onPaginate,
       onMaxRowsChange,
       onSearch,
+      onToggleOwnGigs,
     };
   },
 });
