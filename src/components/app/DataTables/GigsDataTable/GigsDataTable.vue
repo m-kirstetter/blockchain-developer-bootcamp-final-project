@@ -125,7 +125,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, useContext, computed, Ref, onMounted } from '@nuxtjs/composition-api';
-import { dataTableRecordsFixture, dataTableColumnsFixture } from '@/components/VueDataTable/GigsDataTableFixtures';
+import { dataTableRecordsFixture } from '@/components/VueDataTable/GigsDataTableFixtures';
 import VueDataTable from '@/components/VueDataTable/VueDataTable.vue';
 import VueBadge from '@/components/data-display/VueBadge/VueBadge.vue';
 import VueText from '@/components/typography/VueText/VueText.vue';
@@ -140,6 +140,7 @@ import VueMarkdown from '@/components/data-display/VueMarkdown/VueMarkdown.vue';
 import CreateGigForm from '@/components/app/Forms/CreateGigForm/CreateGigForm.vue';
 import { addToast } from '@/components/utils';
 import { IGig, IGigsQuery } from '@/api/models/gig.model';
+import { IDataTableColumns } from '@/components/VueDataTable/IDataTable';
 
 export default defineComponent({
   name: 'GigsDataTable',
@@ -164,10 +165,41 @@ export default defineComponent({
     onMounted(() => fetch());
 
     const isLoading = ref(false);
-    const columns = {
+    const columns: IDataTableColumns = {
       expand: { sortable: false, searchable: false, slot: 'expand', title: ' ', inlineStyle: { width: '64px' } },
-      ...dataTableColumnsFixture(),
+      _id: {
+        visible: false,
+      },
+      title: {
+        title: 'Title',
+        slot: 'title',
+      },
+      description: {
+        visible: false,
+      },
+      details: {
+        visible: false,
+      },
+      skills: {
+        visible: false,
+      },
+      status: {
+        title: 'Status',
+        slot: 'status',
+      },
+      createdAt: {
+        title: 'Created',
+        slot: 'date',
+        searchable: false,
+      },
+      actions: {
+        title: ' ',
+        slot: 'actions',
+        sortable: false,
+        searchable: false,
+      },
     };
+
     const records = dataTableRecordsFixture(100);
     const page = ref(1);
     const maxRows = ref(10);
