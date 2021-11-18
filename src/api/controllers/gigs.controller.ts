@@ -1,8 +1,10 @@
 import * as express from 'express';
 import { pick } from 'lodash';
+import httpStatus from 'http-status';
 import { IPaginationQueryOptions } from '@/interfaces/IPaginationQueryOptions';
+import ApiError from '../utils/ApiError';
 import { IGig } from '../models/gig.model';
-import { createGigService, queryGigsService } from '../services/gig.service';
+import { createGigService, getGigService, updateGigService, queryGigsService } from '../services/gig.service';
 import { verifyToken } from '../services/token.service';
 import { catchAsync } from '../utils/catchAsync';
 import { TokenTypes } from '../enums/TokenTypes';
@@ -18,6 +20,26 @@ export const createGig = catchAsync(
 
     const gig = await createGigService(gigBody);
     res.send({ gig });
+  },
+);
+
+export const updateGig = catchAsync(
+  async (req: gigsValidation.updateGigValidationRequestSchema, res: express.Response) => {
+    const token = req.headers.authorization.replace('Bearer ', '');
+    const tokenDoc = await verifyToken(token, TokenTypes.ACCESS);
+    const gigBody = req.body as gigsValidation.updateGigValidationRequest;
+
+    const gigId = req.params.gigId;
+
+    const gig = await getGigService(gigId);
+
+    if (gig.owner !== tokenDoc.user) {
+      throw new ApiError(httpStatus.BAD_REQUEST, 'You are not allowed to modify this Gig');
+    }
+
+    const updatedGig = await updateGigService(gigId, gigBody);
+
+    res.send({ updatedGig });
   },
 );
 

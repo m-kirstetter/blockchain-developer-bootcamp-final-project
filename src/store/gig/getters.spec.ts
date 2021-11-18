@@ -9,6 +9,6 @@ describe('GigGetters', () => {
   });
 
   test('it should get the gigs', () => {
-    expect(GigGetters.gigs(testState)).toEqual(testState.gigs);
+    expect(GigGetters.gigs(testState)).toEqual(testState.gigs.results);
   });
 });

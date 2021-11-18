@@ -3,7 +3,7 @@ import { IGigsQueryResult } from '../gig.model';
 
 export const paginate = (schema: Schema) => {
   /**
-   * @typedef {Object} QueryResult
+   * @typedef {Object} IGigsQueryResult
    * @property {Document[]} results - Results found
    * @property {number} page - Current page
    * @property {number} limit - Maximum number of results per page
@@ -17,7 +17,7 @@ export const paginate = (schema: Schema) => {
    * @param {string} [options.sortBy] - Sorting criteria using the format: sortField:(desc|asc). Multiple sorting criteria should be separated by commas (,)
    * @param {number} [options.limit] - Maximum number of results per page (default = 10)
    * @param {number} [options.page] - Current page (default = 1)
-   * @returns {Promise<QueryResult>}
+   * @returns {Promise<IGigsQueryResult>}
    */
   schema.statics.paginate = async function (
     filter: any,

@@ -2,7 +2,7 @@
   <vue-sidebar data-testid="main-sidebar">
     <vue-sidebar-group name="Navigation">
       <vue-sidebar-group-item leading-icon="view-list" name="Gigs" to="/app/gigs" />
-      <vue-sidebar-group-item leading-icon="users" name="Freelancers" to="/app/freelancers" />
+      <!-- <vue-sidebar-group-item leading-icon="users" name="Freelancers" to="/app/freelancers" /> -->
     </vue-sidebar-group>
 
     <vue-sidebar-group name="Documentation">

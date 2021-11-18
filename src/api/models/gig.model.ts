@@ -61,6 +61,7 @@ const gigSchema = new Schema<IGig, GigModel>(
     },
     owner: {
       type: SchemaTypes.ObjectId,
+      ref: 'User',
       required: true,
     },
     status: {

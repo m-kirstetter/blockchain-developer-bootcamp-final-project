@@ -15,15 +15,3 @@ export interface IGigFrontend extends IBaseGig {
 export interface IGigFrontendQueryResult extends IQueryResult {
   results: IGigFrontend[];
 }
-
-export interface IGigFormInput {
-  title: string;
-  description: string;
-  freelancers: number;
-  compensation: number;
-}
-
-export interface IGigWorkFormat {
-  gigId: string;
-  contract: string;
-}

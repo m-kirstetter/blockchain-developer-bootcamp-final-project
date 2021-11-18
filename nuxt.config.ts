@@ -27,12 +27,12 @@ const config: Configuration = {
       local: {
         scheme: 'refresh',
         token: {
-          property: 'access_token',
+          property: 'accessToken',
           maxAge: 1800,
         },
         refreshToken: {
-          property: 'refresh_token',
-          data: 'refresh_token',
+          property: 'refreshToken',
+          data: 'refreshToken',
           maxAge: 60 * 60 * 24,
         },
         user: {
@@ -66,7 +66,7 @@ const config: Configuration = {
         },
       },
     },
-    transpile: ['vee-validate', '@vue/apollo-composable'],
+    transpile: ['vee-validate/dist/rules', '@vue/apollo-composable'],
   },
   buildModules: [
     '@nuxt/typescript-build',

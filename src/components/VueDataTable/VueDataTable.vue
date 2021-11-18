@@ -5,7 +5,7 @@
         <vue-text look="large-title">{{ title }}</vue-text>
       </vue-box>
 
-      <vue-box padding="24 16">
+      <vue-box v-if="showAction" padding="24 16">
         <vue-columns space="16">
           <vue-column :width="groupByOptions && groupByOptions.length > 0 ? '80%' : null">
             <vue-input

@@ -6,9 +6,9 @@ import { IGigsQuery } from '@/api/models/gig.model';
 import { IGigState } from './state';
 
 export interface IGigActions {
-  fetchGigs(context: ActionContext<IGigState, IState>, query: Partial<IGigsQuery>): Promise<any>;
-  createGig(context: ActionContext<IGigState, IState>, gig: IGigFrontend): Promise<any>;
-  updateGig(context: ActionContext<IGigState, IState>, gig: IGigFrontend): Promise<any>;
+  fetchGigs(context: ActionContext<IGigState, IState>, query: Partial<IGigsQuery>): Promise<void>;
+  createGig(context: ActionContext<IGigState, IState>, gig: IGigFrontend): Promise<void>;
+  updateGig(context: ActionContext<IGigState, IState>, toUpdate: Partial<IGigFrontend>): Promise<void>;
 }
 
 export const GigActions: IGigActions = {
@@ -48,9 +48,29 @@ export const GigActions: IGigActions = {
       });
     }
   },
-  async updateGig({ commit }, gig) {
-    const data = await this.$axios.$put('/api/v1/gigs/' + gig._id, gig);
-    commit('UPDATE_GIG', data);
+  async updateGig({ commit }, toUpdate) {
+    const gigId = toUpdate._id;
+    delete toUpdate._id;
+
+    try {
+      const response = await this.$axios.$patch('/api/v1/gigs/' + gigId, toUpdate);
+
+      addToast({
+        title: 'Success!',
+        type: 'success',
+        text: 'Gig has been updated.',
+      });
+
+      const { gig } = response;
+
+      commit('UPDATE_GIG', gig);
+    } catch (error) {
+      addToast({
+        title: 'Error!',
+        type: 'danger',
+        text: error,
+      });
+    }
   },
 };
 

@@ -97,8 +97,8 @@ export const generateAuthTokens = async (user: IUser): Promise<ITokensResponse> 
   //   },
   // };
   return {
-    access_token: accessToken,
-    refresh_token: refreshToken,
+    accessToken,
+    refreshToken,
   };
 };
 /**

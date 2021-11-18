@@ -18,15 +18,15 @@
         :is-loading="isLoading"
         :class="$style.table"
         :columns="columns"
-        :records="response.results"
+        :records="gigs"
         :page="page"
         :max-rows="maxRows"
         :show-title="showTitle"
         :show-search="showSearch"
         show-action
-        show-filters
+        :show-filters="user.role === 'RECRUITER'"
         :search-placeholder="searchPlaceholder"
-        :number-of-records="response.totalResults"
+        :number-of-records="gigsQueryResult.totalResults"
         :number-of-records-suffix="numberOfRecordsSuffix"
         :sort-key="sortKey"
         :sort-direction="sortDirection.value"
@@ -71,28 +71,7 @@
         <template #after-row="{ row }">
           <tr v-if="expandedRows.includes(row._id)" :key="'additional-info-' + row._id" :class="$style.noHover">
             <td colspan="5">
-              <vue-box :padding="['24 8', '24 8']">
-                <vue-stack :space="[4, 4, 8, 16]">
-                  <vue-text look="h3" as="h2"> {{ row.title }} </vue-text>
-                  <vue-text look="description">
-                    <vue-markdown> {{ row.description }} </vue-markdown>
-                  </vue-text>
-
-                  <vue-text look="h4" as="h4"> Details </vue-text>
-                  <vue-text look="description">
-                    <vue-markdown> {{ row.details }} </vue-markdown>
-                  </vue-text>
-
-                  <vue-text look="h4" as="h4"> Skills </vue-text>
-                  <vue-text look="description">
-                    <vue-markdown> {{ row.skills }} </vue-markdown>
-                  </vue-text>
-
-                  <vue-button v-if="user.role === 'FREELANCER'" look="secondary" leading-icon="lightning-bolt" block>
-                    Apply
-                  </vue-button>
-                </vue-stack>
-              </vue-box>
+              <gig-full-details :gig="getGig(row._id)" :user="user" />
             </td>
           </tr>
         </template>
@@ -135,11 +114,14 @@ import VueColumns from '@/components/layout/VueColumns/VueColumns.vue';
 import VueColumn from '@/components/layout/VueColumns/VueColumn/VueColumn.vue';
 import VueButton from '@/components/input-and-actions/VueButton/VueButton.vue';
 import VueCard from '@/components/data-display/VueCard/VueCard.vue';
-import VueMarkdown from '@/components/data-display/VueMarkdown/VueMarkdown.vue';
 import CreateGigForm from '@/components/app/Forms/CreateGigForm/CreateGigForm.vue';
 import { addToast } from '@/components/utils';
 import { IGig, IGigsQuery } from '@/api/models/gig.model';
 import { IDataTableColumns } from '@/components/VueDataTable/IDataTable';
+import GigFullDetails from '@/components/app/GigFullDetails/GigFullDetails.vue';
+import { IGigFrontend, IGigFrontendQueryResult } from '@/interfaces/IGig';
+import { IAuthServiceUser } from '@/interfaces/IAuth';
+import { Schema } from 'mongoose';
 
 export default defineComponent({
   name: 'GigsDataTable',
@@ -154,15 +136,15 @@ export default defineComponent({
     VueColumn,
     VueButton,
     VueCard,
-    VueMarkdown,
     CreateGigForm,
+    GigFullDetails,
   },
   props: {},
   setup() {
     const { store } = useContext();
 
     onMounted((): void => {
-      if (user.value.role === 'RECRUITER') filters.value = { owner: userId.value };
+      if (user.value.role === 'RECRUITER') filters.value = { owner: user.value._id as Schema.Types.ObjectId };
       fetch();
     });
 
@@ -216,9 +198,9 @@ export default defineComponent({
     const showPostGigForm = ref(false);
     const expandedRows: Ref<number[]> = ref([]);
 
-    const response = computed(() => store.state.gig.gigs);
-    const user = computed(() => store.state.auth.user);
-    const userId = computed(() => store.state.auth.user._id);
+    const gigs = computed((): IGigFrontend[] => store.getters['gig/gigs']);
+    const gigsQueryResult = computed((): Omit<IGigFrontendQueryResult, 'results'> => store.getters['gig/queryResult']);
+    const user = computed((): IAuthServiceUser => store.state.auth.user);
 
     const fetch = async () => {
       isLoading.value = true;
@@ -284,9 +266,13 @@ export default defineComponent({
       if (filters.value.owner) {
         delete filters.value.owner;
       } else {
-        filters.value = { owner: userId.value };
+        filters.value = { owner: user.value._id as Schema.Types.ObjectId };
       }
       onPaginate(1);
+    };
+
+    const getGig = (id: string): IGigFrontend => {
+      return gigs.value.find((gig: IGigFrontend) => gig._id === id);
     };
 
     return {
@@ -305,7 +291,8 @@ export default defineComponent({
       sortDirection,
       clearSelection,
       showPostGigForm,
-      response,
+      gigs,
+      gigsQueryResult,
       user,
       onExpand,
       onSortKeyChange,
@@ -314,6 +301,7 @@ export default defineComponent({
       onMaxRowsChange,
       onSearch,
       onToggleOwnGigs,
+      getGig,
     };
   },
 });

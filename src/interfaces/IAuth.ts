@@ -1,10 +1,12 @@
+import { Schema } from 'mongoose';
+
 export interface IAuthServiceUser {
   // role: string;
   // isEmailVerified: boolean;
   // address: string;
   // nonce: number;
   // id: string;
-  _id: string;
+  _id: Schema.Types.ObjectId | string;
   address: string;
   bio: string;
   createdAt: string;

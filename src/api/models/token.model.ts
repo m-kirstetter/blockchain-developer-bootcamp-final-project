@@ -23,10 +23,8 @@ export type TokenModel = Model<IToken>;
 // }
 
 export interface ITokensResponse {
-  // eslint-disable-next-line camelcase
-  access_token: string;
-  // eslint-disable-next-line camelcase
-  refresh_token: string;
+  accessToken: string;
+  refreshToken: string;
 }
 
 const tokenSchema = new Schema<IToken>(

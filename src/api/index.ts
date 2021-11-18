@@ -8,6 +8,7 @@ import { errorConverter, errorHandler } from './middlewares/error';
 import { AuthRoutes } from './routes/AuthRoutes';
 import { UsersRoutes } from './routes/UsersRoutes';
 import { GigsRoutes } from './routes/GigsRoutes';
+import { ApplicationsRoutes } from './routes/ApplicationsRoutes';
 import { jwtStrategy } from './config/passport';
 
 const app = express();
@@ -40,6 +41,7 @@ passport.use('jwt', jwtStrategy);
 AuthRoutes(app);
 UsersRoutes(app);
 GigsRoutes(app);
+ApplicationsRoutes(app);
 
 // convert error to ApiError, if needed
 app.use(errorConverter);

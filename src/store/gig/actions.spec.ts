@@ -52,7 +52,6 @@ describe('GigActions', () => {
       updatedAt: '2021-11-13T08:18:46.652Z',
     };
 
-    // try with nested gigs object
     gigs = {
       limit: 10,
       page: 1,

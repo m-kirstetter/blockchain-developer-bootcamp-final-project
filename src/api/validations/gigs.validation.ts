@@ -45,3 +45,25 @@ export interface getGigsValidationRequest extends IPaginationQueryOptions {
 export interface getGigsValidationRequestSchema extends ValidatedRequestSchema {
   [ContainerTypes.Query]: getGigsValidationRequest;
 }
+
+export const updateGigValidation = {
+  body: Joi.object().keys({
+    title: Joi.string(),
+    description: Joi.string(),
+    details: Joi.string(),
+    skills: Joi.string(),
+    budget: Joi.object().keys({
+      min: Joi.number().required(),
+      max: Joi.number().required(),
+    }),
+    status: Joi.string(),
+    freelancer: Joi.string(),
+    deadline: Joi.string(),
+  }),
+};
+
+export type updateGigValidationRequest = Partial<IGig>;
+
+export interface updateGigValidationRequestSchema extends ValidatedRequestSchema {
+  [ContainerTypes.Body]: Omit<updateGigValidationRequest, 'owner'>;
+}
