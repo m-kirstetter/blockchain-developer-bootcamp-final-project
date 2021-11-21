@@ -4,12 +4,19 @@ import httpStatus from 'http-status';
 import ApiError from '../utils/ApiError';
 import { Application, IApplication, IApplicationsQueryResult } from '../models/application.model';
 import * as applicationsValidation from '../validations/applications.validation';
+import { Gig } from '../models/gig.model';
 
 export const createApplicationService = async (
   applicationBody: applicationsValidation.createApplicationValidationRequest,
 ): Promise<IApplication> => {
   try {
-    return await Application.create(applicationBody);
+    const application = await Application.create(applicationBody);
+
+    const gig = await Gig.findById(applicationBody.gig);
+    gig.applications.push(application._id);
+    gig.save();
+
+    return application;
   } catch (error) {
     throw new ApiError(httpStatus.BAD_REQUEST, error);
   }
@@ -27,7 +34,7 @@ export const updateApplicationService = async (
 };
 
 export const queryApplicationsService = async (
-  filter: Partial<Omit<IApplication, '_id' | 'why' | 'milestones'>>,
+  filter: Partial<Omit<IApplication, '_id' | 'why' | 'milestones' | 'amount'>>,
   options: Partial<IPaginationQueryOptions>,
 ): Promise<IApplicationsQueryResult> => {
   try {

@@ -5,58 +5,22 @@ import { GigActions } from '@/store/gig/actions';
 import { GigGetters } from '@/store/gig/getters';
 import { GigMutations } from '@/store/gig/mutations';
 import { AuthStoreModule } from '@/test/test-utils';
-import { Schema } from 'mongoose';
-import { IStatuses } from '@/interfaces/IStatuses';
 import { i18n } from '@/test/i18n';
 import Vue from 'vue';
 import moment from 'vue-moment';
+import { GigCollectionFixture } from '@/fixtures/GigFixture';
 import Gigs from './gigs.vue';
 
 Vue.use(moment);
 
-const gigs = [
-  {
-    _id: '1',
-    title: 'title',
-    description: 'description',
-    details: 'details',
-    skills: 'skills',
-    owner: ('570b570b570bfffffffffffb' as unknown) as Schema.Types.ObjectId,
-    status: 'Registered' as IStatuses,
-    budget: {
-      _id: '1',
-      min: 1,
-      max: 4,
-    },
-    createdAt: '2021-11-10T08:18:46.652Z',
-    updatedAt: '2021-11-13T08:18:46.652Z',
-  },
-  {
-    _id: '2',
-    title: 'title 2',
-    description: 'description 2',
-    details: 'details 2',
-    skills: 'skills 2',
-    owner: ('570b570b570bfffffffffffc' as unknown) as Schema.Types.ObjectId,
-    status: 'Registered' as IStatuses,
-    budget: {
-      _id: '1',
-      min: 2,
-      max: 3,
-    },
-    createdAt: '2021-11-10T08:18:46.652Z',
-    updatedAt: '2021-11-13T08:18:46.652Z',
-  },
-];
-
 const GigDefaultState = (): IGigState => {
   return {
     gigs: {
-      results: gigs,
+      results: GigCollectionFixture(),
       limit: 10,
       page: 1,
       totalPages: 1,
-      totalResults: 0,
+      totalResults: 3,
     },
   };
 };

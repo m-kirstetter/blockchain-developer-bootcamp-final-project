@@ -158,6 +158,7 @@ export default defineComponent({
           why: why.value,
           milestones,
           gig: props.gig._id,
+          amount: total.value,
         })
         .then(() => onClose());
 

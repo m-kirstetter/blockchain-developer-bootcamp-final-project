@@ -18,8 +18,25 @@
           <vue-text look="description">
             <vue-markdown> {{ gig.skills }} </vue-markdown>
           </vue-text>
+
+          <div v-if="gig.applications.length">
+            <vue-text look="h4" as="h4"> Applications </vue-text>
+            <vue-box padding="16 0">
+              <vue-stack :space="[4, 4, 8, 16]" :padding="8">
+                <application-card
+                  v-for="application in gig.applications"
+                  :key="application._id"
+                  :application="application"
+                  :user="user"
+                  :gig="gig"
+                />
+              </vue-stack>
+            </vue-box>
+          </div>
+
           <vue-button
             v-if="user.role === 'FREELANCER'"
+            :disabled="userApplied"
             look="secondary"
             leading-icon="lightning-bolt"
             block
@@ -38,7 +55,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from '@vue/composition-api';
+import { computed, defineComponent, ref } from '@vue/composition-api';
 import VueMarkdown from '@/components/data-display/VueMarkdown/VueMarkdown.vue';
 import VueText from '@/components/typography/VueText/VueText.vue';
 import VueBox from '@/components/layout/VueBox/VueBox.vue';
@@ -46,6 +63,8 @@ import VueStack from '@/components/layout/VueStack/VueStack.vue';
 import VueButton from '@/components/input-and-actions/VueButton/VueButton.vue';
 import { IGigFrontend } from '@/interfaces/IGig';
 import { IAuthServiceUser } from '@/interfaces/IAuth';
+import ApplicationCard from '@/components/app/ApplicationCard/ApplicationCard.vue';
+import { isApplicationArray, isUser } from '@/utils/typeguards';
 import ApplyToGigForm from '../Forms/ApplyToGigForm/ApplyToGigForm.vue';
 
 export default defineComponent({
@@ -57,6 +76,7 @@ export default defineComponent({
     VueStack,
     VueButton,
     ApplyToGigForm,
+    ApplicationCard,
   },
   props: {
     gig: {
@@ -68,10 +88,24 @@ export default defineComponent({
       required: true,
     },
   },
-  setup() {
+  setup(props) {
     const showApplyForm = ref(false);
 
+    const userApplied = computed(() => {
+      const userId = props.user._id;
+      const applications = props.gig.applications;
+
+      if (!isApplicationArray(applications)) throw new Error('Error, application must be Application Model Array');
+
+      return !!applications.find((el) => {
+        if (!isUser(el.owner)) throw new Error('Error, user must be User Model');
+
+        return el.owner._id === userId;
+      });
+    });
+
     return {
+      userApplied,
       showApplyForm,
     };
   },

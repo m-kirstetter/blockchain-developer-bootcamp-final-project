@@ -7,7 +7,23 @@ import * as gigsValidation from '../validations/gigs.validation';
 
 export const createGigService = async (gigBody: gigsValidation.createGigValidationRequest): Promise<IGig> => {
   try {
-    return await Gig.create(gigBody);
+    let gig = await Gig.create(gigBody);
+
+    gig = await gig.populate({
+      path: 'owner',
+      select: 'address bio linkedin role',
+    });
+
+    gig = await gig.populate({
+      path: 'applications',
+      select: 'name bio linkedin role',
+      populate: {
+        path: 'owner',
+        select: 'address bio linkedin role',
+      },
+    });
+
+    return gig;
   } catch (error) {
     throw new ApiError(httpStatus.BAD_REQUEST, error);
   }
@@ -18,7 +34,23 @@ export const updateGigService = async (
   update: gigsValidation.updateGigValidationRequest,
 ): Promise<IGig> => {
   try {
-    return await Gig.findByIdAndUpdate(id, update);
+    let gig = await Gig.findByIdAndUpdate(id, update);
+
+    gig = await gig.populate({
+      path: 'owner',
+      select: 'address bio linkedin role',
+    });
+
+    gig = await gig.populate({
+      path: 'applications',
+      select: 'name bio linkedin role',
+      populate: {
+        path: 'owner',
+        select: 'address bio linkedin role',
+      },
+    });
+
+    return gig;
   } catch (error) {
     throw new ApiError(httpStatus.BAD_REQUEST, error);
   }
@@ -37,7 +69,23 @@ export const queryGigsService = async (
 
 export const getGigService = async (id: Schema.Types.ObjectId): Promise<IGig> => {
   try {
-    return await Gig.findById(id);
+    let gig = await Gig.findById(id);
+
+    gig = await gig.populate({
+      path: 'owner',
+      select: 'address bio linkedin role',
+    });
+
+    gig = await gig.populate({
+      path: 'applications',
+      select: 'name bio linkedin role',
+      populate: {
+        path: 'owner',
+        select: 'address bio linkedin role',
+      },
+    });
+
+    return gig;
   } catch (error) {
     throw new ApiError(httpStatus.BAD_REQUEST, error);
   }

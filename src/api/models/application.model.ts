@@ -3,6 +3,8 @@ import { IPaginationQueryOptions } from '@/interfaces/IPaginationQueryOptions';
 import { IQueryResult } from '@/interfaces/IQueryResult';
 import { IApplicationStatuses } from '@/interfaces/IStatuses';
 import { paginate } from '../models/plugins/paginate.plugin';
+import { IUser } from './user.model';
+import { IGig } from './gig.model';
 
 export interface IGigApplicationMilestone {
   order: number;
@@ -15,9 +17,10 @@ export type GigApplicationMilestoneModel = Model<IGigApplicationMilestone>;
 export interface IBaseApplication {
   why: string;
   milestones: IGigApplicationMilestone[];
-  owner: Schema.Types.ObjectId;
-  gig: Schema.Types.ObjectId;
+  owner: Schema.Types.ObjectId | Partial<IUser>;
+  gig: Schema.Types.ObjectId | Partial<IGig>;
   status: IApplicationStatuses;
+  amount: number;
 }
 
 export type IApplication = Document & IBaseApplication;
@@ -63,6 +66,10 @@ const applicationSchema = new Schema<IApplication, ApplicationModel>(
       type: String,
       enum: ['Applied', 'Declined', 'Accepted'],
       default: 'Applied',
+    },
+    amount: {
+      type: Number,
+      required: true,
     },
   },
   {

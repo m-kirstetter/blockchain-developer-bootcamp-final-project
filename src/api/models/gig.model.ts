@@ -3,23 +3,25 @@ import { IPaginationQueryOptions } from '@/interfaces/IPaginationQueryOptions';
 import { IQueryResult } from '@/interfaces/IQueryResult';
 import { IStatuses } from '@/interfaces/IStatuses';
 import { paginate } from '../models/plugins/paginate.plugin';
+import { IUser } from './user.model';
+import { IApplication } from './application.model';
 
 export interface IGigBudget {
   min: number;
   max: number;
 }
 
-export type GigBudgetModel = Model<IGigBudget>;
+// export type GigBudgetModel = Model<IGigBudget>;
 
 export interface IBaseGig {
   title: string;
   description: string;
   details: string;
   skills: string;
-  owner: Schema.Types.ObjectId;
+  owner: Schema.Types.ObjectId | Partial<IUser>;
   status: IStatuses;
   budget: IGigBudget;
-  freelancer?: Schema.Types.ObjectId;
+  applications?: Schema.Types.ObjectId[] | Partial<IApplication>[];
   deadline?: Date;
 }
 
@@ -36,10 +38,10 @@ export interface GigModel extends Model<IGig> {
   paginate(filter: Partial<IGig>, options: Partial<IPaginationQueryOptions>): Promise<IGigsQueryResult>;
 }
 
-const gigBudgetSchema = new Schema<IGigBudget, GigBudgetModel>({
+const gigBudgetSchema = {
   min: Number,
   max: Number,
-});
+};
 
 const gigSchema = new Schema<IGig, GigModel>(
   {
@@ -73,8 +75,8 @@ const gigSchema = new Schema<IGig, GigModel>(
       type: gigBudgetSchema,
       required: true,
     },
-    freelancer: {
-      type: SchemaTypes.ObjectId,
+    applications: {
+      type: [{ type: SchemaTypes.ObjectId, ref: 'Application' }],
     },
     deadline: {
       type: Date,
@@ -86,5 +88,24 @@ const gigSchema = new Schema<IGig, GigModel>(
 );
 
 gigSchema.plugin(paginate);
+
+gigSchema.pre('find', function () {
+  this.populate([
+    {
+      path: 'owner',
+      select: 'address bio linkedin role',
+    },
+    {
+      path: 'applications',
+      select: 'why milestones owner status amount gig',
+      populate: [
+        {
+          path: 'owner',
+          select: 'address bio linkedin role',
+        },
+      ],
+    },
+  ]);
+});
 
 export const Gig = (models.Gig as GigModel) || model<IGig, GigModel>('Gig', gigSchema);

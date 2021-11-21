@@ -25,13 +25,13 @@ export const createApplication = catchAsync(
 
     applicationBody.owner = tokenDoc.user;
 
-    const gig = await createApplicationService(applicationBody);
-    res.send({ gig });
+    const application = await createApplicationService(applicationBody);
+    res.send({ application });
   },
 );
 
 export const getApplications = catchAsync(async (req: express.Request, res: express.Response) => {
-  const filter = (pick(req.query, ['status', 'owner', 'gig']) as unknown) as Partial<IApplication>;
+  const filter = (pick(req.query, ['status', 'owner', 'gig', 'amount']) as unknown) as Partial<IApplication>;
   const options = (pick(req.query, ['sortBy', 'limit', 'page']) as unknown) as Partial<IPaginationQueryOptions>;
   const applications = await queryApplicationsService(filter, options);
   res.send({ applications });

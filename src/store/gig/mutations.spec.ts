@@ -1,5 +1,4 @@
-import { Schema } from 'mongoose';
-import { IStatuses } from '@/interfaces/IStatuses';
+import { GigCollectionFixture, GigFixture } from '@/fixtures/GigFixture';
 import { GigMutations } from './mutations';
 import { GigDefaultState, IGigState } from './state';
 
@@ -12,40 +11,7 @@ describe('GigMutations', () => {
 
   test('it should set gigs', () => {
     const expected = {
-      results: [
-        {
-          _id: '1',
-          title: 'title',
-          description: 'description',
-          details: 'details',
-          skills: 'skills',
-          owner: ('570b570b570bfffffffffffb' as unknown) as Schema.Types.ObjectId,
-          status: 'Registered' as IStatuses,
-          budget: {
-            _id: '1',
-            min: 1,
-            max: 4,
-          },
-          createdAt: '2021-11-10T08:18:46.652Z',
-          updatedAt: '2021-11-13T08:18:46.652Z',
-        },
-        {
-          _id: '2',
-          title: 'title 2',
-          description: 'description 2',
-          details: 'details 2',
-          skills: 'skills 2',
-          owner: ('570b570b570bfffffffffffc' as unknown) as Schema.Types.ObjectId,
-          status: 'Registered' as IStatuses,
-          budget: {
-            _id: '1',
-            min: 2,
-            max: 3,
-          },
-          createdAt: '2021-11-10T08:18:46.652Z',
-          updatedAt: '2021-11-13T08:18:46.652Z',
-        },
-      ],
+      results: GigCollectionFixture(),
       limit: 10,
       page: 1,
       totalPages: 1,
@@ -57,22 +23,7 @@ describe('GigMutations', () => {
   });
 
   test('it should add and update a gig', () => {
-    const gig = {
-      _id: '1',
-      title: 'title',
-      description: 'description',
-      details: 'details',
-      skills: 'skills',
-      owner: ('570b570b570bfffffffffffb' as unknown) as Schema.Types.ObjectId,
-      status: 'Registered' as IStatuses,
-      budget: {
-        _id: '1',
-        min: 1,
-        max: 4,
-      },
-      createdAt: '2021-11-10T08:18:46.652Z',
-      updatedAt: '2021-11-13T08:18:46.652Z',
-    };
+    const gig = GigFixture();
     GigMutations.ADD_GIG(testState, gig);
     expect(testState.gigs.results).toEqual([gig]);
 

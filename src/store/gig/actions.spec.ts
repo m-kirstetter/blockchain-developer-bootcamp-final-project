@@ -8,11 +8,12 @@ import { GigGetters } from '@/store/gig/getters';
 import { AxiosMock, getAxiosMock } from '@/test/test-utils';
 import { Schema } from 'mongoose';
 import { IStatuses } from '@/interfaces/IStatuses';
+import { GigCollectionFixture } from '@/fixtures/GigFixture';
 
 describe('GigActions', () => {
   let store: Store<IState>;
   let axiosMock: AxiosMock;
-  let gig: IGigFrontend;
+  let gig: Partial<IGigFrontend>;
   let gigs: IGigFrontendQueryResult;
 
   const GigModule = {
@@ -36,7 +37,6 @@ describe('GigActions', () => {
     store.commit = jest.fn();
 
     gig = {
-      _id: '618f74e652e1bd099b345a03',
       title: 'title',
       description: 'description',
       details: 'details',
@@ -44,12 +44,9 @@ describe('GigActions', () => {
       owner: ('570b570b570bfffffffffffb' as unknown) as Schema.Types.ObjectId,
       status: 'Registered' as IStatuses,
       budget: {
-        _id: '618f74e652e1bd099b345a03',
         min: 1,
         max: 4,
       },
-      createdAt: '2021-11-13T08:18:46.652Z',
-      updatedAt: '2021-11-13T08:18:46.652Z',
     };
 
     gigs = {
@@ -57,40 +54,7 @@ describe('GigActions', () => {
       page: 1,
       totalPages: 1,
       totalResults: 2,
-      results: [
-        {
-          _id: '618f74e652e1bd099b345a03',
-          title: 'title',
-          description: 'description',
-          details: 'details',
-          skills: 'skills',
-          owner: ('570b570b570bfffffffffffb' as unknown) as Schema.Types.ObjectId,
-          status: 'Registered' as IStatuses,
-          budget: {
-            _id: '618f74e652e1bd099b345a03',
-            min: 1,
-            max: 4,
-          },
-          createdAt: '2021-11-13T08:18:46.652Z',
-          updatedAt: '2021-11-13T08:18:46.652Z',
-        },
-        {
-          _id: '618f74e652e1bd099b345a03',
-          title: 'title',
-          description: 'description',
-          details: 'details',
-          skills: 'skills',
-          owner: ('570b570b570bfffffffffffb' as unknown) as Schema.Types.ObjectId,
-          status: 'Registered' as IStatuses,
-          budget: {
-            _id: '618f74e652e1bd099b345a03',
-            min: 1,
-            max: 4,
-          },
-          createdAt: '2021-11-13T08:18:46.652Z',
-          updatedAt: '2021-11-13T08:18:46.652Z',
-        },
-      ],
+      results: GigCollectionFixture(),
     };
   });
 

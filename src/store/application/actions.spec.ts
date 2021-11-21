@@ -41,6 +41,7 @@ describe('ApplicationActions', () => {
       owner: ('570b570b570bfffffffffffb' as unknown) as Schema.Types.ObjectId,
       status: 'Applied' as IApplicationStatuses,
       gig: ('570b570b570bfffffffffffb' as unknown) as Schema.Types.ObjectId,
+      amount: 7.3,
       milestones: [
         {
           order: 1,
@@ -69,6 +70,7 @@ describe('ApplicationActions', () => {
           owner: ('570b570b570bfffffffffffb' as unknown) as Schema.Types.ObjectId,
           status: 'Applied' as IApplicationStatuses,
           gig: ('570b570b570bfffffffffffb' as unknown) as Schema.Types.ObjectId,
+          amount: 7.3,
           milestones: [
             {
               order: 1,
@@ -90,6 +92,7 @@ describe('ApplicationActions', () => {
           owner: ('570b570b570bfffffffffffb' as unknown) as Schema.Types.ObjectId,
           status: 'Applied' as IApplicationStatuses,
           gig: ('570b570b570bfffffffffffb' as unknown) as Schema.Types.ObjectId,
+          amount: 8,
           milestones: [
             {
               order: 1,

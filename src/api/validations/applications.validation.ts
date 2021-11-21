@@ -9,6 +9,7 @@ export const createApplicationValidation = {
   body: Joi.object().keys({
     why: Joi.string().required(),
     gig: Joi.string().required(),
+    amount: Joi.number().required(),
     milestones: Joi.array().items({
       order: Joi.number().required(),
       title: Joi.string().required(),
