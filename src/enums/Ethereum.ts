@@ -1,6 +1,6 @@
 /* eslint no-unused-vars: 0 */
 
-export enum EthersErrors {
+export enum EthereumErrors {
   NO_ETHEREUM = 'NO_ETHEREUM',
   NO_PROVIDER = 'NO_PROVIDER',
   NOT_CONNECTED = 'NOT_CONNECTED',
@@ -18,7 +18,7 @@ export enum EthersErrors {
   UNKNOWN_ERROR = 'UNKNOWN_ERROR',
 }
 
-export enum EthersErrorMessages {
+export enum EthereumErrorMessages {
   NO_ETHEREUM = 'Ethereum not detected.',
   NO_PROVIDER = 'No provider detected',
   NOT_CONNECTED = 'Not connected to Ethereum network.',

@@ -2,26 +2,26 @@ import { ActionContext } from 'vuex';
 import { IState } from '@/interfaces/IState';
 import { ErrorCode } from '@ethersproject/logger';
 import { ethers } from 'ethers';
-import { EthersErrors, EthersErrorMessages } from '@/enums/Ethers';
+import { EthereumErrors, EthereumErrorMessages } from '@/enums/Ethereum';
 import { addToast } from '@/components/utils';
 import { getNonce } from '@/services/Auth';
 import { EventBus } from '@/services/EventBus';
 import { IEthersState } from './state';
 
 export interface IEthersActions {
-  disconnectEthers(context: ActionContext<IEthersState, IState>): void;
+  disconnectEthereum(context: ActionContext<IEthersState, IState>): void;
   logout(context: ActionContext<IEthersState, IState>): Promise<any>;
-  connectEthers(context: ActionContext<IEthersState, IState>): Promise<any>;
+  connectEthereum(context: ActionContext<IEthersState, IState>): Promise<any>;
   authenticateUser(context: ActionContext<IEthersState, IState>): Promise<void>;
 }
 
 export const EthersActions: IEthersActions = {
-  async connectEthers({ commit }) {
+  async connectEthereum({ commit }) {
     try {
       // Connect to Metamask & get address + network
-      await this.$ethers.connect();
-      const address = await this.$ethers.getWalletAddress();
-      const network = this.$ethers.network;
+      await this.$ethereum.connect();
+      const address = await this.$ethereum.getWalletAddress();
+      const network = this.$ethereum.network;
 
       // Commit everything
       commit('SET_CONNECTED', true);
@@ -33,12 +33,12 @@ export const EthersActions: IEthersActions = {
       addToast({
         title: 'Error!',
         type: 'danger',
-        text: EthersErrorMessages[error as EthersErrors],
+        text: EthereumErrorMessages[error as EthereumErrors],
       });
     }
   },
 
-  disconnectEthers({ commit }, error?: ErrorCode) {
+  disconnectEthereum({ commit }, error?: ErrorCode) {
     commit('SET_CONNECTED', false);
     commit('SET_ERROR', error);
     commit('SET_ADDRESS', null);
@@ -47,16 +47,15 @@ export const EthersActions: IEthersActions = {
 
   async logout({ dispatch }) {
     // We disconnect everything, user will need to sign again to authenticate
-    await dispatch('ethers/disconnect', {}, { root: true });
     await dispatch('app/resetGigs', {}, { root: true });
-    dispatch('disconnectEthers');
+    dispatch('disconnectEthereum');
     this.$auth.logout();
   },
 
   async authenticateUser({ commit, dispatch, state }) {
     commit('SET_LOADING', true);
 
-    await dispatch('connectEthers');
+    await dispatch('connectEthereum');
 
     if (state.network.name !== 'ropsten') {
       EventBus.$emit('wrongNetwork');
@@ -69,8 +68,8 @@ export const EthersActions: IEthersActions = {
     // Sign message
     const nonce = await getNonce({ address });
     const bytes32Nonce = ethers.utils.formatBytes32String(nonce.toString());
-    const signer = this.$ethers.userWallet;
-    if (!signer) throw EthersErrors.NOT_CONNECTED;
+    const signer = this.$ethereum.userWallet;
+    if (!signer) throw EthereumErrors.NOT_CONNECTED;
 
     // Get user to sign and validate the message (login)
     try {
@@ -84,18 +83,18 @@ export const EthersActions: IEthersActions = {
         });
       });
     } catch (error) {
-      let result: EthersErrors;
+      let result: EthereumErrors;
 
       if (error.code === 4001) {
-        result = EthersErrors.NOT_SIGNED;
+        result = EthereumErrors.NOT_SIGNED;
       } else {
-        result = EthersErrors.UNKNOWN_ERROR;
+        result = EthereumErrors.UNKNOWN_ERROR;
       }
 
       addToast({
         title: 'Error!',
         type: 'danger',
-        text: EthersErrorMessages[result],
+        text: EthereumErrorMessages[result],
       });
     }
 

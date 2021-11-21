@@ -1,7 +1,7 @@
 import { providers, Contract, ethers } from 'ethers';
 import { ExternalProvider, JsonRpcProvider, JsonRpcSigner } from '@ethersproject/providers';
 import { Network } from '@ethersproject/networks';
-import { EthersErrors } from '@/enums/Ethers';
+import { EthereumErrors } from '@/enums/Ethereum';
 import { IEthersErrorResponse } from '@/interfaces/IEthers';
 import { MetaMaskInpageProvider } from '@metamask/providers';
 import metamaskService from './Metamask';
@@ -9,7 +9,7 @@ import { EventBus } from './EventBus';
 
 const ENS_NETS: number[] = [1, 3, 4];
 
-export default class EthersConnect {
+export default class EthereumConnect {
   private _contractAddress: string;
   private _abi: string;
   private _ethereum: MetaMaskInpageProvider;
@@ -61,7 +61,7 @@ export default class EthersConnect {
 
   async connect() {
     try {
-      if (!this._ethereum) throw EthersErrors.NOT_CONNECTED;
+      if (!this._ethereum) throw EthereumErrors.NOT_CONNECTED;
       // Request accounts access
       // WARNING: cast Partial<unknown> to string[]....
       const accounts: string[] = await this._ethereum.request({ method: 'eth_requestAccounts' });
@@ -70,9 +70,9 @@ export default class EthersConnect {
       const ethersErrorResponse = error as IEthersErrorResponse;
 
       if (ethersErrorResponse.code === 4001) {
-        throw EthersErrors.CANCELLED_CONNECT_REQUEST;
+        throw EthereumErrors.CANCELLED_CONNECT_REQUEST;
       } else {
-        throw EthersErrors.UNKNOWN_ERROR;
+        throw EthereumErrors.UNKNOWN_ERROR;
       }
     }
   }
@@ -80,12 +80,12 @@ export default class EthersConnect {
   private async _updateProvider() {
     // Set Ethereum or throw error
     this._ethereum = await metamaskService.getEthereum();
-    if (!this._ethereum) throw EthersErrors.NO_ETHEREUM;
+    if (!this._ethereum) throw EthereumErrors.NO_ETHEREUM;
 
     // Set Provider or throw error
     // WARNING: cast MetaMaskInpageProvider to ExternalProvider....
     this.provider = new providers.Web3Provider(this._ethereum as ExternalProvider);
-    if (!this.provider) throw EthersErrors.NO_PROVIDER;
+    if (!this.provider) throw EthereumErrors.NO_PROVIDER;
 
     // Set Network and Event to alert if not Ropsten
     this.network = await this.provider.getNetwork();
