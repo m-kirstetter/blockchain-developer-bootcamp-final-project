@@ -1,7 +1,6 @@
 import { ActionContext } from 'vuex';
 import { IState } from '@/interfaces/IState';
 import { ErrorCode } from '@ethersproject/logger';
-import { ethers } from 'ethers';
 import { EthereumErrors, EthereumErrorMessages } from '@/enums/Ethereum';
 import { addToast } from '@/components/utils';
 import { getNonce } from '@/services/Auth';
@@ -67,13 +66,13 @@ export const EthersActions: IEthersActions = {
 
     // Sign message
     const nonce = await getNonce({ address });
-    const bytes32Nonce = ethers.utils.formatBytes32String(nonce.toString());
+    const message = `This is a message to sign with your Metamask wallet. We use a unique nonce to authenticate you. Unique nonce: ${nonce.toString()}`;
     const signer = this.$ethereum.userWallet;
     if (!signer) throw EthereumErrors.NOT_CONNECTED;
 
     // Get user to sign and validate the message (login)
     try {
-      const signature = await signer.signMessage(bytes32Nonce);
+      const signature = await signer.signMessage(message);
 
       await this.$auth.loginWith('local', { data: { address, signature } }).then(() => {
         addToast({
@@ -83,18 +82,18 @@ export const EthersActions: IEthersActions = {
         });
       });
     } catch (error) {
-      let result: EthereumErrors;
+      let result: EthereumErrorMessages | string;
 
       if (error.code === 4001) {
-        result = EthereumErrors.NOT_SIGNED;
+        result = EthereumErrorMessages[EthereumErrors.NOT_SIGNED];
       } else {
-        result = EthereumErrors.UNKNOWN_ERROR;
+        result = error.message;
       }
 
       addToast({
         title: 'Error!',
         type: 'danger',
-        text: EthereumErrorMessages[result],
+        text: result,
       });
     }
 

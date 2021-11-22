@@ -34,13 +34,14 @@ export const authenticateController = catchAsync(
     const { address, signature } = req.body;
     const user = await getUserByAddress(address);
     const valid = checkSignature(address, signature, user.nonce.toString());
-    // If signature valid, log in and send jwt
-    if (valid) {
+
+    // If signature not valid, unauthorized
+    if (!valid) {
+      res.status(httpStatus.BAD_REQUEST).send('Sorry, signature do not match.');
+      // If signature valid, log in and send jwt
+    } else {
       const tokens = await generateAuthTokens(user);
       res.send(tokens);
-      // If signature not valid, unauthorized
-    } else {
-      res.status(httpStatus.UNAUTHORIZED);
     }
   },
 );

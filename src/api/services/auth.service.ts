@@ -15,8 +15,8 @@ import { getUserById } from './user.service';
 export const checkSignature = (address: string, signature: string, nonce: string): boolean => {
   let result = false;
 
-  const bytes32Nonce = ethers.utils.formatBytes32String(nonce);
-  const actualAddress = ethers.utils.verifyMessage(bytes32Nonce, signature);
+  const message = `This is a message to sign with your Metamask wallet. We use a unique nonce to authenticate you. Unique nonce: ${nonce}`;
+  const actualAddress = ethers.utils.verifyMessage(message, signature);
 
   if (address.toLowerCase() === actualAddress.toLowerCase()) {
     result = true;
