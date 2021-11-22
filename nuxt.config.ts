@@ -158,7 +158,7 @@ const config: Configuration = {
     { src: '@/plugins/vuex-persist/vuex-persist.client' },
     { src: '@/plugins/vuex-persist/vuex-persist.server' },
     { src: '@/plugins/pwa/update.client' },
-    { src: '@/plugins/ethers/ethers-connect' },
+    { src: '@/plugins/ethereum/ethereum-connect' },
     { src: '@/components/global' },
   ],
   publicRuntimeConfig: {

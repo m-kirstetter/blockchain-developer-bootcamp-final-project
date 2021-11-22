@@ -94,7 +94,7 @@ export default defineComponent({
 
 .vueToast {
   position: fixed;
-  bottom: $toast-position-bottom;
+  top: $navbar-height;
   right: $space-16;
   z-index: $toast-index;
   width: calc(100% - #{$space-32});
