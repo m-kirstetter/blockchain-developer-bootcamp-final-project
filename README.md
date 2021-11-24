@@ -35,13 +35,13 @@ Frontend is built with Vuesion (Nuxt.js), using TypeScript
 Express.js is used for backendAPI, using TypeScript
 MongoDB is used as database, models implemented with Mongoose using TypeScript
 
-## Smart contracts design patterns
+## Design pattern decisions
 
 1. I used the Factory Pattern to generate a smart contract for each 'gig contract' created. It consist of a factory contract that is used to generate a new contract by using openzeppeling proxy Clones.sol contract (it reduces generated contract size as it forwards all calls to another implementation contract, see https://eips.ethereum.org/EIPS/eip-1167)
 2. I used an interface for both SmarterContract and SmarterContractFactory
 3. Protection for proxy contracts initializing function (so it is callable only once). The protection is using openzeppelin proxy utils Initializable.sol contract
 
-## Smart contracts known attacks protection
+## Avoiding common attacks
 
 1. SWC-134 - Avoid the use of transfer() and send(), and without specifying a fixed amount of gas (see https://swcregistry.io/docs/SWC-134) - in SmarterContract.sol \_transfer function
 2. SWC-105 - Controls so withdrawals can only be made to contract provider address (see https://swcregistry.io/docs/SWC-105) - in SmarterContract.sol \_transfer function
