@@ -84,13 +84,9 @@ $ truffle(develop)> migrate
 ## Nuxt.js build setup
 
 ```bash
-# add deployed contract address in .env file
+# add env variables
 $ nano .env
-NUXT_ENV_IMPL_CONTRACT=address_of_your_deployed_implementation_contract
-NUXT_ENV_FACTORY_CONTRACT=address_of_your_deployed_factory_contract
-
-# add your MongoDB url in .env file
-NUXT_ENV_MONGODB_URL=url_of_your_mongodb_database
+add all missing env variables (see .env-example)
 
 # serve with hot reload at localhost:3000
 $ npm run dev

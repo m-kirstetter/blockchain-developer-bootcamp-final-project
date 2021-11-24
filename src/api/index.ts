@@ -13,7 +13,7 @@ import { jwtStrategy } from './config/passport';
 
 const app = express();
 
-mongoose.connect(process.env.MONGODB_URL).then(() => {
+mongoose.connect(process.env.NUXT_ENV_MONGODB_URL).then(() => {
   // eslint-disable-next-line no-console
   console.log('Connected to MongoDB');
 });

@@ -1,8 +1,8 @@
 import { Plugin } from '@nuxt/types';
 import EthereumService from '@/services/Ethereum';
-import abi from './contracts_SmartGigs_sol_SmartGigs.json';
+import contract from '@/../build/contracts/SmarterContractFactory.json';
 
-const EthereumConnection = new EthereumService(process.env.NUXT_ENV_CONTRACT, JSON.stringify(abi));
+const EthereumConnection = new EthereumService(process.env.NUXT_ENV_FACTORY_CONTRACT, JSON.stringify(contract.abi));
 
 declare module 'vue/types/vue' {
   // this.$ethereum inside Vue components
