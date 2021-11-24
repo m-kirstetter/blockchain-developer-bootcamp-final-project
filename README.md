@@ -1,173 +1,125 @@
-<img width="256px" height="256px" src="https://user-images.githubusercontent.com/1667598/55292014-ea98a800-53e5-11e9-82ca-11ba7bb2bbcd.png" alt="vuesion logo" align="center" />
+# blockchain-developer-bootcamp-final-project
 
-# Vuesion
+Deployed at [Heroku](https://flamboyant-booth-468ae4.netlify.app/) on Ropsten.
 
-_**Vuesion is a boilerplate that helps product teams build faster than ever with fewer headaches and modern best practices across engineering & design.**_
+## Final project idea
 
-[![GitHub release](https://img.shields.io/github/release/vuesion/vuesion.svg)](https://GitHub.com/vuesion/vuesion/releases/)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/c8e3979ea94da8e9d683/test_coverage)](https://codeclimate.com/github/vuesion/vuesion/test_coverage)
-[![Maintainability](https://api.codeclimate.com/v1/badges/c8e3979ea94da8e9d683/maintainability)](https://codeclimate.com/github/vuesion/vuesion/maintainability)
-[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/vuesion/vuesion/graphs/commit-activity)
-[![CircleCI](https://circleci.com/gh/vuesion/vuesion.svg?style=svg)](https://circleci.com/gh/vuesion/vuesion)
-[![GitHub issues-closed](https://img.shields.io/github/issues-closed/vuesion/vuesion.svg)](https://GitHub.com/vuesion/vuesion/issues?q=is%3Aissue+is%3Aclosed)
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fvuesion%2Fvuesion.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fvuesion%2Fvuesion?ref=badge_shield)
-[![MIT license](https://img.shields.io/badge/License-MIT-blue.svg)](https://lbesson.mit-license.org/)
+I thought initially of a smart contract development dApp marketplace. After thinking about implementation, for the purpose of the bootcamp and to have something extendable afterwards, I narrowed the blockchain side idea into a contracting and milestones payment solution called 'Smarter Contract'. For the demo, I built a smart contract development marketplace called 'Smart Gigs' that uses the developed smart contract as some kind of 'Escrow' service and for milestones payments. I tried to have minimal footprint contracts to save gas costs while preserving functionalities. The frontend features an authentication with Metamask feature.
 
-# Live demo
+Metamask authentication workflow:
 
-Please visit the **[vuesion app on heroku!](https://vuesion.herokuapp.com/)**
+1. User clic Connect with Metamask button and accepts its Metamask account access
+2. User is directly presented with a second Metamask popup asking for a signature, the message to sign contains a uniquely generated nonce
+3. If user accepts, message is encrypted using his Metamask private key and sent to the app backend
+4. Since backend has the message with the unique nonce and the user public key, it can try to decrypt message signer's wallet address, if the decrypted address corresponds to initial request address, user is identified and logged in.
 
-Or have a look into the future and visit the **[vuesion-next app on heroku!](https://vuesion-next.herokuapp.com/)**
+Gig creation/payment workflow:
 
-# Features
+1. Recruiter creates gig
+2. Freelancers can apply listing milestones and their price
+3. Recruiter awards 1 freelancer by sending data to a smart contract factory contract, with the full contract amount in ETH. The contract amount is locked until milestones are released. (Smart contract interaction)
+4. Freelancer submit a milestone
+5. Recruiter releases the milestone, this automatically triggers milestone payment to provider (Smart contract interaction)
+6. 4 & 5 repeats until there are no more milestones to be released
 
-## Testing
+## Dependencies
 
-- [Cypress.io E2E testing](https://www.cypress.io/)
-- [Jest Testing framework](https://jestjs.io/)
-- [Testing-library](https://testing-library.com/) to encourage good testing practices
-- 250+ example tests included
+- Node v14.18.1
+- Truffle v5.4.12
+- Metamask wallet connected to Ropsten network
 
-## DX, Code quality and maintenance
+## Tech stack
 
-- [TypeScript](https://www.typescriptlang.org/)
-- [Eslint](https://eslint.org/)
-- [Commit message linting](https://github.com/conventional-changelog/commitlint)
-- [Prettier code formatting](https://prettier.io/)
-- [Semantic releases](./.github/semantic.yml)
-- [Changelog](https://www.npmjs.com/package/generate-changelog)
-- [Husky pre-commit hooks](https://github.com/typicode/husky)
-- [Dockerfile included](./Dockerfile)
-- [.env support](./.env-prod)
+Smart contract is coded with Solidity using Truffle, test covered
+Frontend is built with Vuesion (Nuxt.js), using TypeScript
+Express.js is used for backendAPI, using TypeScript
+MongoDB is used as database, models implemented with Mongoose using TypeScript
 
-## Core
+## Design pattern decisions
 
-- server-side-rendering, single-page-app or statically generated HTML with [Nuxt.js](https://nuxtjs.org/)
-- [100% customizable Design-system with 35+ components including](https://vuesion.herokuapp.com/storybook)
-  - layout, typography, button, input, select, checkbox, radio, (range-)slider, toggle, ...
-  - theming/whitelabel support
-- [Figma UIKit](https://www.figma.com/file/DvP4EE7gAJH3fsc4RFqZYc/Vuesion-Core?node-id=1686%3A4660)
-- [SEO support](https://github.com/nuxt/vue-meta)
-- [i18n support](https://i18n.nuxtjs.org/)
-- [Authentication module](https://auth.nuxtjs.org/)
-- [Axios module](https://axios.nuxtjs.org/)
-- [Vue-Apollo module](https://github.com/nuxt-community/apollo-module)
-  - with [apollo-composable](https://v4.apollo.vuejs.org/)
-  - integrated with Authentication- and Axios module
-- [PWA module](https://pwa.nuxtjs.org/)
-- [State management with vuex](https://vuex.vuejs.org/)
-- Code generators for
-  - components
-  - pages
-  - interfaces and fixtures
-  - vuex modules
-- [Storybook](https://storybook.js.org/) with the following add-ons
-  - [a11y](https://storybook.js.org/addons/@storybook/addon-a11y/)
-  - [actions](https://storybook.js.org/addons/@storybook/addon-actions/)
-  - [console](https://storybook.js.org/addons/@storybook/addon-console/)
-  - [links](https://storybook.js.org/addons/@storybook/addon-links/)
-  - [story-source](https://storybook.js.org/addons/@storybook/addon-storysource)
-  - [viewport](https://storybook.js.org/addons/@storybook/addon-viewport/)
-  - [theme-switcher](https://github.com/vuesion/packages/tree/master/packages/storybook-theme-switcher)
-- Form validation with [vee-validate](https://vee-validate.logaretm.com/v3)
-- [Composition-api module](https://composition-api.nuxtjs.org/)
-- [Anime.js](https://animejs.com/) integration
+1. I used the Factory Pattern to generate a smart contract for each 'gig contract' created. It consist of a factory contract that is used to generate a new contract by using openzeppeling proxy Clones.sol contract (it reduces generated contract size as it forwards all calls to another implementation contract, see https://eips.ethereum.org/EIPS/eip-1167)
+2. I used an interface for both SmarterContract and SmarterContractFactory
+3. Protection for proxy contracts initializing function (so it is callable only once). The protection is using openzeppelin proxy utils Initializable.sol contract
 
-# Getting started
+## Avoiding common attacks
 
-> Important note for **Windows users only**: https://github.com/zkat/npx/issues/146#issuecomment-384016791
+1. SWC-134 - Avoid the use of transfer() and send(), and without specifying a fixed amount of gas (see https://swcregistry.io/docs/SWC-134) - in SmarterContract.sol \_transfer function
+2. SWC-105 - Controls so withdrawals can only be made to contract provider address (see https://swcregistry.io/docs/SWC-105) - in SmarterContract.sol \_transfer function
+3. SWC-107 - Using OpenZeppelin's ReentrancyGuard nonReentrant lock modifier (see https://swcregistry.io/docs/SWC-107) - used in SmarterContract.sol release function
+4. Using specific pragma
 
-1. Run `npx @vuesion/create [project-name]` for example `npx @vuesion/create my-app` _(try the latest version by adding the `--next` flag)_
-2. Change directory `cd my-app`
-3. Run `npm run dev`
+## Initial setup
 
-# Documentation
+```bash
+# install dependencies
+$ npm install -g truffle
+$ npm install
+```
 
-**[https://vuesion.github.io/docs/en/v4/](https://vuesion.github.io/docs/en/v4/)**
+## Run smart contracts tests
 
-# Support this project
+```bash
+# run tests
+$ truffle test
+```
 
-- [Give a :star:!](https://github.com/vuesion/vuesion/stargazers)
-- [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=flat)](https://twitter.com/intent/tweet?text=Vuesion%20an%20enterprise%20ready%20boilerplate%20for%20isomorphic,%20progressive%20web%20apps%20with%20Vue.JS&url=https://github.com/vuesion/vuesion&via=vuesion1&hashtags=Vuesion,VueJS,SEO,Enterprise) it!
-- Join the <a href="https://discord.gg/59x5cg2" target="_blank"><img src="https://cdn0.iconfinder.com/data/icons/square-logo-buttons/512/discord-1-128.png" height="20px" /> Discord community</a>!
-- [Contribute!](https://github.com/vuesion/vuesion/blob/master/.github/CONTRIBUTING.md)
+## Run Nuxt.js tests
 
-# Contribute
+```bash
+# run tests
+$ npm run tests
+```
 
-Contributions are always welcome! Please read the [contribution guidelines](https://github.com/vuesion/vuesion/blob/master/.github/CONTRIBUTING.md) first.
+## Contract build setup
 
-Thanks goes to these wonderful people:
+```bash
+# build artifacts
+$ truffle compile
 
-<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-<!-- prettier-ignore-start -->
-<!-- markdownlint-disable -->
-<table>
-  <tr>
-    <td align="center"><a href="https://twitter.com/_jwerner_"><img src="https://avatars1.githubusercontent.com/u/1667598?v=4?s=64" width="64px;" alt=""/><br /><sub><b>Johannes Werner</b></sub></a><br /><a href="https://github.com/vuesion/vuesion/commits?author=devCrossNet" title="Code">💻</a> <a href="https://github.com/vuesion/vuesion/issues?q=author%3AdevCrossNet" title="Bug reports">🐛</a> <a href="https://github.com/vuesion/vuesion/commits?author=devCrossNet" title="Documentation">📖</a> <a href="#design-devCrossNet" title="Design">🎨</a> <a href="#example-devCrossNet" title="Examples">💡</a> <a href="#tool-devCrossNet" title="Tools">🔧</a></td>
-    <td align="center"><a href="https://github.com/40818419"><img src="https://avatars2.githubusercontent.com/u/2235499?s=460&v=4?s=64" width="64px;" alt=""/><br /><sub><b>Konstantin Kulinicenko</b></sub></a><br /><a href="https://github.com/vuesion/vuesion/commits?author=40818419" title="Code">💻</a> <a href="https://github.com/vuesion/vuesion/issues?q=author%3A40818419" title="Bug reports">🐛</a> <a href="https://github.com/vuesion/vuesion/commits?author=40818419" title="Documentation">📖</a> <a href="#example-40818419" title="Examples">💡</a></td>
-    <td align="center"><a href="http://xmartin.de/"><img src="https://avatars2.githubusercontent.com/u/112532?v=4?s=64" width="64px;" alt=""/><br /><sub><b>xMartin</b></sub></a><br /><a href="https://github.com/vuesion/vuesion/commits?author=xMartin" title="Code">💻</a> <a href="https://github.com/vuesion/vuesion/issues?q=author%3AxMartin" title="Bug reports">🐛</a> <a href="https://github.com/vuesion/vuesion/commits?author=xMartin" title="Documentation">📖</a> <a href="#example-xMartin" title="Examples">💡</a></td>
-    <td align="center"><a href="http://saigao.fun"><img src="https://avatars0.githubusercontent.com/u/31165554?v=4?s=64" width="64px;" alt=""/><br /><sub><b>Silver·湫澲</b></sub></a><br /><a href="https://github.com/vuesion/vuesion/commits?author=SilverLeaves" title="Documentation">📖</a> <a href="#translation-SilverLeaves" title="Translation">🌍</a></td>
-    <td align="center"><a href="https://stavrosliaskos.com/"><img src="https://avatars2.githubusercontent.com/u/17932287?v=4?s=64" width="64px;" alt=""/><br /><sub><b>Stavros Liaskos</b></sub></a><br /><a href="https://github.com/vuesion/vuesion/issues?q=author%3Astavros-liaskos" title="Bug reports">🐛</a></td>
-    <td align="center"><a href="https://marceloboeira.com"><img src="https://avatars3.githubusercontent.com/u/1898225?v=4?s=64" width="64px;" alt=""/><br /><sub><b>Marcelo Boeira</b></sub></a><br /><a href="#translation-marceloboeira" title="Translation">🌍</a></td>
-    <td align="center"><a href="http://teamteatime.net/"><img src="https://avatars3.githubusercontent.com/u/3583774?v=4?s=64" width="64px;" alt=""/><br /><sub><b>Rick Mann</b></sub></a><br /><a href="https://github.com/vuesion/vuesion/commits?author=Riari" title="Code">💻</a></td>
-  </tr>
-  <tr>
-    <td align="center"><a href="http://www.EnigmaCurry.com"><img src="https://avatars0.githubusercontent.com/u/43061?v=4?s=64" width="64px;" alt=""/><br /><sub><b>Ryan McGuire</b></sub></a><br /><a href="https://github.com/vuesion/vuesion/commits?author=EnigmaCurry" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/jmcdo29"><img src="https://avatars3.githubusercontent.com/u/28268680?v=4?s=64" width="64px;" alt=""/><br /><sub><b>Jay McDoniel</b></sub></a><br /><a href="https://github.com/vuesion/vuesion/commits?author=jmcdo29" title="Code">💻</a></td>
-    <td align="center"><a href="http://livgrhm.com"><img src="https://avatars3.githubusercontent.com/u/3798005?v=4?s=64" width="64px;" alt=""/><br /><sub><b>Olivia Graham</b></sub></a><br /><a href="https://github.com/vuesion/vuesion/commits?author=livgrhm" title="Code">💻</a></td>
-    <td align="center"><a href="http://hugomagalhaes.com"><img src="https://avatars3.githubusercontent.com/u/497957?v=4?s=64" width="64px;" alt=""/><br /><sub><b>Hugo Magalhães</b></sub></a><br /><a href="#translation-hugomn" title="Translation">🌍</a></td>
-    <td align="center"><a href="https://github.com/glederer"><img src="https://avatars3.githubusercontent.com/u/7151993?v=4?s=64" width="64px;" alt=""/><br /><sub><b>glederer</b></sub></a><br /><a href="https://github.com/vuesion/vuesion/commits?author=glederer" title="Documentation">📖</a></td>
-    <td align="center"><a href="https://github.com/tamer-mohamed"><img src="https://avatars3.githubusercontent.com/u/4436327?v=4?s=64" width="64px;" alt=""/><br /><sub><b>Tamer Mohamed</b></sub></a><br /><a href="https://github.com/vuesion/vuesion/commits?author=tamer-mohamed" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/rizwanzaheer"><img src="https://avatars3.githubusercontent.com/u/13586702?v=4?s=64" width="64px;" alt=""/><br /><sub><b>Rizwan Zaheer</b></sub></a><br /><a href="https://github.com/vuesion/vuesion/commits?author=rizwanzaheer" title="Documentation">📖</a></td>
-  </tr>
-  <tr>
-    <td align="center"><a href="https://github.com/rgrosjean"><img src="https://avatars3.githubusercontent.com/u/39985706?v=4?s=64" width="64px;" alt=""/><br /><sub><b>rgrosjean</b></sub></a><br /><a href="https://github.com/vuesion/vuesion/commits?author=rgrosjean" title="Code">💻</a></td>
-    <td align="center"><a href="https://corbella.me"><img src="https://avatars2.githubusercontent.com/u/4535719?v=4?s=64" width="64px;" alt=""/><br /><sub><b>Bernardo Corbella</b></sub></a><br /><a href="https://github.com/vuesion/vuesion/commits?author=bernardocorbella" title="Code">💻</a></td>
-    <td align="center"><a href="http://mohittilwani.com"><img src="https://avatars3.githubusercontent.com/u/13518712?v=4?s=64" width="64px;" alt=""/><br /><sub><b>Mohit Tilwani</b></sub></a><br /><a href="https://github.com/vuesion/vuesion/commits?author=MohitTilwani15" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/eipiminus1"><img src="https://avatars2.githubusercontent.com/u/11791837?v=4?s=64" width="64px;" alt=""/><br /><sub><b>eipiminus1 </b></sub></a><br /><a href="https://github.com/vuesion/vuesion/commits?author=eipiminus1" title="Documentation">📖</a></td>
-    <td align="center"><a href="http://jezmck.com"><img src="https://avatars2.githubusercontent.com/u/89996?v=4?s=64" width="64px;" alt=""/><br /><sub><b>Jez McKean</b></sub></a><br /><a href="https://github.com/vuesion/vuesion/commits?author=jezmck" title="Documentation">📖</a></td>
-    <td align="center"><a href="http://duylam.pleaserevise.xyz"><img src="https://avatars1.githubusercontent.com/u/855206?v=4?s=64" width="64px;" alt=""/><br /><sub><b>Duylam Nguyen-Ngo</b></sub></a><br /><a href="#design-einfalles" title="Design">🎨</a></td>
-    <td align="center"><a href="https://www.merschroth.design/"><img src="https://avatars2.githubusercontent.com/u/19751007?v=4?s=64" width="64px;" alt=""/><br /><sub><b>Martin Merschroth</b></sub></a><br /><a href="#design-majroth" title="Design">🎨</a></td>
-  </tr>
-  <tr>
-    <td align="center"><a href="http://www.camswork.com"><img src="https://avatars0.githubusercontent.com/u/1984124?v=4?s=64" width="64px;" alt=""/><br /><sub><b>Camila Peralta Wieland</b></sub></a><br /><a href="#design-campunknita" title="Design">🎨</a></td>
-    <td align="center"><a href="http://alecsoftolio.com"><img src="https://avatars1.githubusercontent.com/u/39228141?v=4?s=64" width="64px;" alt=""/><br /><sub><b>Alec M</b></sub></a><br /><a href="https://github.com/vuesion/vuesion/commits?author=HeavenlyEntity" title="Documentation">📖</a></td>
-    <td align="center"><a href="https://misikoff.com/"><img src="https://avatars.githubusercontent.com/u/9086984?v=4?s=64" width="64px;" alt=""/><br /><sub><b>misikoff</b></sub></a><br /><a href="https://github.com/vuesion/vuesion/commits?author=misikoff" title="Code">💻</a></td>
-    <td align="center"><a href="http://silver.saigao.fun/saigao/index.html"><img src="https://avatars.githubusercontent.com/u/31165554?v=4?s=64" width="64px;" alt=""/><br /><sub><b>臭哥哥·湫曗</b></sub></a><br /><a href="https://github.com/vuesion/vuesion/commits?author=Akimotorakiyu" title="Documentation">📖</a></td>
-    <td align="center"><a href="https://www.paulvogel.me/"><img src="https://avatars.githubusercontent.com/u/4786628?v=4?s=64" width="64px;" alt=""/><br /><sub><b>Paul Vogel</b></sub></a><br /><a href="https://github.com/vuesion/vuesion/commits?author=pavog" title="Documentation">📖</a></td>
-    <td align="center"><a href="https://fuzinato.com/"><img src="https://avatars.githubusercontent.com/u/3132724?v=4?s=64" width="64px;" alt=""/><br /><sub><b>Dario Fuzinato</b></sub></a><br /><a href="https://github.com/vuesion/vuesion/commits?author=fuzinato" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/maks232"><img src="https://avatars.githubusercontent.com/u/166910?v=4?s=64" width="64px;" alt=""/><br /><sub><b>Maksim Bock</b></sub></a><br /><a href="https://github.com/vuesion/vuesion/commits?author=maks232" title="Tests">⚠️</a></td>
-  </tr>
-</table>
+# migrating (or Deploying) contract (abi are in generated json files)
+$ truffle develop
+$ truffle(develop)> migrate
+```
 
-<!-- markdownlint-restore -->
-<!-- prettier-ignore-end -->
+## Nuxt.js build setup
 
-<!-- ALL-CONTRIBUTORS-LIST:END -->
+```bash
+# add deployed contract address in .env file
+$ nano .env
+NUXT_ENV_IMPL_CONTRACT=address_of_your_deployed_implementation_contract
+NUXT_ENV_FACTORY_CONTRACT=address_of_your_deployed_factory_contract
 
-This project follows the [all-contributors](https://github.com/kentcdodds/all-contributors) specification. Contributions of any kind welcome!
+# add your MongoDB url in .env file
+NUXT_ENV_MONGODB_URL=url_of_your_mongodb_database
+
+# serve with hot reload at localhost:3000
+$ npm run dev
+
+# build for production and launch server
+$ npm run build
+$ npm run start
+
+# generate static project
+$ npm run generate
+```
+
+For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
+
+## Possible future features
+
+- Add deadline with fund release feature
+- Milestone rejection feature
+- Aragon Court for dispute resolution
+- Tip feature
+- Lock feature
+- Test SmarterContractFactory more thoroughly
 
 # References
 
+- [vuesion](https://vuesion.herokuapp.com/)
 - [nuxt](https://nuxtjs.org/)
-- [nuxt/auth](https://auth.nuxtjs.org/guide/setup/)
-- [nuxt/axios](https://axios.nuxtjs.org/)
-- [nuxt/composition-api](https://composition-api.nuxtjs.org/)
-- [nuxt/pwa](https://pwa.nuxtjs.org/)
-- [nuxt/i18n](https://i18n.nuxtjs.org/)
-- [nuxt/apollo](https://github.com/nuxt-community/apollo-module)
-- [Storybook](https://storybook.js.org/)
-- [jest](https://jestjs.io/)
-- [cypress.io](https://www.cypress.io/)
-- [testing-library](https://testing-library.com/docs/vue-testing-library/intro/)
-- [vee-validate](https://vee-validate.logaretm.com/v3)
-- [animejs](https://animejs.com/)
-
-# Contact
-
-- [Discord](https://discord.gg/59x5cg2)
-- [Twitter](https://twitter.com/vuesion1)
 
 # License
 
 [MIT](http://opensource.org/licenses/MIT)
+Vuesion+ VueDataTable component use is limited to this project, see component's LICENSE.md file
