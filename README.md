@@ -1,6 +1,6 @@
 # blockchain-developer-bootcamp-final-project
 
-Deployed at [Heroku](https://flamboyant-booth-468ae4.netlify.app/) on Ropsten.
+Deployed at [Heroku](https://smart-gigs.herokuapp.com/) on Ropsten.
 
 ## Final project idea
 
