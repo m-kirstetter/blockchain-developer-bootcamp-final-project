@@ -22,7 +22,7 @@ import VueCard from '@/components/data-display/VueCard/VueCard.vue';
 import VueBox from '@/components/layout/VueBox/VueBox.vue';
 import VueStack from '@/components/layout/VueStack/VueStack.vue';
 import VueText from '@/components/typography/VueText/VueText.vue';
-import SettingsGeneralForm from '@/components/app/Forms/SettingsGeneralForm/SettingsGeneralForm.vue';
+import SettingsGeneralForm from '@/components/app/Forms2/SettingsGeneralForm/SettingsGeneralForm.vue';
 
 export default defineComponent({
   name: 'SettingsPage',

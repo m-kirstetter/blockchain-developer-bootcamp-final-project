@@ -22,7 +22,7 @@ import VueContentBlock from '@/components/layout/VueContentBlock/VueContentBlock
 import VueBox from '@/components/layout/VueBox/VueBox.vue';
 import VueCard from '@/components/data-display/VueCard/VueCard.vue';
 import VueStack from '@/components/layout/VueStack/VueStack.vue';
-import SettingsProfileForm from '@/components/app/Forms/SettingsProfileForm/SettingsProfileForm.vue';
+import SettingsProfileForm from '@/components/app/Forms2/SettingsProfileForm/SettingsProfileForm.vue';
 
 export default defineComponent({
   name: 'ProfilePage',

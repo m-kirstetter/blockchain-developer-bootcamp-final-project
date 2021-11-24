@@ -22,7 +22,7 @@ import VueContentBlock from '@/components/layout/VueContentBlock/VueContentBlock
 import VueBox from '@/components/layout/VueBox/VueBox.vue';
 import VueCard from '@/components/data-display/VueCard/VueCard.vue';
 import VueStack from '@/components/layout/VueStack/VueStack.vue';
-import SettingsSocialForm from '@/components/app/Forms/SettingsSocialForm/SettingsSocialForm.vue';
+import SettingsSocialForm from '@/components/app/Forms2/SettingsSocialForm/SettingsSocialForm.vue';
 
 export default defineComponent({
   name: 'SocialPage',
