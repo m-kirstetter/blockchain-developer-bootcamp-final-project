@@ -22,11 +22,23 @@ Gig creation/payment workflow:
 5. Recruiter releases the milestone, this automatically triggers milestone payment to provider (Smart contract interaction)
 6. 4 & 5 repeats until there are no more milestones to be released
 
-## Dependencies
+## Tested with
 
 - Node v14.18.1
 - Truffle v5.4.12
 - Metamask wallet connected to Ropsten network
+
+## Directory structure
+
+- contracts - smart contracts and interfaces
+- build/contracts - smart contracts build json (abi, etc)
+- test - smart contracts tests
+
+- src/api - Express backend API code & mongoose models
+- src/services - contains Ethereum & Ethers services
+- src/components - contains Vuesion and app components
+- src/pages - contains page components
+- src/test - contains frontend tests
 
 ## Tech stack
 
@@ -117,5 +129,5 @@ For detailed explanation on how things work, check out [Nuxt.js docs](https://nu
 
 # License
 
-[MIT](http://opensource.org/licenses/MIT)
-Vuesion+ VueDataTable component use is limited to this project, see component's LICENSE.md file
+- [MIT](http://opensource.org/licenses/MIT)
+- Vuesion+ VueDataTable component use is limited to this project, see component's LICENSE.md file
