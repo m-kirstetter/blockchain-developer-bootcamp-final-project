@@ -1,5 +1,5 @@
 import { Schema } from 'mongoose';
-import { IApplicationStatuses, IStatuses } from '@/interfaces/IStatuses';
+import { IApplicationStatuses } from '@/interfaces/IStatuses';
 import { ApplicationMutations } from './mutations';
 import { ApplicationDefaultState, IApplicationState } from './state';
 

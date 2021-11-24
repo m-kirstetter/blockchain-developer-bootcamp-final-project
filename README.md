@@ -30,10 +30,10 @@ Gig creation/payment workflow:
 
 ## Tech stack
 
-Smart contract is coded with Solidity using Truffle, test covered
-Frontend is built with Vuesion (Nuxt.js), using TypeScript
-Express.js is used for backendAPI, using TypeScript
-MongoDB is used as database, models implemented with Mongoose using TypeScript
+- Smart contract is coded with Solidity using Truffle, test covered
+- Frontend is built with Vuesion (Nuxt.js), using TypeScript
+- Express.js is used for backendAPI, using TypeScript
+- MongoDB is used as database, models implemented with Mongoose using TypeScript
 
 ## Design pattern decisions
 

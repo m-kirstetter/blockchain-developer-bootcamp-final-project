@@ -1,7 +1,6 @@
 import Vuex, { Store } from 'vuex';
 import { EthersDefaultState } from '@/store/ethers/state';
 import { IState } from '@/interfaces/IState';
-import { IEthers } from '@/interfaces/IEthers';
 import { EthersActions } from '@/store/ethers/actions';
 import { EthersMutations } from '@/store/ethers/mutations';
 import { EthersGetters } from '@/store/ethers/getters';
@@ -10,7 +9,6 @@ import { AxiosMock, getAxiosMock } from '@/test/test-utils';
 describe('EthersActions', () => {
   let store: Store<IState>;
   let axiosMock: AxiosMock;
-  let fixture: IEthers;
 
   const EtherModule = {
     namespaced: true,
@@ -31,8 +29,6 @@ describe('EthersActions', () => {
 
     store.$axios = axiosMock;
     store.commit = jest.fn();
-
-    // fixture = { _id: '1' };
   });
 
   describe('TODO: REAL TESTS', () => {
