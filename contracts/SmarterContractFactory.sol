@@ -5,25 +5,45 @@ import "@openzeppelin/contracts/proxy/Clones.sol";
 import "./interfaces/ISmarterContractFactory.sol";
 import "./interfaces/ISmarterContract.sol";
 
+/// @title SmarterContractFactory - SmarterContract factory contract
+/// @author Manuel Kirstetter
+/// @notice Use for testing purpose only, no guarantee
+/// @custom:experimental This is an experimental contract.
 contract SmarterContractFactory is ISmarterContractFactory {
+    /// @notice count of all 'child' contracts
+    /// @return returns the count of 'child' contracts
     uint256 public contractCount = 0;
+
+    /// @notice contract address from which all 'child' contract should be implemented from
+    /// @dev immutable
+    /// @return returns implementation contract address
+    address public immutable implementation;
+
     mapping(uint256 => address) internal _contracts;
 
+    /// @notice event fired at 'child' contract creation
+    /// @param index contract id/index
+    /// @param contractAddress created contract address
+    /// @param milestones array of all created contract milestones
     event LogNewContract(
         uint256 indexed index,
         address contractAddress,
         uint256[] milestones
     );
 
-    address public immutable implementation;
-
     constructor(address _implementation) {
         require(_implementation != address(0), "Implementation contract address invalid");
         implementation = _implementation;
     }
 
+    /// @notice calls initialization of a new contract with provided params
+    /// @param _contractAddress contract address
+    /// @param _client client address
+    /// @param _provider provider address
+    /// @param _milestones array of milestone amounts
+    /// @dev _milestones is available only during this function call
     function _init(
-        address _contractAddress,
+        address payable _contractAddress,
         address _client,
         address _provider,
         uint256[] calldata _milestones
@@ -41,12 +61,18 @@ contract SmarterContractFactory is ISmarterContractFactory {
         emit LogNewContract(contractId, _contractAddress, _milestones);
     }
 
+    /// @notice generates contract address calls initialization of a new contract with provided params
+    /// @param _client client address
+    /// @param _provider provider address
+    /// @param _milestones array of milestone amounts
+    /// @dev _milestones is available only during this function call
+    /// @return Returns created contract address
     function create(
         address _client,
         address _provider,
         uint256[] calldata _milestones
     ) external override returns (address) {
-        address contractAddress = Clones.clone(implementation);
+        address payable contractAddress = payable(address(Clones.clone(implementation)));
 
         _init(
             contractAddress,
@@ -58,6 +84,9 @@ contract SmarterContractFactory is ISmarterContractFactory {
         return contractAddress;
     }
 
+    /// @notice to get contract address of id/index 
+    /// @param _index contract id/index
+    /// @return Returns contract address of id/index
     function getContractAddress(uint256 _index) public view returns (address) {
         return _contracts[_index];
     }

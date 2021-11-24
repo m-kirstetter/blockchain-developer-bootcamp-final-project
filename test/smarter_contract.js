@@ -6,6 +6,8 @@ const truffleAssert = require('truffle-assertions');
 const truffleEvent = require('truffle-events');
 const BN = require('bn.js');
 
+// Add tests for Factory contract
+
 contract('SmarterContract', (accounts) => {
   it('should assert true', async function () {
     await SmarterContract.deployed();
@@ -76,40 +78,35 @@ contract('SmarterContract', (accounts) => {
     await truffleAssert.reverts(contract.release(0), "Can't release any milestone. Have you deposit funds?");
   });
 
-  it('should update balance on deposit', async function () {
-    const contract = await SmarterContract.at(contractAddress);
-    const value = '30000000000';
-    const contractBalanceBefore = await web3.eth.getBalance(contractAddress);
-    await truffleAssert.passes(contract.sendTransaction({ from: account1, value }));
-    const contractBalanceAfter = await web3.eth.getBalance(contractAddress);
-    const total = await contract.total();
-    const received = contractBalanceAfter - contractBalanceBefore;
-    assert.strictEqual(received.toString(), value);
-    assert.strictEqual(total.toString(), value);
-  });
-
   it('should revert if deposit from address that is not Client', async function () {
     const contract = await SmarterContract.at(contractAddress);
     const value = '30000000000';
     await truffleAssert.reverts(contract.sendTransaction({ from: account5, value }), 'You are not contract Client');
   });
 
-  it('should revert if deposit is below total contract amount', async function () {
+  it('should revert if deposit is not total contract amount', async function () {
     const contract = await SmarterContract.at(contractAddress);
     const value = '10000000000';
     await truffleAssert.reverts(
       contract.sendTransaction({ from: account1, value }),
-      'Deposit too low, minimum deposit is total contract amount',
+      'Deposit should be total contract amount',
     );
   });
 
-  it('should fire Received event on deposit', async function () {
+  it('should update balance on deposit, and fire Received event', async function () {
     const contract = await SmarterContract.at(contractAddress);
     const value = '30000000000';
+    const contractBalanceBefore = await web3.eth.getBalance(contractAddress);
     const result = await contract.sendTransaction({ from: account1, value });
     truffleAssert.eventEmitted(result, 'Received', (event) => {
       return event.amount.toString() === value.toString();
     });
+    await truffleAssert.passes(result);
+    const contractBalanceAfter = await web3.eth.getBalance(contractAddress);
+    const total = await contract.total();
+    const received = contractBalanceAfter - contractBalanceBefore;
+    assert.strictEqual(received.toString(), value);
+    assert.strictEqual(total.toString(), value);
   });
 
   it('should revert if release from address that is not Client', async function () {
@@ -125,7 +122,7 @@ contract('SmarterContract', (accounts) => {
     );
   });
 
-  it('should pass at next milestone release, and pay milestoe to provider', async function () {
+  it('should pass at next milestone release, and pay milestone to provider', async function () {
     const contract = await SmarterContract.at(contractAddress);
     const milestoneToRelease = 0;
     const amountToBePaid = milestones[milestoneToRelease];
@@ -158,19 +155,13 @@ contract('SmarterContract', (accounts) => {
 
     let amountToBePaid = 0;
 
-    const loop = milestonesListLength - currentMilestone;
-
-    for (let i = 0; i < loop; i++) {
-      if (i >= currentMilestone) {
-        amountToBePaid = amountToBePaid + parseInt((await contract.milestones(i)).toString());
-      }
-    }
-
     const contractBalanceBefore = await web3.eth.getBalance(contractAddress);
     const contractBalanceBeforeBN = new BN(contractBalanceBefore);
 
-    for (let i = 0; i < loop; i++) {
-      if (i >= currentMilestone) {
+    for (let i = 0; i < milestonesListLength; i++) {
+      if (i >= currentMilestone && i <= milestonesListLength) {
+        amountToBePaid = amountToBePaid + parseInt((await contract.milestones(i)).toString());
+
         await truffleAssert.passes(contract.release(currentMilestone));
         currentMilestone = currentMilestone + 1;
       }
@@ -182,5 +173,12 @@ contract('SmarterContract', (accounts) => {
     const paidAmount = contractBalanceBeforeBN.sub(contractBalanceAfterBN);
 
     assert.strictEqual(paidAmount.toString(), amountToBePaid.toString());
+  });
+
+  it('should have balance at 0', async function () {
+    const contractBalance = await web3.eth.getBalance(contractAddress);
+    const zero = 0;
+
+    assert.strictEqual(contractBalance.toString(), zero.toString());
   });
 });
