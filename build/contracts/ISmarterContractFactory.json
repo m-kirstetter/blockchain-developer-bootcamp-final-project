@@ -1,0 +1,709 @@
+{
+  "contractName": "ISmarterContractFactory",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_client",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_provider",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256[]",
+          "name": "_milestones",
+          "type": "uint256[]"
+        }
+      ],
+      "name": "create",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_index",
+          "type": "uint256"
+        }
+      ],
+      "name": "getContractAddress",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "metadata": "{\"compiler\":{\"version\":\"0.8.9+commit.e5eed63a\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_client\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_provider\",\"type\":\"address\"},{\"internalType\":\"uint256[]\",\"name\":\"_milestones\",\"type\":\"uint256[]\"}],\"name\":\"create\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_index\",\"type\":\"uint256\"}],\"name\":\"getContractAddress\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"author\":\"Manuel Kirstetter\",\"custom:experimental\":\"This is an experimental contract.\",\"kind\":\"dev\",\"methods\":{\"create(address,address,uint256[])\":{\"details\":\"_milestones is available only during this function call\",\"params\":{\"_client\":\"client address\",\"_milestones\":\"array of milestone amounts\",\"_provider\":\"provider address\"},\"returns\":{\"_0\":\"Returns created contract address\"}},\"getContractAddress(uint256)\":{\"params\":{\"_index\":\"contract id/index\"},\"returns\":{\"_0\":\"Returns contract address of id/index\"}}},\"title\":\"ISmarterContractFactory - interface of SmarterContractFactory\",\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{\"create(address,address,uint256[])\":{\"notice\":\"creates a new contract with provided params\"},\"getContractAddress(uint256)\":{\"notice\":\"to get contract address of id/index \"}},\"notice\":\"Use for testing purpose only, no guarantee\",\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/contracts/interfaces/ISmarterContractFactory.sol\":\"ISmarterContractFactory\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"project:/contracts/interfaces/ISmarterContractFactory.sol\":{\"keccak256\":\"0xa9e19a3a3b5567f511ac6feea43c099abb5dddb9f690043410d0aef1422f1931\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://9d5c39471761a02a993f7d93ce5282a1ea35ba7dcfb22b3101f38494e27bd7a9\",\"dweb:/ipfs/QmXQ5YUwsxK171LtuFyc7ysQsRwgrBwsDBXhPGvPi8twz2\"]}},\"version\":1}",
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "immutableReferences": {},
+  "generatedSources": [],
+  "deployedGeneratedSources": [],
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "// SPDX-License-Identifier: MIT\npragma solidity >=0.8.9 <0.9.0;\n\n/// @title ISmarterContractFactory - interface of SmarterContractFactory\n/// @author Manuel Kirstetter\n/// @notice Use for testing purpose only, no guarantee\n/// @custom:experimental This is an experimental contract.\ninterface ISmarterContractFactory {\n    /// @notice creates a new contract with provided params\n    /// @param _client client address\n    /// @param _provider provider address\n    /// @param _milestones array of milestone amounts\n    /// @dev _milestones is available only during this function call\n    /// @return Returns created contract address\n    function create(\n        address _client,\n        address _provider,\n        uint256[] calldata _milestones\n    ) external returns (address);\n    \n    /// @notice to get contract address of id/index \n    /// @param _index contract id/index\n    /// @return Returns contract address of id/index\n    function getContractAddress(uint256 _index) external view returns (address);\n}",
+  "sourcePath": "/Users/manu/Blockchain/blockchain-developer-bootcamp-final-project/contracts/interfaces/ISmarterContractFactory.sol",
+  "ast": {
+    "absolutePath": "project:/contracts/interfaces/ISmarterContractFactory.sol",
+    "exportedSymbols": {
+      "ISmarterContractFactory": [
+        716
+      ]
+    },
+    "id": 717,
+    "license": "MIT",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 693,
+        "literals": [
+          "solidity",
+          ">=",
+          "0.8",
+          ".9",
+          "<",
+          "0.9",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "32:31:8"
+      },
+      {
+        "abstract": false,
+        "baseContracts": [],
+        "canonicalName": "ISmarterContractFactory",
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "documentation": {
+          "id": 694,
+          "nodeType": "StructuredDocumentation",
+          "src": "65:217:8",
+          "text": "@title ISmarterContractFactory - interface of SmarterContractFactory\n @author Manuel Kirstetter\n @notice Use for testing purpose only, no guarantee\n @custom:experimental This is an experimental contract."
+        },
+        "fullyImplemented": false,
+        "id": 716,
+        "linearizedBaseContracts": [
+          716
+        ],
+        "name": "ISmarterContractFactory",
+        "nameLocation": "292:23:8",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "documentation": {
+              "id": 695,
+              "nodeType": "StructuredDocumentation",
+              "src": "322:307:8",
+              "text": "@notice creates a new contract with provided params\n @param _client client address\n @param _provider provider address\n @param _milestones array of milestone amounts\n @dev _milestones is available only during this function call\n @return Returns created contract address"
+            },
+            "functionSelector": "2bfdced7",
+            "id": 707,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "create",
+            "nameLocation": "643:6:8",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 703,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 697,
+                  "mutability": "mutable",
+                  "name": "_client",
+                  "nameLocation": "667:7:8",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 707,
+                  "src": "659:15:8",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 696,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "659:7:8",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 699,
+                  "mutability": "mutable",
+                  "name": "_provider",
+                  "nameLocation": "692:9:8",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 707,
+                  "src": "684:17:8",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 698,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "684:7:8",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 702,
+                  "mutability": "mutable",
+                  "name": "_milestones",
+                  "nameLocation": "730:11:8",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 707,
+                  "src": "711:30:8",
+                  "stateVariable": false,
+                  "storageLocation": "calldata",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_uint256_$dyn_calldata_ptr",
+                    "typeString": "uint256[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 700,
+                      "name": "uint256",
+                      "nodeType": "ElementaryTypeName",
+                      "src": "711:7:8",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "id": 701,
+                    "nodeType": "ArrayTypeName",
+                    "src": "711:9:8",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_uint256_$dyn_storage_ptr",
+                      "typeString": "uint256[]"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "649:98:8"
+            },
+            "returnParameters": {
+              "id": 706,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 705,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 707,
+                  "src": "766:7:8",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 704,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "766:7:8",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "765:9:8"
+            },
+            "scope": 716,
+            "src": "634:141:8",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "documentation": {
+              "id": 708,
+              "nodeType": "StructuredDocumentation",
+              "src": "785:141:8",
+              "text": "@notice to get contract address of id/index \n @param _index contract id/index\n @return Returns contract address of id/index"
+            },
+            "functionSelector": "aefa7d98",
+            "id": 715,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getContractAddress",
+            "nameLocation": "940:18:8",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 711,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 710,
+                  "mutability": "mutable",
+                  "name": "_index",
+                  "nameLocation": "967:6:8",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 715,
+                  "src": "959:14:8",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 709,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "959:7:8",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "958:16:8"
+            },
+            "returnParameters": {
+              "id": 714,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 713,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 715,
+                  "src": "998:7:8",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 712,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "998:7:8",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "997:9:8"
+            },
+            "scope": 716,
+            "src": "931:76:8",
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "scope": 717,
+        "src": "282:727:8",
+        "usedErrors": []
+      }
+    ],
+    "src": "32:977:8"
+  },
+  "legacyAST": {
+    "absolutePath": "project:/contracts/interfaces/ISmarterContractFactory.sol",
+    "exportedSymbols": {
+      "ISmarterContractFactory": [
+        716
+      ]
+    },
+    "id": 717,
+    "license": "MIT",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 693,
+        "literals": [
+          "solidity",
+          ">=",
+          "0.8",
+          ".9",
+          "<",
+          "0.9",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "32:31:8"
+      },
+      {
+        "abstract": false,
+        "baseContracts": [],
+        "canonicalName": "ISmarterContractFactory",
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "documentation": {
+          "id": 694,
+          "nodeType": "StructuredDocumentation",
+          "src": "65:217:8",
+          "text": "@title ISmarterContractFactory - interface of SmarterContractFactory\n @author Manuel Kirstetter\n @notice Use for testing purpose only, no guarantee\n @custom:experimental This is an experimental contract."
+        },
+        "fullyImplemented": false,
+        "id": 716,
+        "linearizedBaseContracts": [
+          716
+        ],
+        "name": "ISmarterContractFactory",
+        "nameLocation": "292:23:8",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "documentation": {
+              "id": 695,
+              "nodeType": "StructuredDocumentation",
+              "src": "322:307:8",
+              "text": "@notice creates a new contract with provided params\n @param _client client address\n @param _provider provider address\n @param _milestones array of milestone amounts\n @dev _milestones is available only during this function call\n @return Returns created contract address"
+            },
+            "functionSelector": "2bfdced7",
+            "id": 707,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "create",
+            "nameLocation": "643:6:8",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 703,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 697,
+                  "mutability": "mutable",
+                  "name": "_client",
+                  "nameLocation": "667:7:8",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 707,
+                  "src": "659:15:8",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 696,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "659:7:8",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 699,
+                  "mutability": "mutable",
+                  "name": "_provider",
+                  "nameLocation": "692:9:8",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 707,
+                  "src": "684:17:8",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 698,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "684:7:8",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 702,
+                  "mutability": "mutable",
+                  "name": "_milestones",
+                  "nameLocation": "730:11:8",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 707,
+                  "src": "711:30:8",
+                  "stateVariable": false,
+                  "storageLocation": "calldata",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_uint256_$dyn_calldata_ptr",
+                    "typeString": "uint256[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 700,
+                      "name": "uint256",
+                      "nodeType": "ElementaryTypeName",
+                      "src": "711:7:8",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "id": 701,
+                    "nodeType": "ArrayTypeName",
+                    "src": "711:9:8",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_uint256_$dyn_storage_ptr",
+                      "typeString": "uint256[]"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "649:98:8"
+            },
+            "returnParameters": {
+              "id": 706,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 705,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 707,
+                  "src": "766:7:8",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 704,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "766:7:8",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "765:9:8"
+            },
+            "scope": 716,
+            "src": "634:141:8",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "documentation": {
+              "id": 708,
+              "nodeType": "StructuredDocumentation",
+              "src": "785:141:8",
+              "text": "@notice to get contract address of id/index \n @param _index contract id/index\n @return Returns contract address of id/index"
+            },
+            "functionSelector": "aefa7d98",
+            "id": 715,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getContractAddress",
+            "nameLocation": "940:18:8",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 711,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 710,
+                  "mutability": "mutable",
+                  "name": "_index",
+                  "nameLocation": "967:6:8",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 715,
+                  "src": "959:14:8",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 709,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "959:7:8",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "958:16:8"
+            },
+            "returnParameters": {
+              "id": 714,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 713,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 715,
+                  "src": "998:7:8",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 712,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "998:7:8",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "997:9:8"
+            },
+            "scope": 716,
+            "src": "931:76:8",
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "scope": 717,
+        "src": "282:727:8",
+        "usedErrors": []
+      }
+    ],
+    "src": "32:977:8"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.8.9+commit.e5eed63a.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.4.3",
+  "updatedAt": "2021-11-24T12:58:11.164Z",
+  "devdoc": {
+    "author": "Manuel Kirstetter",
+    "custom:experimental": "This is an experimental contract.",
+    "kind": "dev",
+    "methods": {
+      "create(address,address,uint256[])": {
+        "details": "_milestones is available only during this function call",
+        "params": {
+          "_client": "client address",
+          "_milestones": "array of milestone amounts",
+          "_provider": "provider address"
+        },
+        "returns": {
+          "_0": "Returns created contract address"
+        }
+      },
+      "getContractAddress(uint256)": {
+        "params": {
+          "_index": "contract id/index"
+        },
+        "returns": {
+          "_0": "Returns contract address of id/index"
+        }
+      }
+    },
+    "title": "ISmarterContractFactory - interface of SmarterContractFactory",
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {
+      "create(address,address,uint256[])": {
+        "notice": "creates a new contract with provided params"
+      },
+      "getContractAddress(uint256)": {
+        "notice": "to get contract address of id/index "
+      }
+    },
+    "notice": "Use for testing purpose only, no guarantee",
+    "version": 1
+  }
+}
