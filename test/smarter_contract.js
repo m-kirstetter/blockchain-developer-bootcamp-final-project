@@ -186,4 +186,18 @@ contract('SmarterContract', (accounts) => {
 
     assert.strictEqual(contractBalance.toString(), zero.toString());
   });
+
+  it('should list contracts count from SmarterContractFactory', async function () {
+    const contractCount = await contractFactory.contractCount();
+    const number = 2;
+
+    assert.strictEqual(contractCount.toString(), number.toString());
+  });
+
+  it('should get contract address by its index', async function () {
+    const contractCount = await contractFactory.getContractAddress(1);
+    const number = 2;
+
+    assert.strictEqual(contractCount, contractAddress);
+  });
 });
