@@ -65,7 +65,7 @@ import { IGigFrontend } from '@/interfaces/IGig';
 import { IAuthServiceUser } from '@/interfaces/IAuth';
 import ApplicationCard from '@/components/app/ApplicationCard/ApplicationCard.vue';
 import { isApplicationArray, isUser } from '@/utils/typeguards';
-import ApplyToGigForm from '../Forms2/ApplyToGigForm/ApplyToGigForm.vue';
+import ApplyToGigForm from '../Forms/ApplyToGigForm/ApplyToGigForm.vue';
 
 export default defineComponent({
   name: 'GigFullDetails',

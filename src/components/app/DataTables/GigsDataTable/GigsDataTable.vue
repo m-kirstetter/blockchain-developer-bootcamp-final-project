@@ -114,7 +114,7 @@ import VueColumns from '@/components/layout/VueColumns/VueColumns.vue';
 import VueColumn from '@/components/layout/VueColumns/VueColumn/VueColumn.vue';
 import VueButton from '@/components/input-and-actions/VueButton/VueButton.vue';
 import VueCard from '@/components/data-display/VueCard/VueCard.vue';
-import CreateGigForm from '@/components/app/Forms2/CreateGigForm/CreateGigForm.vue';
+import CreateGigForm from '@/components/app/Forms/CreateGigForm/CreateGigForm.vue';
 import { addToast } from '@/components/utils';
 import { IGig, IGigsQuery } from '@/api/models/gig.model';
 import { IDataTableColumns } from '@/components/VueDataTable/IDataTable';

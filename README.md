@@ -22,10 +22,11 @@ Gig creation/payment workflow:
 5. Recruiter releases the milestone, this automatically triggers milestone payment to provider (Smart contract interaction)
 6. 4 & 5 repeats until there are no more milestones to be released
 
-## Tested with
+## Prerequisities
 
-- Node v14.18.1
-- Truffle v5.4.12
+- Node v14
+- Truffle v5
+- Solidity v0.8.9
 - Metamask wallet connected to Ropsten network
 
 ## Directory structure
