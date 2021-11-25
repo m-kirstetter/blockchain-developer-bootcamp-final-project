@@ -68,27 +68,17 @@
   "ast": {
     "absolutePath": "project:/contracts/interfaces/ISmarterContract.sol",
     "exportedSymbols": {
-      "ISmarterContract": [
-        691
-      ]
+      "ISmarterContract": [658]
     },
-    "id": 692,
+    "id": 659,
     "license": "MIT",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 662,
-        "literals": [
-          "solidity",
-          ">=",
-          "0.8",
-          ".9",
-          "<",
-          "0.9",
-          ".0"
-        ],
+        "id": 629,
+        "literals": ["solidity", ">=", "0.8", ".9", "<", "0.9", ".0"],
         "nodeType": "PragmaDirective",
-        "src": "32:31:7"
+        "src": "32:31:6"
       },
       {
         "abstract": false,
@@ -97,48 +87,46 @@
         "contractDependencies": [],
         "contractKind": "interface",
         "documentation": {
-          "id": 663,
+          "id": 630,
           "nodeType": "StructuredDocumentation",
-          "src": "65:203:7",
+          "src": "65:203:6",
           "text": "@title ISmarterContract - interface of SmarterContract\n @author Manuel Kirstetter\n @notice Use for testing purpose only, no guarantee\n @custom:experimental This is an experimental contract."
         },
         "fullyImplemented": false,
-        "id": 691,
-        "linearizedBaseContracts": [
-          691
-        ],
+        "id": 658,
+        "linearizedBaseContracts": [658],
         "name": "ISmarterContract",
-        "nameLocation": "278:16:7",
+        "nameLocation": "278:16:6",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "documentation": {
-              "id": 664,
+              "id": 631,
               "nodeType": "StructuredDocumentation",
-              "src": "301:192:7",
+              "src": "301:192:6",
               "text": "@notice initialize a new contract with provided params\n @param _client client address\n @param _provider provider address\n @param _milestones array of milestone amounts"
             },
             "functionSelector": "44b77680",
-            "id": 674,
+            "id": 641,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "init",
-            "nameLocation": "507:4:7",
+            "nameLocation": "507:4:6",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 672,
+              "id": 639,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 666,
+                  "id": 633,
                   "mutability": "mutable",
                   "name": "_client",
-                  "nameLocation": "529:7:7",
+                  "nameLocation": "529:7:6",
                   "nodeType": "VariableDeclaration",
-                  "scope": 674,
-                  "src": "521:15:7",
+                  "scope": 641,
+                  "src": "521:15:6",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -146,10 +134,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 665,
+                    "id": 632,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "521:7:7",
+                    "src": "521:7:6",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -160,13 +148,13 @@
                 },
                 {
                   "constant": false,
-                  "id": 668,
+                  "id": 635,
                   "mutability": "mutable",
                   "name": "_provider",
-                  "nameLocation": "554:9:7",
+                  "nameLocation": "554:9:6",
                   "nodeType": "VariableDeclaration",
-                  "scope": 674,
-                  "src": "546:17:7",
+                  "scope": 641,
+                  "src": "546:17:6",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -174,10 +162,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 667,
+                    "id": 634,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "546:7:7",
+                    "src": "546:7:6",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -188,13 +176,13 @@
                 },
                 {
                   "constant": false,
-                  "id": 671,
+                  "id": 638,
                   "mutability": "mutable",
                   "name": "_milestones",
-                  "nameLocation": "592:11:7",
+                  "nameLocation": "592:11:6",
                   "nodeType": "VariableDeclaration",
-                  "scope": 674,
-                  "src": "573:30:7",
+                  "scope": 641,
+                  "src": "573:30:6",
                   "stateVariable": false,
                   "storageLocation": "calldata",
                   "typeDescriptions": {
@@ -203,18 +191,18 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 669,
+                      "id": 636,
                       "name": "uint256",
                       "nodeType": "ElementaryTypeName",
-                      "src": "573:7:7",
+                      "src": "573:7:6",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
                       }
                     },
-                    "id": 670,
+                    "id": 637,
                     "nodeType": "ArrayTypeName",
-                    "src": "573:9:7",
+                    "src": "573:9:6",
                     "typeDescriptions": {
                       "typeIdentifier": "t_array$_t_uint256_$dyn_storage_ptr",
                       "typeString": "uint256[]"
@@ -223,54 +211,54 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "511:98:7"
+              "src": "511:98:6"
             },
             "returnParameters": {
-              "id": 673,
+              "id": 640,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "618:0:7"
+              "src": "618:0:6"
             },
-            "scope": 691,
-            "src": "498:121:7",
+            "scope": 658,
+            "src": "498:121:6",
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "external"
           },
           {
             "documentation": {
-              "id": 675,
+              "id": 642,
               "nodeType": "StructuredDocumentation",
-              "src": "625:91:7",
+              "src": "625:91:6",
               "text": "@notice to get number of milestones\n @return returns the milestones array length"
             },
             "functionSelector": "f55864e0",
-            "id": 680,
+            "id": 647,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "milestonesListLength",
-            "nameLocation": "730:20:7",
+            "nameLocation": "730:20:6",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 676,
+              "id": 643,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "750:2:7"
+              "src": "750:2:6"
             },
             "returnParameters": {
-              "id": 679,
+              "id": 646,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 678,
+                  "id": 645,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 680,
-                  "src": "776:7:7",
+                  "scope": 647,
+                  "src": "776:7:6",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -278,10 +266,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 677,
+                    "id": 644,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "776:7:7",
+                    "src": "776:7:6",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -290,42 +278,42 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "775:9:7"
+              "src": "775:9:6"
             },
-            "scope": 691,
-            "src": "721:64:7",
+            "scope": 658,
+            "src": "721:64:6",
             "stateMutability": "view",
             "virtual": false,
             "visibility": "external"
           },
           {
             "documentation": {
-              "id": 681,
+              "id": 648,
               "nodeType": "StructuredDocumentation",
-              "src": "791:125:7",
+              "src": "791:125:6",
               "text": "@notice releases milestone and transfer milestone associated fund\n @param _milestone milestone id/index to release"
             },
             "functionSelector": "37bdc99b",
-            "id": 686,
+            "id": 653,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "release",
-            "nameLocation": "930:7:7",
+            "nameLocation": "930:7:6",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 684,
+              "id": 651,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 683,
+                  "id": 650,
                   "mutability": "mutable",
                   "name": "_milestone",
-                  "nameLocation": "946:10:7",
+                  "nameLocation": "946:10:6",
                   "nodeType": "VariableDeclaration",
-                  "scope": 686,
-                  "src": "938:18:7",
+                  "scope": 653,
+                  "src": "938:18:6",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -333,10 +321,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 682,
+                    "id": 649,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "938:7:7",
+                    "src": "938:7:6",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -345,28 +333,28 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "937:20:7"
+              "src": "937:20:6"
             },
             "returnParameters": {
-              "id": 685,
+              "id": 652,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "966:0:7"
+              "src": "966:0:6"
             },
-            "scope": 691,
-            "src": "921:46:7",
+            "scope": 658,
+            "src": "921:46:6",
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "external"
           },
           {
             "documentation": {
-              "id": 687,
+              "id": 654,
               "nodeType": "StructuredDocumentation",
-              "src": "973:37:7",
+              "src": "973:37:6",
               "text": "@notice deposit funds to contract"
             },
-            "id": 690,
+            "id": 657,
             "implemented": false,
             "kind": "receive",
             "modifiers": [],
@@ -374,55 +362,45 @@
             "nameLocation": "-1:-1:-1",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 688,
+              "id": 655,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "1022:2:7"
+              "src": "1022:2:6"
             },
             "returnParameters": {
-              "id": 689,
+              "id": 656,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "1041:0:7"
+              "src": "1041:0:6"
             },
-            "scope": 691,
-            "src": "1015:27:7",
+            "scope": 658,
+            "src": "1015:27:6",
             "stateMutability": "payable",
             "virtual": false,
             "visibility": "external"
           }
         ],
-        "scope": 692,
-        "src": "268:777:7",
+        "scope": 659,
+        "src": "268:777:6",
         "usedErrors": []
       }
     ],
-    "src": "32:1013:7"
+    "src": "32:1013:6"
   },
   "legacyAST": {
     "absolutePath": "project:/contracts/interfaces/ISmarterContract.sol",
     "exportedSymbols": {
-      "ISmarterContract": [
-        691
-      ]
+      "ISmarterContract": [658]
     },
-    "id": 692,
+    "id": 659,
     "license": "MIT",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 662,
-        "literals": [
-          "solidity",
-          ">=",
-          "0.8",
-          ".9",
-          "<",
-          "0.9",
-          ".0"
-        ],
+        "id": 629,
+        "literals": ["solidity", ">=", "0.8", ".9", "<", "0.9", ".0"],
         "nodeType": "PragmaDirective",
-        "src": "32:31:7"
+        "src": "32:31:6"
       },
       {
         "abstract": false,
@@ -431,48 +409,46 @@
         "contractDependencies": [],
         "contractKind": "interface",
         "documentation": {
-          "id": 663,
+          "id": 630,
           "nodeType": "StructuredDocumentation",
-          "src": "65:203:7",
+          "src": "65:203:6",
           "text": "@title ISmarterContract - interface of SmarterContract\n @author Manuel Kirstetter\n @notice Use for testing purpose only, no guarantee\n @custom:experimental This is an experimental contract."
         },
         "fullyImplemented": false,
-        "id": 691,
-        "linearizedBaseContracts": [
-          691
-        ],
+        "id": 658,
+        "linearizedBaseContracts": [658],
         "name": "ISmarterContract",
-        "nameLocation": "278:16:7",
+        "nameLocation": "278:16:6",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "documentation": {
-              "id": 664,
+              "id": 631,
               "nodeType": "StructuredDocumentation",
-              "src": "301:192:7",
+              "src": "301:192:6",
               "text": "@notice initialize a new contract with provided params\n @param _client client address\n @param _provider provider address\n @param _milestones array of milestone amounts"
             },
             "functionSelector": "44b77680",
-            "id": 674,
+            "id": 641,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "init",
-            "nameLocation": "507:4:7",
+            "nameLocation": "507:4:6",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 672,
+              "id": 639,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 666,
+                  "id": 633,
                   "mutability": "mutable",
                   "name": "_client",
-                  "nameLocation": "529:7:7",
+                  "nameLocation": "529:7:6",
                   "nodeType": "VariableDeclaration",
-                  "scope": 674,
-                  "src": "521:15:7",
+                  "scope": 641,
+                  "src": "521:15:6",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -480,10 +456,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 665,
+                    "id": 632,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "521:7:7",
+                    "src": "521:7:6",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -494,13 +470,13 @@
                 },
                 {
                   "constant": false,
-                  "id": 668,
+                  "id": 635,
                   "mutability": "mutable",
                   "name": "_provider",
-                  "nameLocation": "554:9:7",
+                  "nameLocation": "554:9:6",
                   "nodeType": "VariableDeclaration",
-                  "scope": 674,
-                  "src": "546:17:7",
+                  "scope": 641,
+                  "src": "546:17:6",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -508,10 +484,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 667,
+                    "id": 634,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "546:7:7",
+                    "src": "546:7:6",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -522,13 +498,13 @@
                 },
                 {
                   "constant": false,
-                  "id": 671,
+                  "id": 638,
                   "mutability": "mutable",
                   "name": "_milestones",
-                  "nameLocation": "592:11:7",
+                  "nameLocation": "592:11:6",
                   "nodeType": "VariableDeclaration",
-                  "scope": 674,
-                  "src": "573:30:7",
+                  "scope": 641,
+                  "src": "573:30:6",
                   "stateVariable": false,
                   "storageLocation": "calldata",
                   "typeDescriptions": {
@@ -537,18 +513,18 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 669,
+                      "id": 636,
                       "name": "uint256",
                       "nodeType": "ElementaryTypeName",
-                      "src": "573:7:7",
+                      "src": "573:7:6",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
                       }
                     },
-                    "id": 670,
+                    "id": 637,
                     "nodeType": "ArrayTypeName",
-                    "src": "573:9:7",
+                    "src": "573:9:6",
                     "typeDescriptions": {
                       "typeIdentifier": "t_array$_t_uint256_$dyn_storage_ptr",
                       "typeString": "uint256[]"
@@ -557,54 +533,54 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "511:98:7"
+              "src": "511:98:6"
             },
             "returnParameters": {
-              "id": 673,
+              "id": 640,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "618:0:7"
+              "src": "618:0:6"
             },
-            "scope": 691,
-            "src": "498:121:7",
+            "scope": 658,
+            "src": "498:121:6",
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "external"
           },
           {
             "documentation": {
-              "id": 675,
+              "id": 642,
               "nodeType": "StructuredDocumentation",
-              "src": "625:91:7",
+              "src": "625:91:6",
               "text": "@notice to get number of milestones\n @return returns the milestones array length"
             },
             "functionSelector": "f55864e0",
-            "id": 680,
+            "id": 647,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "milestonesListLength",
-            "nameLocation": "730:20:7",
+            "nameLocation": "730:20:6",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 676,
+              "id": 643,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "750:2:7"
+              "src": "750:2:6"
             },
             "returnParameters": {
-              "id": 679,
+              "id": 646,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 678,
+                  "id": 645,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 680,
-                  "src": "776:7:7",
+                  "scope": 647,
+                  "src": "776:7:6",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -612,10 +588,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 677,
+                    "id": 644,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "776:7:7",
+                    "src": "776:7:6",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -624,42 +600,42 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "775:9:7"
+              "src": "775:9:6"
             },
-            "scope": 691,
-            "src": "721:64:7",
+            "scope": 658,
+            "src": "721:64:6",
             "stateMutability": "view",
             "virtual": false,
             "visibility": "external"
           },
           {
             "documentation": {
-              "id": 681,
+              "id": 648,
               "nodeType": "StructuredDocumentation",
-              "src": "791:125:7",
+              "src": "791:125:6",
               "text": "@notice releases milestone and transfer milestone associated fund\n @param _milestone milestone id/index to release"
             },
             "functionSelector": "37bdc99b",
-            "id": 686,
+            "id": 653,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "release",
-            "nameLocation": "930:7:7",
+            "nameLocation": "930:7:6",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 684,
+              "id": 651,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 683,
+                  "id": 650,
                   "mutability": "mutable",
                   "name": "_milestone",
-                  "nameLocation": "946:10:7",
+                  "nameLocation": "946:10:6",
                   "nodeType": "VariableDeclaration",
-                  "scope": 686,
-                  "src": "938:18:7",
+                  "scope": 653,
+                  "src": "938:18:6",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -667,10 +643,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 682,
+                    "id": 649,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "938:7:7",
+                    "src": "938:7:6",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -679,28 +655,28 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "937:20:7"
+              "src": "937:20:6"
             },
             "returnParameters": {
-              "id": 685,
+              "id": 652,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "966:0:7"
+              "src": "966:0:6"
             },
-            "scope": 691,
-            "src": "921:46:7",
+            "scope": 658,
+            "src": "921:46:6",
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "external"
           },
           {
             "documentation": {
-              "id": 687,
+              "id": 654,
               "nodeType": "StructuredDocumentation",
-              "src": "973:37:7",
+              "src": "973:37:6",
               "text": "@notice deposit funds to contract"
             },
-            "id": 690,
+            "id": 657,
             "implemented": false,
             "kind": "receive",
             "modifiers": [],
@@ -708,30 +684,30 @@
             "nameLocation": "-1:-1:-1",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 688,
+              "id": 655,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "1022:2:7"
+              "src": "1022:2:6"
             },
             "returnParameters": {
-              "id": 689,
+              "id": 656,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "1041:0:7"
+              "src": "1041:0:6"
             },
-            "scope": 691,
-            "src": "1015:27:7",
+            "scope": 658,
+            "src": "1015:27:6",
             "stateMutability": "payable",
             "virtual": false,
             "visibility": "external"
           }
         ],
-        "scope": 692,
-        "src": "268:777:7",
+        "scope": 659,
+        "src": "268:777:6",
         "usedErrors": []
       }
     ],
-    "src": "32:1013:7"
+    "src": "32:1013:6"
   },
   "compiler": {
     "name": "solc",
@@ -739,7 +715,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.3",
-  "updatedAt": "2021-11-24T12:58:11.163Z",
+  "updatedAt": "2021-11-25T08:15:34.418Z",
   "devdoc": {
     "author": "Manuel Kirstetter",
     "custom:experimental": "This is an experimental contract.",

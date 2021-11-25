@@ -1,0 +1,4 @@
+These 2 contracts are deployed on Ropsten
+
+Factory Implementation Contract: 0x2E3D96dedFef325D314116A4B1cEA429B1318EDb
+Factory Contract: 0xc05dceF7c3628d0004549A5a628B77a151867F9a
