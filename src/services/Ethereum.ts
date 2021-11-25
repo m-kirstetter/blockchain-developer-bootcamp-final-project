@@ -4,6 +4,7 @@ import { Network } from '@ethersproject/networks';
 import { EthereumErrors } from '@/enums/Ethereum';
 import { IEthersErrorResponse } from '@/interfaces/IEthers';
 import { MetaMaskInpageProvider } from '@metamask/providers';
+import { INewContractEvent } from '@/interfaces/INewContractEvent';
 import metamaskService from './Metamask';
 import { EventBus } from './EventBus';
 
@@ -93,6 +94,17 @@ export default class EthereumConnect {
     // If contract already set, we remove all listeners first
     if (this.contract) this.contract.removeAllListeners();
     this.contract = new Contract(this._contractAddress, this._abi, this.provider);
+    this.contract.on(
+      'LogNewContract',
+      (
+        externalId: INewContractEvent['externalId'],
+        index: INewContractEvent['index'],
+        contractAddress: INewContractEvent['contractAddress'],
+        milestones: INewContractEvent['milestones'],
+      ) => {
+        EventBus.$emit('NewContract', { externalId, index, contractAddress, milestones });
+      },
+    );
 
     this._ethereum.on('chainChanged', this._handleChainChanged);
 

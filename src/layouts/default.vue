@@ -47,6 +47,7 @@ import VueFooter from '@/components/navigation/VueFooter/VueFooter.vue';
 import VueToast from '@/components/data-display/VueToast/VueToast.vue';
 import VueBackToTop from '@/components/behavior/VueBackToTop/VueBackToTop.vue';
 import { IItem } from '@/interfaces/IItem';
+import { INewContractEvent } from '@/interfaces/INewContractEvent';
 import VueNavbar from '@/components/navigation/VueNavbar/VueNavbar.vue';
 import MainSidebarMenu from '@/components/app/SidebarMenus/MainSidebarMenu.vue';
 import ProfileSidebarMenu from '@/components/app/SidebarMenus/ProfileSidebarMenu.vue';
@@ -75,7 +76,7 @@ export default defineComponent({
     RoleModal,
   },
   setup() {
-    const { app, $auth } = useContext();
+    const { app, $auth, store } = useContext();
     const { htmlAttrs } = useMeta();
     const showSidebar = ref(true);
     const themes = computed(() => [
@@ -91,6 +92,11 @@ export default defineComponent({
     onMounted(() => {
       EventBus.$on('logout', async (silent = false) => {
         await logout(silent);
+      });
+
+      EventBus.$on('NewContract', (contract: INewContractEvent) => {
+        console.log('In layout:' + contract);
+        store.dispatch('contract/updateContract', { _id: contract.externalId, contract: contract.contractAddress });
       });
     });
 

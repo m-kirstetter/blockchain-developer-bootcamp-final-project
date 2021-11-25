@@ -18117,10 +18117,16 @@
       "links": {},
       "address": "0x6104579cd7F39e9007169FB5BA615411501484F2",
       "transactionHash": "0x35d624dce19faac901a17dcc58d3e030c9bee898b52236bee28d7921ce52d24f"
+    },
+    "5777": {
+      "events": {},
+      "links": {},
+      "address": "0x2AC072247BE6D689271Be0Ec8936909Ec938880e",
+      "transactionHash": "0xfad606fc74febd8f5e1a6bb4bcead471d0474b5951dd36867ceebdf01bcebca9"
     }
   },
   "schemaVersion": "3.4.3",
-  "updatedAt": "2021-11-25T17:26:00.915Z",
+  "updatedAt": "2021-11-25T19:37:57.344Z",
   "networkType": "ethereum",
   "devdoc": {
     "author": "Manuel Kirstetter",

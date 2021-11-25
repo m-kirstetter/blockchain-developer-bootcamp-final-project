@@ -56,7 +56,7 @@ export const EthersActions: IEthersActions = {
 
     await dispatch('connectEthereum');
 
-    if (state.network.name !== 'ropsten') {
+    if (state.network.name !== 'ropsten' && state.network.chainId !== 1337) {
       EventBus.$emit('wrongNetwork');
       commit('SET_LOADING', false);
       throw new Error('Wrong network.');

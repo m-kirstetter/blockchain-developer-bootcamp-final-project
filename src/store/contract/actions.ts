@@ -8,6 +8,8 @@ import { isModel } from '@/utils/typeguards';
 import { IUserFrontend } from '@/interfaces/IUser';
 import { IApplicationFrontend } from '@/interfaces/IApplication';
 import { IUser } from '@/api/models/user.model';
+import { IContractFrontend } from '@/interfaces/IContract';
+import { AtLeast } from '@/utils/generics';
 import { IContractState } from './state';
 
 export interface IContractActions {
@@ -15,10 +17,10 @@ export interface IContractActions {
     context: ActionContext<IContractState, IState>,
     payload: { application: Partial<IApplicationFrontend>; user: Partial<IUserFrontend> },
   ): Promise<any>;
-  // updateContract(
-  //   context: ActionContext<IContractState, IState>,
-  //   payload: { application: Partial<IApplicationFrontend>; user: Partial<IUserFrontend> },
-  // ): Promise<any>;
+  updateContract(
+    context: ActionContext<IContractState, IState>,
+    contract: AtLeast<IContractFrontend, '_id'> & Partial<Pick<IContractFrontend, 'contract' | 'currentMilestone'>>,
+  ): Promise<any>;
 }
 
 export const ContractActions: IContractActions = {
@@ -45,13 +47,9 @@ export const ContractActions: IContractActions = {
     try {
       // const response = await this.$axios.$post('/api/v1/contracts', contract);
       const response = '619fbbbb23a1ff68e9bc773c';
-      const result = await this.$ethereum.contractRw.create(
-        response,
-        user.address,
-        application.owner.address,
-        milestones,
-      );
-      console.log(result);
+      await this.$ethereum.contractRw.create(response, user.address, application.owner.address, milestones, {
+        gasLimit: process.env.NUXT_ENV_GAS_LIMIT,
+      });
 
       addToast({
         title: 'Success!',
@@ -66,10 +64,10 @@ export const ContractActions: IContractActions = {
       });
     }
   },
-  // async updateContract({ commit }, { application, user }) {
-  //   const data = await this.$axios.$put('/contracts/' + contract._id, contract);
-  //   commit('UPDATE_CONTRACT', data);
-  // },
+  async updateContract(_context, contract) {
+    console.log('In update action:' + contract);
+    await this.$axios.$put('/api/v1/contracts/' + contract._id, contract);
+  },
 };
 
 export default ContractActions;

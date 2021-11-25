@@ -9902,10 +9902,16 @@
       "links": {},
       "address": "0xD997A32aef40d8Ad9758508eAb1374B0fEF515c2",
       "transactionHash": "0xd105d66ad936549b1207917b67666b9fb7a696dc687a9a23e1c77d650caffd21"
+    },
+    "5777": {
+      "events": {},
+      "links": {},
+      "address": "0x00a7A7414EDa02BE9a0679605751F58Cd07AfB30",
+      "transactionHash": "0xfc642df441ea8e5be4c85734a94e494b0d74624f2752c4b55e1e827626eca422"
     }
   },
   "schemaVersion": "3.4.3",
-  "updatedAt": "2021-11-25T17:26:00.932Z",
+  "updatedAt": "2021-11-25T19:37:57.366Z",
   "networkType": "ethereum",
   "devdoc": {
     "author": "Manuel Kirstetter",
