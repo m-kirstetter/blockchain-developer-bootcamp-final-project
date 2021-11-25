@@ -45,7 +45,15 @@
               </vue-text>
             </vue-box>
           </vue-box>
-          <vue-button v-if="isGigOwner" look="outline" size="lg" block leading-icon="checkmark" @click="onAccept">
+          <vue-button
+            v-if="isGigOwner"
+            look="outline"
+            size="lg"
+            block
+            leading-icon="checkmark"
+            :loading="isLoading"
+            @click="onAccept"
+          >
             Accept
           </vue-button>
         </vue-box>
@@ -65,10 +73,11 @@ import VueColumn from '@/components/layout/VueColumns/VueColumn/VueColumn.vue';
 import VueBox from '@/components/layout/VueBox/VueBox.vue';
 import VueCollapse from '@/components/behavior/VueCollapse/VueCollapse.vue';
 import { useContext } from '@nuxtjs/composition-api';
-import { isUser } from '@/utils/typeguards';
+import { isModel } from '@/utils/typeguards';
 import { IApplicationFrontend } from '@/interfaces/IApplication';
 import { IGigFrontend } from '@/interfaces/IGig';
 import { IUserFrontend } from '@/interfaces/IUser';
+import { IUser } from '@/api/models/user.model';
 
 export default defineComponent({
   name: 'ApplicationCard',
@@ -103,13 +112,13 @@ export default defineComponent({
     const details = ref(false);
 
     const isApplicationOwner = computed(() => {
-      if (!isUser(props.application.owner)) throw new Error('Error, user must be Model');
+      if (!isModel<IUser>(props.application.owner)) throw new Error('Error, user must be Model');
 
       return props.user.role === 'FREELANCER' && props.application.owner._id === props.user._id;
     });
 
     const isGigOwner = computed(() => {
-      if (!isUser(props.gig.owner)) throw new Error('Error, user must be Model');
+      if (!isModel<IUser>(props.gig.owner)) throw new Error('Error, user must be Model');
 
       return props.user.role === 'RECRUITER' && props.gig.owner._id === props.user._id;
     });
@@ -119,9 +128,7 @@ export default defineComponent({
     const onAccept = async () => {
       isLoading.value = true;
 
-      await store.dispatch('application/acceptApplication', {
-        application: props.application._id,
-      });
+      await store.dispatch('contract/createContract', { application: props.application, user: props.user });
 
       isLoading.value = false;
     };

@@ -71,6 +71,8 @@ $ npm install
 
 ## Run smart contracts tests
 
+- development network is configured on port 7545
+
 ```bash
 # run tests
 $ truffle test

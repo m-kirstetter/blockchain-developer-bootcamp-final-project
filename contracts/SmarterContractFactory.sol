@@ -22,10 +22,12 @@ contract SmarterContractFactory is ISmarterContractFactory {
     mapping(uint256 => address) internal _contracts;
 
     /// @notice event fired at 'child' contract creation
+    /// @param externalId contract external id
     /// @param index contract id/index
     /// @param contractAddress created contract address
     /// @param milestones array of all created contract milestones
     event LogNewContract(
+        string externalId,
         uint256 indexed index,
         address contractAddress,
         uint256[] milestones
@@ -38,17 +40,20 @@ contract SmarterContractFactory is ISmarterContractFactory {
 
     /// @notice calls initialization of a new contract with provided params
     /// @param _contractAddress contract address
+    /// @param _externalId contract external id
     /// @param _client client address
     /// @param _provider provider address
     /// @param _milestones array of milestone amounts
     /// @dev _milestones is available only during this function call
     function _init(
         address payable _contractAddress,
+        string calldata _externalId,
         address _client,
         address _provider,
         uint256[] calldata _milestones
     ) internal {
         ISmarterContract(_contractAddress).init(
+            _externalId,
             _client,
             _provider,
             _milestones
@@ -58,16 +63,18 @@ contract SmarterContractFactory is ISmarterContractFactory {
         _contracts[contractId] = _contractAddress;
         contractCount = contractCount + 1;
 
-        emit LogNewContract(contractId, _contractAddress, _milestones);
+        emit LogNewContract(_externalId, contractId, _contractAddress, _milestones);
     }
 
     /// @notice generates contract address calls initialization of a new contract with provided params
+    /// @param _externalId contract external id
     /// @param _client client address
     /// @param _provider provider address
     /// @param _milestones array of milestone amounts
     /// @dev _milestones is available only during this function call
     /// @return Returns created contract address
     function create(
+        string calldata _externalId,
         address _client,
         address _provider,
         uint256[] calldata _milestones
@@ -76,6 +83,7 @@ contract SmarterContractFactory is ISmarterContractFactory {
 
         _init(
             contractAddress,
+            _externalId,
             _client,
             _provider,
             _milestones

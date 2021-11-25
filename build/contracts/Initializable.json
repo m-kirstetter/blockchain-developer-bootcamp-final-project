@@ -14,9 +14,7 @@
   "ast": {
     "absolutePath": "@openzeppelin/contracts/proxy/utils/Initializable.sol",
     "exportedSymbols": {
-      "Initializable": [
-        125
-      ]
+      "Initializable": [125]
     },
     "id": 126,
     "license": "MIT",
@@ -24,12 +22,7 @@
     "nodes": [
       {
         "id": 81,
-        "literals": [
-          "solidity",
-          "^",
-          "0.8",
-          ".0"
-        ],
+        "literals": ["solidity", "^", "0.8", ".0"],
         "nodeType": "PragmaDirective",
         "src": "33:23:1"
       },
@@ -47,9 +40,7 @@
         },
         "fullyImplemented": true,
         "id": 125,
-        "linearizedBaseContracts": [
-          125
-        ],
+        "linearizedBaseContracts": [125],
         "name": "Initializable",
         "nameLocation": "1011:13:1",
         "nodeType": "ContractDefinition",
@@ -217,10 +208,7 @@
                       "id": 91,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        4294967278,
-                        4294967278
-                      ],
+                      "overloadedDeclarations": [4294967278, 4294967278],
                       "referencedDeclaration": 4294967278,
                       "src": "1401:7:1",
                       "typeDescriptions": {
@@ -248,9 +236,7 @@
                   "src": "1401:89:1"
                 },
                 {
-                  "assignments": [
-                    100
-                  ],
+                  "assignments": [100],
                   "declarations": [
                     {
                       "constant": false,
@@ -538,9 +524,7 @@
   "legacyAST": {
     "absolutePath": "@openzeppelin/contracts/proxy/utils/Initializable.sol",
     "exportedSymbols": {
-      "Initializable": [
-        125
-      ]
+      "Initializable": [125]
     },
     "id": 126,
     "license": "MIT",
@@ -548,12 +532,7 @@
     "nodes": [
       {
         "id": 81,
-        "literals": [
-          "solidity",
-          "^",
-          "0.8",
-          ".0"
-        ],
+        "literals": ["solidity", "^", "0.8", ".0"],
         "nodeType": "PragmaDirective",
         "src": "33:23:1"
       },
@@ -571,9 +550,7 @@
         },
         "fullyImplemented": true,
         "id": 125,
-        "linearizedBaseContracts": [
-          125
-        ],
+        "linearizedBaseContracts": [125],
         "name": "Initializable",
         "nameLocation": "1011:13:1",
         "nodeType": "ContractDefinition",
@@ -741,10 +718,7 @@
                       "id": 91,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        4294967278,
-                        4294967278
-                      ],
+                      "overloadedDeclarations": [4294967278, 4294967278],
                       "referencedDeclaration": 4294967278,
                       "src": "1401:7:1",
                       "typeDescriptions": {
@@ -772,9 +746,7 @@
                   "src": "1401:89:1"
                 },
                 {
-                  "assignments": [
-                    100
-                  ],
+                  "assignments": [100],
                   "declarations": [
                     {
                       "constant": false,
@@ -1065,7 +1037,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.3",
-  "updatedAt": "2021-11-24T12:58:11.104Z",
+  "updatedAt": "2021-11-25T17:22:13.232Z",
   "devdoc": {
     "details": "This is a base contract to aid in writing upgradeable contracts, or any kind of contract that will be deployed behind a proxy. Since a proxied contract can't have a constructor, it's common to move constructor logic to an external initializer function, usually called `initialize`. It then becomes necessary to protect this initializer function so it can only be called once. The {initializer} modifier provided by this contract will have this effect. TIP: To avoid leaving the proxy in an uninitialized state, the initializer function should be called as early as possible by providing the encoded function call as the `_data` argument to {ERC1967Proxy-constructor}. CAUTION: When used with inheritance, manual care must be taken to not invoke a parent initializer twice, or to ensure that all initializers are idempotent. This is not verified automatically as constructors are by Solidity.",
     "kind": "dev",

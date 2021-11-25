@@ -5,6 +5,7 @@ import { IStatuses } from '@/interfaces/IStatuses';
 import { paginate } from '../models/plugins/paginate.plugin';
 import { IUser } from './user.model';
 import { IApplication } from './application.model';
+import { IContract } from './contract.model';
 
 export interface IGigBudget {
   min: number;
@@ -22,6 +23,7 @@ export interface IBaseGig {
   status: IStatuses;
   budget: IGigBudget;
   applications?: Schema.Types.ObjectId[] | Partial<IApplication>[];
+  contract?: Schema.Types.ObjectId | Partial<IContract>;
   deadline?: Date;
 }
 
@@ -77,6 +79,10 @@ const gigSchema = new Schema<IGig, GigModel>(
     },
     applications: {
       type: [{ type: SchemaTypes.ObjectId, ref: 'Application' }],
+    },
+    contract: {
+      type: SchemaTypes.ObjectId,
+      ref: 'Contract',
     },
     deadline: {
       type: Date,

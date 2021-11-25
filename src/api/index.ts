@@ -10,6 +10,7 @@ import { UsersRoutes } from './routes/UsersRoutes';
 import { GigsRoutes } from './routes/GigsRoutes';
 import { ApplicationsRoutes } from './routes/ApplicationsRoutes';
 import { jwtStrategy } from './config/passport';
+import { ContractsRoutes } from './routes/ContractsRoutes';
 
 const app = express();
 
@@ -42,6 +43,7 @@ AuthRoutes(app);
 UsersRoutes(app);
 GigsRoutes(app);
 ApplicationsRoutes(app);
+ContractsRoutes(app);
 
 // convert error to ApiError, if needed
 app.use(errorConverter);

@@ -44,7 +44,7 @@ export const queryApplicationsService = async (
   }
 };
 
-export const getGigService = async (id: Schema.Types.ObjectId): Promise<IApplication> => {
+export const getApplicationService = async (id: Schema.Types.ObjectId): Promise<IApplication> => {
   try {
     return await Application.findById(id);
   } catch (error) {

@@ -38,14 +38,14 @@ contract('SmarterContract', (accounts) => {
 
   it('should create a new instance of SmarterContract', async function () {
     await truffleAssert.passes(
-      contractFactory.create(account1, account2, milestones, {
+      contractFactory.create('1', account1, account2, milestones, {
         from: account1,
       }),
     );
   });
 
   it('should fire LogNewContract event on new instance of SmarterContract created', async function () {
-    const result = await contractFactory.create(account1, account2, milestones, {
+    const result = await contractFactory.create('2', account1, account2, milestones, {
       from: account1,
     });
 
@@ -58,7 +58,12 @@ contract('SmarterContract', (accounts) => {
       mappedEventMilestones.forEach((milestone, index) => {
         if (checkMilestones && milestone !== milestones[index]) checkMilestones = false;
       });
-      return event.index.toString() === '1' && web3.utils.isAddress(event.contractAddress) && checkMilestones;
+      return (
+        event.externalId.toString() === '2' &&
+        event.index.toString() === '1' &&
+        web3.utils.isAddress(event.contractAddress) &&
+        checkMilestones
+      );
     });
 
     // Check with wrong milestones data

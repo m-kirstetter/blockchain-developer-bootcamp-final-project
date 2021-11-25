@@ -64,7 +64,8 @@ import VueButton from '@/components/input-and-actions/VueButton/VueButton.vue';
 import { IGigFrontend } from '@/interfaces/IGig';
 import { IAuthServiceUser } from '@/interfaces/IAuth';
 import ApplicationCard from '@/components/app/ApplicationCard/ApplicationCard.vue';
-import { isApplicationArray, isUser } from '@/utils/typeguards';
+import { isApplicationArray, isModel } from '@/utils/typeguards';
+import { IUser } from '@/api/models/user.model';
 import ApplyToGigForm from '../Forms/ApplyToGigForm/ApplyToGigForm.vue';
 
 export default defineComponent({
@@ -98,7 +99,7 @@ export default defineComponent({
       if (!isApplicationArray(applications)) throw new Error('Error, application must be Application Model Array');
 
       return !!applications.find((el) => {
-        if (!isUser(el.owner)) throw new Error('Error, user must be User Model');
+        if (!isModel<IUser>(el.owner)) throw new Error('Error, user must be User Model');
 
         return el.owner._id === userId;
       });

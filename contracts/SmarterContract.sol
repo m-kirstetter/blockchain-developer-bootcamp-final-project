@@ -15,6 +15,10 @@ contract SmarterContract is ISmarterContract, Initializable, Context, Reentrancy
     /// @return returns contract locked state
     bool public locked;
 
+    /// @notice contract external id
+    /// @return returns contract external id
+    string public externalId;
+
     /// @notice contract client address
     /// @return returns contract client address
     address public client;
@@ -36,11 +40,13 @@ contract SmarterContract is ISmarterContract, Initializable, Context, Reentrancy
     uint256[] public milestones;
 
     /// @notice event fired at contract creation
+    /// @param externalId contract external id
     /// @param client contract client
     /// @param provider contract provider
     /// @param milestones array of all contract milestones
-    /// @dev client & provider are indexed in topics
+    /// @dev externalId, client & provider are indexed in topics
     event Register(
+        string indexed externalId,
         address indexed client,
         address indexed provider,
         uint256[] milestones
@@ -71,12 +77,14 @@ contract SmarterContract is ISmarterContract, Initializable, Context, Reentrancy
     }
 
     /// @notice initialize a new contract with provided params
+    /// @param _externalId contract external id
     /// @param _client client address
     /// @param _provider provider address
     /// @param _milestones array of milestone amounts
     /// @dev this function has the role of constructor here - factory pattern
     /// @dev this function initializes contract - see CWE-665
     function init(
+        string calldata _externalId,
         address _client,
         address _provider,
         uint256[] calldata _milestones
@@ -84,6 +92,7 @@ contract SmarterContract is ISmarterContract, Initializable, Context, Reentrancy
         require(_client != address(0), "Client address is invalid");
         require(_provider != address(0), "Provider address is invalid");
 
+        externalId = _externalId;
         client = _client;
         provider = _provider;
         milestones = _milestones;
@@ -91,7 +100,7 @@ contract SmarterContract is ISmarterContract, Initializable, Context, Reentrancy
             total = total + milestones[i];
         }
 
-        emit Register(_client, _provider, milestones);
+        emit Register(_externalId, _client, _provider, milestones);
     }
 
     /// @notice to get number of milestones

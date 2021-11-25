@@ -14,9 +14,7 @@
   "ast": {
     "absolutePath": "@openzeppelin/contracts/proxy/Clones.sol",
     "exportedSymbols": {
-      "Clones": [
-        79
-      ]
+      "Clones": [79]
     },
     "id": 80,
     "license": "MIT",
@@ -24,12 +22,7 @@
     "nodes": [
       {
         "id": 1,
-        "literals": [
-          "solidity",
-          "^",
-          "0.8",
-          ".0"
-        ],
+        "literals": ["solidity", "^", "0.8", ".0"],
         "nodeType": "PragmaDirective",
         "src": "33:23:0"
       },
@@ -47,9 +40,7 @@
         },
         "fullyImplemented": true,
         "id": 79,
-        "linearizedBaseContracts": [
-          79
-        ],
+        "linearizedBaseContracts": [79],
         "name": "Clones",
         "nameLocation": "696:6:0",
         "nodeType": "ContractDefinition",
@@ -416,10 +407,7 @@
                       "id": 11,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        4294967278,
-                        4294967278
-                      ],
+                      "overloadedDeclarations": [4294967278, 4294967278],
                       "referencedDeclaration": 4294967278,
                       "src": "1357:7:0",
                       "typeDescriptions": {
@@ -911,10 +899,7 @@
                       "id": 33,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        4294967278,
-                        4294967278
-                      ],
+                      "overloadedDeclarations": [4294967278, 4294967278],
                       "referencedDeclaration": 4294967278,
                       "src": "2281:7:0",
                       "typeDescriptions": {
@@ -1741,10 +1726,7 @@
                       "id": 68,
                       "name": "predictDeterministicAddress",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        58,
-                        78
-                      ],
+                      "overloadedDeclarations": [58, 78],
                       "referencedDeclaration": 58,
                       "src": "3432:27:0",
                       "typeDescriptions": {
@@ -1901,9 +1883,7 @@
   "legacyAST": {
     "absolutePath": "@openzeppelin/contracts/proxy/Clones.sol",
     "exportedSymbols": {
-      "Clones": [
-        79
-      ]
+      "Clones": [79]
     },
     "id": 80,
     "license": "MIT",
@@ -1911,12 +1891,7 @@
     "nodes": [
       {
         "id": 1,
-        "literals": [
-          "solidity",
-          "^",
-          "0.8",
-          ".0"
-        ],
+        "literals": ["solidity", "^", "0.8", ".0"],
         "nodeType": "PragmaDirective",
         "src": "33:23:0"
       },
@@ -1934,9 +1909,7 @@
         },
         "fullyImplemented": true,
         "id": 79,
-        "linearizedBaseContracts": [
-          79
-        ],
+        "linearizedBaseContracts": [79],
         "name": "Clones",
         "nameLocation": "696:6:0",
         "nodeType": "ContractDefinition",
@@ -2303,10 +2276,7 @@
                       "id": 11,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        4294967278,
-                        4294967278
-                      ],
+                      "overloadedDeclarations": [4294967278, 4294967278],
                       "referencedDeclaration": 4294967278,
                       "src": "1357:7:0",
                       "typeDescriptions": {
@@ -2798,10 +2768,7 @@
                       "id": 33,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        4294967278,
-                        4294967278
-                      ],
+                      "overloadedDeclarations": [4294967278, 4294967278],
                       "referencedDeclaration": 4294967278,
                       "src": "2281:7:0",
                       "typeDescriptions": {
@@ -3628,10 +3595,7 @@
                       "id": 68,
                       "name": "predictDeterministicAddress",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        58,
-                        78
-                      ],
+                      "overloadedDeclarations": [58, 78],
                       "referencedDeclaration": 58,
                       "src": "3432:27:0",
                       "typeDescriptions": {
@@ -3791,7 +3755,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.3",
-  "updatedAt": "2021-11-24T12:58:11.098Z",
+  "updatedAt": "2021-11-25T17:22:13.226Z",
   "devdoc": {
     "details": "https://eips.ethereum.org/EIPS/eip-1167[EIP 1167] is a standard for deploying minimal proxy contracts, also known as \"clones\". > To simply and cheaply clone contract functionality in an immutable way, this standard specifies > a minimal bytecode implementation that delegates all calls to a known, fixed address. The library includes functions to deploy a proxy using either `create` (traditional deployment) or `create2` (salted deterministic deployment). It also includes functions to predict the addresses of clones deployed using the deterministic method. _Available since v3.4._",
     "kind": "dev",

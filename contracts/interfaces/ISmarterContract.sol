@@ -7,10 +7,12 @@ pragma solidity >=0.8.9 <0.9.0;
 /// @custom:experimental This is an experimental contract.
 interface ISmarterContract {
     /// @notice initialize a new contract with provided params
+    /// @param _externalId contract external id
     /// @param _client client address
     /// @param _provider provider address
     /// @param _milestones array of milestone amounts
     function init(
+        string calldata _externalId,
         address _client,
         address _provider,
         uint256[] calldata _milestones
