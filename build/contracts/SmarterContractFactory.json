@@ -54,8 +54,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [],
@@ -68,8 +67,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [
@@ -122,8 +120,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     }
   ],
   "metadata": "{\"compiler\":{\"version\":\"0.8.9+commit.e5eed63a\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_implementation\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"string\",\"name\":\"externalId\",\"type\":\"string\"},{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"index\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"contractAddress\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256[]\",\"name\":\"milestones\",\"type\":\"uint256[]\"}],\"name\":\"LogNewContract\",\"type\":\"event\"},{\"inputs\":[],\"name\":\"contractCount\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"_externalId\",\"type\":\"string\"},{\"internalType\":\"address\",\"name\":\"_client\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_provider\",\"type\":\"address\"},{\"internalType\":\"uint256[]\",\"name\":\"_milestones\",\"type\":\"uint256[]\"}],\"name\":\"create\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_index\",\"type\":\"uint256\"}],\"name\":\"getContractAddress\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"implementation\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"author\":\"Manuel Kirstetter\",\"custom:experimental\":\"This is an experimental contract.\",\"events\":{\"LogNewContract(string,uint256,address,uint256[])\":{\"params\":{\"contractAddress\":\"created contract address\",\"externalId\":\"contract external id\",\"index\":\"contract id/index\",\"milestones\":\"array of all created contract milestones\"}}},\"kind\":\"dev\",\"methods\":{\"create(string,address,address,uint256[])\":{\"details\":\"_milestones is available only during this function call\",\"params\":{\"_client\":\"client address\",\"_externalId\":\"contract external id\",\"_milestones\":\"array of milestone amounts\",\"_provider\":\"provider address\"},\"returns\":{\"_0\":\"Returns created contract address\"}},\"getContractAddress(uint256)\":{\"params\":{\"_index\":\"contract id/index\"},\"returns\":{\"_0\":\"Returns contract address of id/index\"}}},\"stateVariables\":{\"contractCount\":{\"return\":\"returns the count of 'child' contracts\",\"returns\":{\"_0\":\"returns the count of 'child' contracts\"}},\"implementation\":{\"details\":\"immutable\",\"return\":\"returns implementation contract address\",\"returns\":{\"_0\":\"returns implementation contract address\"}}},\"title\":\"SmarterContractFactory - SmarterContract factory contract\",\"version\":1},\"userdoc\":{\"events\":{\"LogNewContract(string,uint256,address,uint256[])\":{\"notice\":\"event fired at 'child' contract creation\"}},\"kind\":\"user\",\"methods\":{\"contractCount()\":{\"notice\":\"count of all 'child' contracts\"},\"create(string,address,address,uint256[])\":{\"notice\":\"generates contract address calls initialization of a new contract with provided params\"},\"getContractAddress(uint256)\":{\"notice\":\"to get contract address of id/index \"},\"implementation()\":{\"notice\":\"contract address from which all 'child' contract should be implemented from\"}},\"notice\":\"Use for testing purpose only, no guarantee\",\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/contracts/SmarterContractFactory.sol\":\"SmarterContractFactory\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"@openzeppelin/contracts/proxy/Clones.sol\":{\"keccak256\":\"0xa3bbab77849522b73d8c6cd3d2ac54bef7580e4354484f35f4cabf55d3d2b3f9\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://e33ac5e378143f0348b1b903a0d2e02e617bed6d971df8ec7d886cca0ab3107e\",\"dweb:/ipfs/QmeEXQ8FLWvLZKVwmfEW1n9Wuv7CqEn66SW9rGHakjaaUb\"]},\"project:/contracts/SmarterContractFactory.sol\":{\"keccak256\":\"0x0d963a2e2a6346e6ed259cf2f79aed6b6eaebef997ce4f4bedcacd1f81f221f7\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://82b0a333531aea9870bdf261c9c4ab4d0be7fa03b3b7fd56530570595947d45f\",\"dweb:/ipfs/Qmdw11iSchraHShh2H4Y8marbiP5kYYBtcrY7e4sgZgcMh\"]},\"project:/contracts/interfaces/ISmarterContract.sol\":{\"keccak256\":\"0x0b6c35497ca28b36133b710e10a656f01bb9817dc733aa9785e1d662f8bab512\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://4fcc50e5c81d1ff67ff942c494f41429680c39a9c2b1f7c1c0b7139ae181c332\",\"dweb:/ipfs/Qmaxa75qoxj3rMTgwEtXwMdjh8MhFz798PTdemaVnzNvQQ\"]},\"project:/contracts/interfaces/ISmarterContractFactory.sol\":{\"keccak256\":\"0xdf1bbc42cc985e7bc85ff231a5ba8be45b4a2d72752532be932249fe185744d3\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://00ecb420267be53375a9b0efd8c09033ec28dda70dd331d5a4869964b81736f0\",\"dweb:/ipfs/QmUiZziEoBo5gG8gY1FN7juvkjNABr2p49THZtt2z3Pu5q\"]}},\"version\":1}",
@@ -9896,23 +9893,9 @@
     "name": "solc",
     "version": "0.8.9+commit.e5eed63a.Emscripten.clang"
   },
-  "networks": {
-    "3": {
-      "events": {},
-      "links": {},
-      "address": "0xD997A32aef40d8Ad9758508eAb1374B0fEF515c2",
-      "transactionHash": "0xd105d66ad936549b1207917b67666b9fb7a696dc687a9a23e1c77d650caffd21"
-    },
-    "5777": {
-      "events": {},
-      "links": {},
-      "address": "0x00a7A7414EDa02BE9a0679605751F58Cd07AfB30",
-      "transactionHash": "0xfc642df441ea8e5be4c85734a94e494b0d74624f2752c4b55e1e827626eca422"
-    }
-  },
+  "networks": {},
   "schemaVersion": "3.4.3",
-  "updatedAt": "2021-11-25T19:37:57.366Z",
-  "networkType": "ethereum",
+  "updatedAt": "2021-11-29T19:41:50.254Z",
   "devdoc": {
     "author": "Manuel Kirstetter",
     "custom:experimental": "This is an experimental contract.",
