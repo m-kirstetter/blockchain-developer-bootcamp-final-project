@@ -98,6 +98,7 @@ import VueColumn from '@/components/layout/VueColumns/VueColumn/VueColumn.vue';
 import VueText from '@/components/typography/VueText/VueText.vue';
 import { useContext } from '@nuxtjs/composition-api';
 import { IGigFrontend } from '@/interfaces/IGig';
+import { EventBus } from '@/services/EventBus';
 
 export default defineComponent({
   name: 'ApplyToGigForm',
@@ -161,6 +162,8 @@ export default defineComponent({
           amount: total.value,
         })
         .then(() => onClose());
+
+      EventBus.$emit('reloadGigs');
 
       isLoading.value = false;
     };

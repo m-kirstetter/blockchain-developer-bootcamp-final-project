@@ -2,7 +2,7 @@ import * as express from 'express';
 import httpStatus from 'http-status';
 import { isModel } from '../../utils/typeguards';
 import ApiError from '../utils/ApiError';
-import { createContractService } from '../services/contract.service';
+import { createContractService, getContractService, updateContractService } from '../services/contract.service';
 import { verifyToken } from '../services/token.service';
 import { getUserById } from '../services/user.service';
 import { getGigService } from '../services/gig.service';
@@ -29,12 +29,32 @@ export const createContract = catchAsync(
       contractBody.client !== gig.owner._id.toString() ||
       contractBody.client !== user._id.toString() ||
       user._id.toString() !== gig.owner._id.toString() ||
-      gig.contract
+      gig.status !== 'Open'
     ) {
       throw new ApiError(httpStatus.BAD_REQUEST, 'You are not allowed to create this Contract');
     }
 
     const contract = await createContractService(contractBody);
     res.send({ contract });
+  },
+);
+
+export const updateContract = catchAsync(
+  async (req: contractsValidation.updateContractValidationRequestSchema, res: express.Response) => {
+    const token = req.headers.authorization.replace('Bearer ', '');
+    const tokenDoc = await verifyToken(token, TokenTypes.ACCESS);
+    const contractBody = req.body as contractsValidation.updateContractValidationRequest;
+
+    const contractId = req.params.contractId;
+
+    const contract = await getContractService(contractId);
+
+    if (contract.client.toString() !== tokenDoc.user.toString()) {
+      throw new ApiError(httpStatus.BAD_REQUEST, 'You are not allowed to modify this Contract');
+    }
+
+    const updateContract = await updateContractService(contractId, contractBody);
+
+    res.send({ contract: updateContract });
   },
 );

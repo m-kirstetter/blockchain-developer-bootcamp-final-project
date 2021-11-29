@@ -3,7 +3,9 @@ import { pick } from 'lodash';
 import httpStatus from 'http-status';
 import { IPaginationQueryOptions } from '@/interfaces/IPaginationQueryOptions';
 import ApiError from '../utils/ApiError';
+import { isModel } from '../../utils/typeguards';
 import { IGig } from '../models/gig.model';
+import { IUser } from '../models/user.model';
 import { createGigService, getGigService, updateGigService, queryGigsService } from '../services/gig.service';
 import { verifyToken } from '../services/token.service';
 import { catchAsync } from '../utils/catchAsync';
@@ -33,13 +35,14 @@ export const updateGig = catchAsync(
 
     const gig = await getGigService(gigId);
 
-    if (gig.owner !== tokenDoc.user) {
+    if (!isModel<IUser>(gig.owner)) throw new Error('Error, user must be Model');
+    if (gig.owner._id.toString() !== tokenDoc.user.toString()) {
       throw new ApiError(httpStatus.BAD_REQUEST, 'You are not allowed to modify this Gig');
     }
 
     const updatedGig = await updateGigService(gigId, gigBody);
 
-    res.send({ updatedGig });
+    res.send({ gig: updatedGig });
   },
 );
 

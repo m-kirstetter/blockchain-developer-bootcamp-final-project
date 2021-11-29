@@ -19,6 +19,14 @@ export interface createContractValidationRequestSchema extends ValidatedRequestS
   [ContainerTypes.Body]: createContractValidationRequest;
 }
 
+export const updateContractValidation = {
+  body: Joi.object().keys({
+    contract: Joi.string(),
+    paid: Joi.bool(),
+    currentMilestone: Joi.number(),
+  }),
+};
+
 export type updateContractValidationRequest = Partial<IContract>;
 
 export interface updateContractValidationRequestSchema extends ValidatedRequestSchema {

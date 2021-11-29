@@ -1,3 +1,3 @@
-export type IStatuses = 'Registered' | 'Open' | 'Review' | 'Awarded';
+export type IGigStatuses = 'Open' | 'Running' | 'Closed';
 
 export type IApplicationStatuses = 'Applied' | 'Declined' | 'Accepted';

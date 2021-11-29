@@ -13,6 +13,7 @@ const ENS_NETS: number[] = [1, 3, 4];
 export default class EthereumConnect {
   private _contractAddress: string;
   private _abi: string;
+  private _implementationContractAbi: string;
   private _ethereum: MetaMaskInpageProvider;
   private _currentAccount: string;
   private _checkInterval: NodeJS.Timeout;
@@ -23,9 +24,10 @@ export default class EthereumConnect {
   network: Network;
   userWallet: JsonRpcSigner;
 
-  constructor(contractAddress: string, abi: string) {
+  constructor(contractAddress: string, abi: string, implementationContractAbi: string) {
     this._contractAddress = contractAddress;
     this._abi = abi;
+    this._implementationContractAbi = implementationContractAbi;
 
     // Start Ethereum provider check
     this._checkInterval = setInterval(this.checkProvider.bind(this), 500);
@@ -78,6 +80,10 @@ export default class EthereumConnect {
     }
   }
 
+  contractInstance(address: string) {
+    return new Contract(address, this._implementationContractAbi, this.userWallet || this.provider);
+  }
+
   private async _updateProvider() {
     // Set Ethereum or throw error
     this._ethereum = await metamaskService.getEthereum();
@@ -91,7 +97,7 @@ export default class EthereumConnect {
     // Set Network and Event to alert if not Ropsten
     this.network = await this.provider.getNetwork();
 
-    // If contract already set, we remove all listeners first
+    // If factory contract already set, we remove all listeners first
     if (this.contract) this.contract.removeAllListeners();
     this.contract = new Contract(this._contractAddress, this._abi, this.provider);
     this.contract.on(
@@ -103,6 +109,7 @@ export default class EthereumConnect {
         milestones: INewContractEvent['milestones'],
       ) => {
         EventBus.$emit('NewContract', { externalId, index, contractAddress, milestones });
+        EventBus.$emit('reloadGigs');
       },
     );
 

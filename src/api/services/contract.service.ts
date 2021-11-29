@@ -31,3 +31,11 @@ export const updateContractService = async (
     throw new ApiError(httpStatus.BAD_REQUEST, error);
   }
 };
+
+export const getContractService = async (id: Schema.Types.ObjectId): Promise<IContract> => {
+  try {
+    return await Contract.findById(id).exec();
+  } catch (error) {
+    throw new ApiError(httpStatus.BAD_REQUEST, error);
+  }
+};

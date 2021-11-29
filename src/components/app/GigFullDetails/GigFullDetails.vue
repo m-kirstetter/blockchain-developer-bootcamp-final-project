@@ -35,7 +35,7 @@
           </div>
 
           <vue-button
-            v-if="user.role === 'FREELANCER'"
+            v-if="user.role === 'FREELANCER' && gig.status === 'Open'"
             :disabled="userApplied"
             look="secondary"
             leading-icon="lightning-bolt"

@@ -1,7 +1,7 @@
 import { Schema, model, Model, models, SchemaTypes } from 'mongoose';
 import { IPaginationQueryOptions } from '@/interfaces/IPaginationQueryOptions';
 import { IQueryResult } from '@/interfaces/IQueryResult';
-import { IStatuses } from '@/interfaces/IStatuses';
+import { IGigStatuses } from '@/interfaces/IStatuses';
 import { paginate } from '../models/plugins/paginate.plugin';
 import { IUser } from './user.model';
 import { IApplication } from './application.model';
@@ -20,7 +20,7 @@ export interface IBaseGig {
   details: string;
   skills: string;
   owner: Schema.Types.ObjectId | Partial<IUser>;
-  status: IStatuses;
+  status: IGigStatuses;
   budget: IGigBudget;
   applications?: Schema.Types.ObjectId[] | Partial<IApplication>[];
   contract?: Schema.Types.ObjectId | Partial<IContract>;
@@ -63,15 +63,15 @@ const gigSchema = new Schema<IGig, GigModel>(
       type: String,
       required: true,
     },
+    status: {
+      type: String,
+      enum: ['Open', 'Running', 'Closed'],
+      default: 'Open',
+    },
     owner: {
       type: SchemaTypes.ObjectId,
       ref: 'User',
       required: true,
-    },
-    status: {
-      type: String,
-      enum: ['Registered', 'Open', 'Review', 'Awarded'],
-      default: 'Registered',
     },
     budget: {
       type: gigBudgetSchema,
@@ -100,6 +100,20 @@ gigSchema.pre('find', function () {
     {
       path: 'owner',
       select: 'address bio linkedin role',
+    },
+    {
+      path: 'contract',
+      select: 'client provider contract application currentMilestone paid',
+      populate: [
+        {
+          path: 'client',
+          select: 'address',
+        },
+        {
+          path: 'provider',
+          select: 'address',
+        },
+      ],
     },
     {
       path: 'applications',

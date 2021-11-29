@@ -12,6 +12,7 @@ export interface IBaseContract {
   contract?: string;
   gig: Schema.Types.ObjectId | Partial<IGig>;
   application: Schema.Types.ObjectId | Partial<IApplication>;
+  paid?: boolean;
   currentMilestone: number;
 }
 
@@ -51,6 +52,10 @@ const contractSchema = new Schema<IContract, ContractModel>(
       type: SchemaTypes.ObjectId,
       ref: 'Application',
       required: true,
+    },
+    paid: {
+      type: Boolean,
+      default: false,
     },
     currentMilestone: {
       type: Number,

@@ -48,22 +48,18 @@ export const GigActions: IGigActions = {
       });
     }
   },
-  async updateGig({ commit }, toUpdate) {
+  async updateGig(_context, toUpdate) {
     const gigId = toUpdate._id;
     delete toUpdate._id;
 
     try {
-      const response = await this.$axios.$patch('/api/v1/gigs/' + gigId, toUpdate);
+      await this.$axios.$patch('/api/v1/gigs/' + gigId, toUpdate);
 
       addToast({
         title: 'Success!',
         type: 'success',
         text: 'Gig has been updated.',
       });
-
-      const { gig } = response;
-
-      commit('UPDATE_GIG', gig);
     } catch (error) {
       addToast({
         title: 'Error!',

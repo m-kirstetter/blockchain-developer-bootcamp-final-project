@@ -1,4 +1,3 @@
-import { IStatuses } from '@/interfaces/IStatuses';
 import { IGigFrontend } from '@/interfaces/IGig';
 import { ApplicationCollectionFixture } from './ApplicationFixture';
 import { UserFixture } from './UserFixture';
@@ -12,7 +11,7 @@ export const GigCollectionFixture = (): IGigFrontend[] => [
     details: 'details',
     skills: 'skills',
     owner: UserFixture(),
-    status: 'Registered' as IStatuses,
+    status: 'Open',
     budget: {
       _id: '618f74e652e1bd099b345a04',
       min: 1,
@@ -29,7 +28,7 @@ export const GigCollectionFixture = (): IGigFrontend[] => [
     details: 'details',
     skills: 'skills',
     owner: UserFixture(),
-    status: 'Registered' as IStatuses,
+    status: 'Open',
     budget: {
       _id: '618f74e652e1bd099b345a04',
       min: 1,
@@ -46,7 +45,7 @@ export const GigCollectionFixture = (): IGigFrontend[] => [
     details: 'details',
     skills: 'skills',
     owner: UserFixture(),
-    status: 'Registered' as IStatuses,
+    status: 'Open',
     budget: {
       _id: '618f74e652e1bd099b345a04',
       min: 1,

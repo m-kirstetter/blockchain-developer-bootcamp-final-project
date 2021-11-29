@@ -2,7 +2,6 @@ import Joi from 'joi';
 import { Schema } from 'mongoose';
 import { ContainerTypes, ValidatedRequestSchema } from 'express-joi-validation';
 import { IPaginationQueryOptions } from '@/interfaces/IPaginationQueryOptions';
-import { IStatuses } from '@/interfaces/IStatuses';
 import { IGig } from '@/api/models/gig.model';
 
 export const createGigValidation = {
@@ -35,7 +34,6 @@ export const getGigsValidation = {
 };
 
 export interface getGigsValidationRequest extends IPaginationQueryOptions {
-  status: IStatuses[];
   owner: Schema.Types.ObjectId;
   sortBy: string;
   limit: number;
@@ -52,11 +50,11 @@ export const updateGigValidation = {
     description: Joi.string(),
     details: Joi.string(),
     skills: Joi.string(),
+    status: Joi.string().valid('Draft', 'Open', 'Running', 'Closed'),
     budget: Joi.object().keys({
       min: Joi.number().required(),
       max: Joi.number().required(),
     }),
-    status: Joi.string(),
     freelancer: Joi.string(),
     deadline: Joi.string(),
   }),

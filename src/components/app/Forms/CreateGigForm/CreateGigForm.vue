@@ -72,6 +72,7 @@ import VueTiles from '@/components/layout/VueTiles/VueTiles.vue';
 import VueStack from '@/components/layout/VueStack/VueStack.vue';
 import VueSlider from '@/components/input-and-actions/VueSlider/VueSlider.vue';
 import { IGigBudget } from '@/api/models/gig.model';
+import { EventBus } from '@/services/EventBus';
 
 export default defineComponent({
   name: 'CreateGigForm',
@@ -115,6 +116,8 @@ export default defineComponent({
           budget: budgetRange.value,
         })
         .then(() => onClose());
+
+      EventBus.$emit('reloadGigs');
 
       isLoading.value = false;
     };

@@ -7,7 +7,6 @@ import { GigMutations } from '@/store/gig/mutations';
 import { GigGetters } from '@/store/gig/getters';
 import { AxiosMock, getAxiosMock } from '@/test/test-utils';
 import { Schema } from 'mongoose';
-import { IStatuses } from '@/interfaces/IStatuses';
 import { GigCollectionFixture } from '@/fixtures/GigFixture';
 
 describe('GigActions', () => {
@@ -42,7 +41,7 @@ describe('GigActions', () => {
       details: 'details',
       skills: 'skills',
       owner: ('570b570b570bfffffffffffb' as unknown) as Schema.Types.ObjectId,
-      status: 'Registered' as IStatuses,
+      status: 'Open',
       budget: {
         min: 1,
         max: 4,

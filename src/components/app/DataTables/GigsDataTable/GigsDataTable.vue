@@ -45,26 +45,31 @@
               look="outline"
               :leading-icon="expandedRows.includes(row._id) ? 'minus' : 'plus'"
               :style="{ padding: '0', height: 'auto', minWidth: 'auto' }"
-              @click="onExpand(row._id)"
             />
           </td>
           <td>
             <vue-columns space="12" align-y="center">
               <vue-column>
                 <vue-text weight="semi-bold" as="div">{{ row.title }}</vue-text>
-                <vue-text color="text-low">ID: {{ row._id }}</vue-text>
+                <vue-text v-if="contractExists(row._id)" color="text-low">
+                  Contract:
+                  <a :href="`https://ropsten.etherscan.io/address/${row.contract.contract}`" target="_blank">
+                    {{ truncate(row.contract.contract, 6, 6, 18) }}
+                  </a>
+                </vue-text>
               </vue-column>
             </vue-columns>
           </td>
           <td>
-            <vue-badge v-if="row.status === 'Awarded'" status="success">{{ row.status }}</vue-badge>
-            <vue-badge v-else-if="row.status === 'Review'" status="warning">{{ row.status }}</vue-badge>
-            <vue-badge v-else-if="row.status === 'Open'" status="primary">{{ row.status }}</vue-badge>
-            <vue-badge v-else-if="row.status === 'Registered'" status="info">{{ row.status }}</vue-badge>
+            <vue-badge v-if="row.status === 'Open'" status="success">{{ row.status }}</vue-badge>
+            <vue-badge v-else-if="row.status === 'Running'" status="warning">{{ row.status }}</vue-badge>
+            <vue-badge v-else-if="row.status === 'Closed'" status="danger">{{ row.status }}</vue-badge>
           </td>
           <td>{{ $moment(row.createdAt).format('ll') }}</td>
           <td>
-            <vue-dropdown button-text="Select" :items="[{ label: 'Edit', value: 'edit' }]" align-menu="right" />
+            <vue-button look="outline" :leading-icon="expandedRows.includes(row._id) ? 'eye-off' : 'eye'">
+              Details
+            </vue-button>
           </td>
         </template>
 
@@ -92,11 +97,11 @@
           </vue-button>
         </template>
 
-        <template #filters>
+        <!-- <template #filters>
           <vue-button v-if="user.role === 'RECRUITER'" look="outline" size="sm" @click.prevent="onToggleOwnGigs">
             {{ `Show ${filters.owner ? 'all' : 'own'} gigs` }}
           </vue-button>
-        </template>
+        </template> -->
       </vue-data-table>
     </vue-stack>
   </div>
@@ -109,7 +114,6 @@ import VueBadge from '@/components/data-display/VueBadge/VueBadge.vue';
 import VueText from '@/components/typography/VueText/VueText.vue';
 import VueBox from '@/components/layout/VueBox/VueBox.vue';
 import VueStack from '@/components/layout/VueStack/VueStack.vue';
-import VueDropdown from '@/components/input-and-actions/VueDropdown/VueDropdown.vue';
 import VueColumns from '@/components/layout/VueColumns/VueColumns.vue';
 import VueColumn from '@/components/layout/VueColumns/VueColumn/VueColumn.vue';
 import VueButton from '@/components/input-and-actions/VueButton/VueButton.vue';
@@ -122,6 +126,9 @@ import GigFullDetails from '@/components/app/GigFullDetails/GigFullDetails.vue';
 import { IGigFrontend, IGigFrontendQueryResult } from '@/interfaces/IGig';
 import { IAuthServiceUser } from '@/interfaces/IAuth';
 import { Schema } from 'mongoose';
+import { EventBus } from '@/services/EventBus';
+import { isModel } from '@/utils/typeguards';
+import { IContractFrontend } from '@/interfaces/IContract';
 
 export default defineComponent({
   name: 'GigsDataTable',
@@ -131,7 +138,6 @@ export default defineComponent({
     VueText,
     VueBox,
     VueStack,
-    VueDropdown,
     VueColumns,
     VueColumn,
     VueButton,
@@ -144,7 +150,12 @@ export default defineComponent({
     const { store } = useContext();
 
     onMounted((): void => {
+      EventBus.$on('reloadGigs', () => {
+        fetch();
+      });
+
       if (user.value.role === 'RECRUITER') filters.value = { owner: user.value._id as Schema.Types.ObjectId };
+
       fetch();
     });
 
@@ -152,6 +163,9 @@ export default defineComponent({
     const columns: IDataTableColumns = {
       expand: { sortable: false, searchable: false, slot: 'expand', title: ' ', inlineStyle: { width: '64px' } },
       _id: {
+        visible: false,
+      },
+      contract: {
         visible: false,
       },
       title: {
@@ -196,7 +210,7 @@ export default defineComponent({
     const sortDirection = ref({ label: 'Descending', value: 'desc' });
     const clearSelection = true;
     const showPostGigForm = ref(false);
-    const expandedRows: Ref<number[]> = ref([]);
+    const expandedRows: Ref<string[]> = ref([]);
 
     const gigs = computed((): IGigFrontend[] => store.getters['gig/gigs']);
     const gigsQueryResult = computed((): Omit<IGigFrontendQueryResult, 'results'> => store.getters['gig/queryResult']);
@@ -225,9 +239,9 @@ export default defineComponent({
       isLoading.value = false;
     };
 
-    const onExpand = (id: number) => {
+    const onExpand = (id: string) => {
       if (expandedRows.value.includes(id)) {
-        expandedRows.value = expandedRows.value.filter((rowId: number) => rowId !== id);
+        expandedRows.value = expandedRows.value.filter((rowId: string) => rowId !== id);
       } else {
         expandedRows.value.push(id);
       }
@@ -275,6 +289,25 @@ export default defineComponent({
       return gigs.value.find((gig: IGigFrontend) => gig._id === id);
     };
 
+    const contractExists = (gigId: string) => {
+      const gig = gigs.value.find((gig) => gig._id === gigId);
+      if (gigId && typeof gig.contract !== 'string') {
+        if (!isModel<IContractFrontend>(gig.contract)) throw new Error('Error, contract must be Model');
+        if (gig.contract?.contract) {
+          return gig.contract.contract;
+        }
+      }
+    };
+
+    const truncate = (text: string, startChars: number, endChars: number, maxLength: number) => {
+      if (text.length > maxLength) {
+        const start = text.substring(0, startChars);
+        const end = text.substring(text.length - endChars, text.length);
+        return start + ' .... ' + end;
+      }
+      return text;
+    };
+
     return {
       isLoading,
       ownGigs,
@@ -294,6 +327,7 @@ export default defineComponent({
       gigs,
       gigsQueryResult,
       user,
+      fetch,
       onExpand,
       onSortKeyChange,
       onSortDirectionChange,
@@ -302,6 +336,8 @@ export default defineComponent({
       onSearch,
       onToggleOwnGigs,
       getGig,
+      contractExists,
+      truncate,
     };
   },
 });

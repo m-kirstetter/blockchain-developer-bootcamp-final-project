@@ -94,9 +94,21 @@ export default defineComponent({
         await logout(silent);
       });
 
-      EventBus.$on('NewContract', (contract: INewContractEvent) => {
-        console.log('In layout:' + contract);
-        store.dispatch('contract/updateContract', { _id: contract.externalId, contract: contract.contractAddress });
+      EventBus.$on('NewContract', async (contract: INewContractEvent) => {
+        if (loggedIn.value) {
+          await store.dispatch('contract/updateContract', {
+            _id: contract.externalId,
+            contract: contract.contractAddress,
+          });
+
+          EventBus.$emit('reloadGigs');
+
+          addToast({
+            title: 'Success!',
+            type: 'success',
+            text: 'Contract has been created',
+          });
+        }
       });
     });
 
