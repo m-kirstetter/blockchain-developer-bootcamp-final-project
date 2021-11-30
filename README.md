@@ -4,7 +4,7 @@ Deployed at [Heroku](https://smart-gigs.herokuapp.com/) on Ropsten.
 
 ## Final project idea
 
-I thought initially of a smart contract development dApp marketplace. After thinking about implementation, for the purpose of the bootcamp and to have something extendable afterwards, I narrowed the blockchain side idea into a contracting and milestones payment solution called 'Smarter Contract'. For the demo, I built a smart contract development marketplace called 'Smart Gigs' that uses the developed smart contract as some kind of 'Escrow' service and for milestones payments. I tried to have minimal footprint contracts to save gas costs while preserving functionalities. The frontend features an authentication with Metamask feature.
+I thought initially of a smart contract development dApp marketplace. After thinking about implementation, for the purpose of the bootcamp and to have something extendable afterwards, I narrowed the blockchain side idea into a contracting and milestones payment solution called 'Smarter Contract'. For the demo, I built a smart contract development marketplace called 'Smart Gigs' that uses the developed smart contract as some kind of 'Escrow' service and for milestones payments. I tried to have minimal footprint contracts to save gas costs while preserving functionalities. The frontend features a passwordless backend authentication with Metamask.
 
 Metamask authentication workflow:
 
@@ -17,10 +17,9 @@ Gig creation/payment workflow:
 
 1. Recruiter creates gig
 2. Freelancers can apply listing milestones and their price
-3. Recruiter awards 1 freelancer by sending data to a smart contract factory contract, with the full contract amount in ETH. The contract amount is locked until milestones are released. (Smart contract interaction)
-4. Freelancer submit a milestone
-5. Recruiter releases the milestone, this automatically triggers milestone payment to provider (Smart contract interaction)
-6. 4 & 5 repeats until there are no more milestones to be released
+3. Recruiter awards 1 freelancer by sending all required data to a smart contract factory contract, with the full contract amount in ETH. The contract amount is locked until milestones are released. (Smart contract interaction)
+4. Recruiter releases the milestone, this automatically triggers milestone payment to provider (Smart contract interaction)
+5. 4 repeats until there are no more milestones to be released
 
 ## Prerequisities
 
@@ -45,7 +44,7 @@ Gig creation/payment workflow:
 
 - Smart contract is coded with Solidity using Truffle, test covered
 - Frontend is built with Vuesion (Nuxt.js), using TypeScript
-- Express.js is used for backendAPI, using TypeScript
+- Express.js is used for backend API, using TypeScript
 - MongoDB is used as database, models implemented with Mongoose using TypeScript
 
 ## Design pattern decisions
