@@ -48,8 +48,19 @@ export const ContractActions: IContractActions = {
 
     const response = await this.$axios.$post('/api/v1/contracts', contract);
 
+    const gasEstimate = await this.$ethereum.contractRw.estimateGas.create(
+      response.contract._id,
+      user.address,
+      application.owner.address,
+      milestones,
+      {
+        gasLimit: process.env.NUXT_ENV_GAS_LIMIT,
+      },
+    );
+
     await this.$ethereum.contractRw.create(response.contract._id, user.address, application.owner.address, milestones, {
       gasLimit: process.env.NUXT_ENV_GAS_LIMIT,
+      gasPrice: gasEstimate.toString(),
     });
 
     await this.$axios.$patch('/api/v1/applications/' + application._id, { status: 'Accepted' });

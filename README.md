@@ -2,6 +2,8 @@
 
 Deployed at [Heroku](https://smart-gigs.herokuapp.com/) on Ropsten.
 
+My Ethereum address: 0xb40FadAc1bBD43f24c5Dbd46924dd653bcdFd784
+
 ## Final project idea
 
 I thought initially of a smart contract development dApp marketplace. After thinking about implementation, for the purpose of the bootcamp and to have something extendable afterwards, I narrowed the blockchain side idea into a contracting and milestones payment solution called 'Smarter Contract'. For the demo, I built a smart contract development marketplace called 'Smart Gigs' that uses the developed smart contract as some kind of 'Escrow' service and for milestones payments. I tried to have minimal footprint contracts to save gas costs while preserving functionalities. The frontend features a passwordless backend authentication with Metamask.
