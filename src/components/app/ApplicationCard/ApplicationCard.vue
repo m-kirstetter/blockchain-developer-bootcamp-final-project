@@ -78,7 +78,11 @@
             Lock Gig Amount
           </vue-button>
           <vue-button
-            v-else-if="isGigOwner && gig.contract.paid && gig.status !== 'Closed'"
+            v-else-if="
+              isGigOwner &&
+              gig.contract.paid &&
+              (gig.status !== 'Closed' || (remainingAmount === '0' && currentMilestone !== 0))
+            "
             look="secondary"
             size="lg"
             block
@@ -95,7 +99,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, onMounted, watch } from '@vue/composition-api';
+import { computed, defineComponent, ref, onMounted, onBeforeUnmount, watch } from '@vue/composition-api';
 import VueCard from '@/components/data-display/VueCard/VueCard.vue';
 import VueBadge from '@/components/data-display/VueBadge/VueBadge.vue';
 import VueButton from '@/components/input-and-actions/VueButton/VueButton.vue';
@@ -111,11 +115,11 @@ import { IApplicationFrontend } from '@/interfaces/IApplication';
 import { IGigFrontend } from '@/interfaces/IGig';
 import { IUserFrontend } from '@/interfaces/IUser';
 import { IUser } from '@/api/models/user.model';
-import { EventBus } from '@/services/EventBus';
 import { IContract } from '@/api/models/contract.model';
 import { addToast } from '@/components/utils';
 import { Contract, utils } from 'ethers';
 import { IContractFrontend } from '@/interfaces/IContract';
+import { EventBus } from '@/services/EventBus';
 
 export default defineComponent({
   name: 'ApplicationCard',
@@ -155,6 +159,53 @@ export default defineComponent({
 
     onMounted(() => setContractInstance());
 
+    const receivedEventListener = async () => {
+      if (!isModel<IContractFrontend>(props.gig.contract)) throw new Error('Error, contract must be Model');
+      await store.dispatch('contract/updateContract', {
+        _id: props.gig.contract._id,
+        paid: true,
+      });
+
+      await setRemainingAmount();
+
+      addToast({
+        title: 'Success!',
+        type: 'success',
+        text: 'Amount has been locked successfully!',
+      });
+
+      EventBus.$emit('reloadGigs');
+
+      isLoading.value = false;
+    };
+
+    const releaseEventListener = async () => {
+      if (!isModel<IContractFrontend>(props.gig.contract)) throw new Error('Error, contract must be Model');
+      if (props.gig.contract.currentMilestone === props.application.milestones.length - 1) {
+        await store.dispatch('gig/updateGig', {
+          _id: props.gig._id,
+          status: 'Closed',
+        });
+      } else {
+        await store.dispatch('contract/updateContract', {
+          _id: props.gig.contract._id,
+          currentMilestone: props.gig.contract.currentMilestone + 1,
+        });
+      }
+
+      addToast({
+        title: 'Success!',
+        type: 'success',
+        text: `Milestone ${props.gig.contract.currentMilestone + 1} has been released successfully!`,
+      });
+
+      await setRemainingAmount();
+
+      EventBus.$emit('reloadGigs');
+
+      isLoading.value = false;
+    };
+
     const setContractInstance = async () => {
       if (!isModel<IContract>(props.gig.contract)) throw new Error('Error, contract must be Model');
 
@@ -163,52 +214,9 @@ export default defineComponent({
 
         await setRemainingAmount();
 
-        smartContract.on('Received', async () => {
-          if (!isModel<IContractFrontend>(props.gig.contract)) throw new Error('Error, contract must be Model');
-          await store.dispatch('contract/updateContract', {
-            _id: props.gig.contract._id,
-            paid: true,
-          });
+        smartContract.on('Received', receivedEventListener);
 
-          await setRemainingAmount();
-
-          addToast({
-            title: 'Success!',
-            type: 'success',
-            text: 'Amount has been locked successfully!',
-          });
-
-          EventBus.$emit('reloadGigs');
-
-          isLoading.value = false;
-        });
-
-        smartContract.on('Release', async () => {
-          if (!isModel<IContractFrontend>(props.gig.contract)) throw new Error('Error, contract must be Model');
-          if (props.gig.contract.currentMilestone === props.application.milestones.length - 1) {
-            await store.dispatch('gig/updateGig', {
-              _id: props.gig._id,
-              status: 'Closed',
-            });
-          } else {
-            await store.dispatch('contract/updateContract', {
-              _id: props.gig.contract._id,
-              currentMilestone: props.gig.contract.currentMilestone + 1,
-            });
-          }
-
-          addToast({
-            title: 'Success!',
-            type: 'success',
-            text: `Milestone ${props.gig.contract.currentMilestone + 1} has been released successfully!`,
-          });
-
-          EventBus.$emit('reloadGigs');
-
-          await setRemainingAmount();
-
-          isLoading.value = false;
-        });
+        smartContract.on('Release', releaseEventListener);
       }
     };
 
@@ -319,6 +327,13 @@ export default defineComponent({
       },
       { deep: true },
     );
+
+    onBeforeUnmount(() => {
+      if (smartContract) {
+        smartContract.removeListener('Received', receivedEventListener);
+        smartContract.removeListener('Release', releaseEventListener);
+      }
+    });
 
     return {
       isApplicationOwner,
