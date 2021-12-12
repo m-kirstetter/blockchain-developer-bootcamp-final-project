@@ -7,7 +7,7 @@
             <vue-text>
               {{ application.owner.address === user.address ? 'My application' : application.owner.address }}
             </vue-text>
-            <vue-text v-if="contractExistsAndIsPaid" color="text-low">
+            <vue-text v-if="contractExistsAndIsPaid && gig.status !== 'Open'" color="text-low">
               Remaining locked: {{ remainingAmount }} ETH
             </vue-text>
           </vue-stack>
@@ -90,7 +90,7 @@
             :loading="isLoading"
             @click="releaseMilestone"
           >
-            Release Milestone {{ gig.contract.currentMilestone + 1 }}
+            Release Milestone {{ currentMilestone + 1 }}
           </vue-button>
         </vue-box>
       </vue-collapse>
@@ -180,28 +180,23 @@ export default defineComponent({
     };
 
     const releaseEventListener = async () => {
-      if (!isModel<IContractFrontend>(props.gig.contract)) throw new Error('Error, contract must be Model');
-      if (props.gig.contract.currentMilestone === props.application.milestones.length - 1) {
+      if (currentMilestone.value === props.application.milestones.length - 1) {
         await store.dispatch('gig/updateGig', {
           _id: props.gig._id,
           status: 'Closed',
         });
-      } else {
-        await store.dispatch('contract/updateContract', {
-          _id: props.gig.contract._id,
-          currentMilestone: props.gig.contract.currentMilestone + 1,
-        });
+
+        EventBus.$emit('reloadGigs');
       }
 
       addToast({
         title: 'Success!',
         type: 'success',
-        text: `Milestone ${props.gig.contract.currentMilestone + 1} has been released successfully!`,
+        text: `Milestone ${currentMilestone.value + 1} has been released successfully!`,
       });
 
       await setRemainingAmount();
-
-      EventBus.$emit('reloadGigs');
+      await setCurrentMilestone();
 
       isLoading.value = false;
     };
@@ -213,6 +208,7 @@ export default defineComponent({
         smartContract = $ethereum.contractInstance(props.gig.contract.contract);
 
         await setRemainingAmount();
+        await setCurrentMilestone();
 
         smartContract.on('Received', receivedEventListener);
 
@@ -225,7 +221,9 @@ export default defineComponent({
 
       const amountWei = await $ethereum.provider.getBalance(props.gig.contract.contract);
       remainingAmount.value = utils.formatEther(amountWei.toString());
+    };
 
+    const setCurrentMilestone = async () => {
       const currentMilestoneBN = await smartContract.currentMilestone();
 
       currentMilestone.value = parseInt(currentMilestoneBN.toString());
@@ -293,7 +291,7 @@ export default defineComponent({
       try {
         if (!isModel<IContractFrontend>(props.gig.contract)) throw new Error('Error, gig must be Model');
 
-        await smartContract.release(props.gig.contract.currentMilestone);
+        await smartContract.release(currentMilestone.value);
       } catch (error) {
         addToast({
           title: 'Error!',

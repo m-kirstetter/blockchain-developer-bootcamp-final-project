@@ -21,7 +21,7 @@ export interface IContractActions {
   ): Promise<any>;
   updateContract(
     context: ActionContext<IContractState, IState>,
-    contract: AtLeast<IContractFrontend, '_id'> & Partial<Pick<IContractFrontend, 'contract' | 'currentMilestone'>>,
+    contract: AtLeast<IContractFrontend, '_id'> & Partial<Pick<IContractFrontend, 'contract'>>,
   ): Promise<any>;
 }
 
@@ -37,7 +37,6 @@ export const ContractActions: IContractActions = {
       provider: (application.owner._id as unknown) as Schema.Types.ObjectId,
       gig: application.gig,
       application: application._id,
-      currentMilestone: 0,
     };
 
     const milestones: string[] = [];

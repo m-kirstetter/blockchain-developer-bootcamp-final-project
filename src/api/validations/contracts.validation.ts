@@ -9,7 +9,6 @@ export const createContractValidation = {
     contract: Joi.string(),
     gig: Joi.string().required(),
     application: Joi.string().required(),
-    currentMilestone: Joi.number().required(),
   }),
 };
 
@@ -23,7 +22,6 @@ export const updateContractValidation = {
   body: Joi.object().keys({
     contract: Joi.string(),
     paid: Joi.bool(),
-    currentMilestone: Joi.number(),
   }),
 };
 
