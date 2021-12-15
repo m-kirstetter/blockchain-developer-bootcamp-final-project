@@ -30,6 +30,7 @@ Gig creation/payment workflow:
 - Node v14
 - Truffle v5
 - Solidity v0.8.9
+- MongoDB
 - Metamask wallet connected to Ropsten network
 
 ## Directory structure
